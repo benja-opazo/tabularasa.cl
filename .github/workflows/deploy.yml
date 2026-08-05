@@ -1,0 +1,47 @@
+# Deploy pipeline for the tabularasa.cl companion site.
+#
+# There is no build step (plain HTML/CSS/JS, no npm) — `check` is a cheap
+# syntax guard, and `deploy` just ships `site/` as-is via `wrangler deploy`
+# against the Workers static-assets config in wrangler.toml. See
+# docs/decisions/deploy.md for why this replaces benjaopazoc.cl's
+# dashboard-only Cloudflare Pages setup with an in-repo, reviewable pipeline.
+#
+# Required repo secrets (Settings -> Secrets and variables -> Actions):
+#   CLOUDFLARE_API_TOKEN   - scoped to "Edit Cloudflare Workers" on this account
+#   CLOUDFLARE_ACCOUNT_ID  - the account the Worker deploys under
+# Full setup steps: docs/decisions/deploy.md.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Syntax check (JS)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node --check site/assets/js/theme.js
+      - run: node --check site/assets/js/demo-table.js
+      - run: node --check site/assets/js/downloads.js
+
+  deploy:
+    name: Deploy to Cloudflare Workers
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: wrangler deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy

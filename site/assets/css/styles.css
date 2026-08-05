@@ -1,0 +1,1293 @@
+/* ==========================================================================
+   tabularasa.cl — styles.css
+   Numbered TOC (keep updated — convention borrowed from benjaopazoc.cl):
+     1. Reset + fonts
+     2. Layout primitives
+     3. Header / nav
+     4. Hero
+     5. Buttons + badges (site-level marketing controls)
+     6. Section headings / feature grid
+     7. Showcase window chrome (title bar, menu bar, tab strip) — app-faithful
+     8. Toolbar (app-faithful)
+     9. Grid (app-faithful)
+    10. Status bar (app-faithful)
+    11. Search bar (app-faithful)
+    12. Popovers / dropdowns (app-faithful)
+    13. Download section
+    14. Footer
+    15. Scrollbars (app-faithful)
+    16. Responsive
+    17. Reduced motion / accessibility
+   ========================================================================== */
+
+/* ---- 1. Reset + fonts --------------------------------------------------- */
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../fonts/JetBrainsMono-Regular.ttf") format("truetype");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "lucide";
+  src: url("../fonts/lucide.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block; /* icon glyphs must not flash as tofu/text */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-chrome);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+.icon {
+  font-family: var(--font-icon);
+  font-style: normal;
+  line-height: 1;
+  display: inline-block;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ---- 2. Layout primitives ------------------------------------------------ */
+
+.container {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--space-3);
+}
+
+.section {
+  padding-block: var(--space-6);
+}
+
+.section-head {
+  max-width: 640px;
+  margin-bottom: var(--space-5);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 var(--space-2);
+}
+
+.section-head h2 {
+  font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.1rem);
+  margin: 0 0 var(--space-2);
+  letter-spacing: -0.01em;
+}
+
+.section-head p {
+  color: var(--dim);
+  margin: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-2);
+  top: -48px;
+  background: var(--accent);
+  color: var(--panel-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  z-index: 100;
+  transition: top 0.2s var(--ease);
+}
+
+.skip-link:focus {
+  top: var(--space-2);
+}
+
+/* ---- 3. Header / nav ------------------------------------------------------ */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.25s var(--ease), background 0.25s var(--ease);
+}
+
+.site-header.is-scrolled {
+  border-bottom-color: var(--border);
+  background: color-mix(in srgb, var(--bg) 96%, transparent);
+}
+
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+
+.brand-mark {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: var(--accent);
+  flex: none;
+}
+
+.brand-name {
+  font-family: var(--font-mono);
+}
+
+.main-nav {
+  display: none;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: var(--dim);
+  font-size: 14.5px;
+  transition: color 0.2s var(--ease);
+}
+
+.main-nav a:hover {
+  color: var(--text);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  flex: none;
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.theme-toggle:hover {
+  background: var(--hover);
+}
+
+.theme-toggle svg {
+  width: 17px;
+  height: 17px;
+}
+
+.theme-toggle .icon-moon {
+  display: none;
+}
+:root[data-theme="dark"] .theme-toggle .icon-sun {
+  display: none;
+}
+:root[data-theme="dark"] .theme-toggle .icon-moon {
+  display: block;
+}
+
+/* ---- 4. Hero -------------------------------------------------------------- */
+
+.hero {
+  padding-block: var(--space-6) var(--space-5);
+  text-align: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--dim);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 12px;
+  margin-bottom: var(--space-3);
+}
+
+.hero-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  flex: none;
+}
+
+.hero h1 {
+  font-size: clamp(2.1rem, 1.7rem + 2.6vw, 3.4rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-3);
+}
+
+.hero h1 .accent-text {
+  color: var(--accent);
+}
+
+.hero-sub {
+  max-width: 560px;
+  margin: 0 auto var(--space-4);
+  color: var(--dim);
+  font-size: 17px;
+}
+
+.hero-ctas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.hero-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.hero-meta {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--faint);
+}
+
+.hero-meta a {
+  color: var(--dim);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ---- 5. Buttons + badges -------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 20px;
+  border-radius: var(--radius-sm);
+  font-size: 14.5px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), background 0.2s var(--ease),
+    border-color 0.2s var(--ease);
+  white-space: nowrap;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  /* Mirrors theme::primary_button: accent fill + panel2 text, strong. */
+  background: var(--accent);
+  color: var(--panel-2);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.04);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--hover);
+}
+
+.btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.btn-sm {
+  height: 36px;
+  padding: 0 14px;
+  font-size: 13px;
+}
+
+/* ---- 6. Feature grid ------------------------------------------------------ */
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+.feature-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+.feature-card .icon {
+  font-size: 22px;
+  color: var(--accent);
+  margin-bottom: var(--space-2);
+}
+
+.feature-card h3 {
+  font-size: 15.5px;
+  margin: 0 0 6px;
+}
+
+.feature-card p {
+  margin: 0;
+  color: var(--dim);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.feature-card .status-pill {
+  display: inline-block;
+  margin-top: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.status-pill.is-shipped {
+  color: var(--green);
+  background: color-mix(in srgb, var(--green) 14%, transparent);
+}
+
+.status-pill.is-roadmap {
+  color: var(--orange);
+  background: color-mix(in srgb, var(--orange) 14%, transparent);
+}
+
+/* ---- 7. Showcase window chrome ------------------------------------------- */
+
+.showcase-frame {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: 0 24px 60px -20px var(--shadow-color);
+  background: var(--bg);
+  /* Isolates the app-faithful design tokens: this subtree always renders in
+     the "app" palette below, independent of whatever the marketing shell
+     is doing — see docs/decisions/theming.md. */
+}
+
+.tr-titlebar {
+  height: 32px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  background: var(--titlebar);
+  border-bottom: 1px solid var(--border);
+}
+
+.tr-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.tr-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--faint);
+  opacity: 0.6;
+}
+
+.tr-titlebar-title {
+  font-size: 12px;
+  color: var(--dim);
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  margin-inline: auto;
+  font-family: var(--font-chrome);
+}
+
+.tr-menubar {
+  height: 28px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 0 14px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  font-size: 12.5px;
+  color: var(--faint);
+  overflow-x: auto;
+}
+
+.tr-tabstrip {
+  height: 34px;
+  flex: none;
+  display: flex;
+  align-items: stretch;
+  background: var(--panel-2);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+
+.tr-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  font-size: 12.5px;
+  color: var(--dim);
+  border-right: 1px solid var(--border);
+  white-space: nowrap;
+  flex: none;
+}
+
+.tr-tab.is-active {
+  background: var(--grid);
+  color: var(--text);
+  box-shadow: inset 0 2px 0 var(--accent);
+}
+
+.tr-tab-dirty {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dim);
+}
+
+.tr-tab-add {
+  width: 34px;
+  display: grid;
+  place-items: center;
+  color: var(--faint);
+  font-size: 16px;
+  flex: none;
+}
+
+/* ---- 8. Toolbar ------------------------------------------------------------ */
+
+.tr-toolbar {
+  min-height: 46px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 12px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  row-gap: 4px;
+}
+
+.tr-toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.tr-group-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--faint);
+  margin-right: 4px;
+}
+
+.tr-divider {
+  width: 1px;
+  align-self: stretch;
+  margin-block: 8px;
+  background: var(--border);
+  flex: none;
+}
+
+.tr-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 8px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-chrome);
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+  position: relative;
+}
+
+.tr-btn .icon {
+  font-size: 15px;
+}
+
+.tr-btn .chev {
+  font-size: 10px;
+  margin-left: 2px;
+  color: var(--faint);
+}
+
+.tr-btn:hover,
+.tr-btn.is-active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tr-btn.is-active .chev {
+  color: var(--accent);
+}
+
+.tr-btn[disabled] {
+  color: var(--faint);
+  cursor: not-allowed;
+  background: none;
+}
+
+.tr-btn[disabled]:hover {
+  background: none;
+}
+
+/* ---- 9. Grid ---------------------------------------------------------------- */
+
+.tr-grid-scroll {
+  overflow: auto;
+  max-height: 420px;
+  background: var(--grid);
+}
+
+.tr-grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.tr-grid thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--panel-2);
+  color: var(--text);
+  text-align: left;
+  font-weight: 500;
+  padding: 6px 8px;
+  height: 26px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.tr-grid thead th:hover {
+  background: var(--hover);
+}
+
+.tr-grid thead th.tr-col-gutter {
+  cursor: default;
+}
+
+.tr-grid thead th.tr-col-gutter:hover {
+  background: var(--panel-2);
+}
+
+.tr-grid th .sort-chev {
+  font-size: 10px;
+  margin-left: 4px;
+  color: var(--accent);
+}
+
+.tr-grid tbody td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.tr-grid.is-wrapped tbody td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.tr-grid tbody tr.tr-row-even td {
+  background: var(--grid);
+}
+
+.tr-grid tbody tr.tr-row-odd td {
+  background: var(--grid-alt);
+}
+
+.tr-grid tbody tr:hover td {
+  background: var(--hover);
+}
+
+.tr-grid tbody tr.is-row-selected td {
+  background: var(--line-selection);
+}
+
+.tr-grid td.is-cell-selected {
+  background: var(--block-selection);
+  outline: 1px solid var(--accent);
+  outline-offset: -1px;
+}
+
+.tr-col-gutter {
+  color: var(--gutter-text);
+  background: var(--gutter) !important;
+  text-align: right;
+  width: 1%;
+  cursor: pointer;
+}
+
+.tr-grid tbody td.tr-col-gutter:hover {
+  background: var(--hover) !important;
+}
+
+.tr-col-id {
+  color: var(--dim);
+}
+
+.tr-status-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tr-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.tr-status-dot.is-green {
+  background: var(--green);
+}
+.tr-status-dot.is-orange {
+  background: var(--orange);
+}
+.tr-status-dot.is-red {
+  background: var(--red);
+}
+
+.tr-status-cell.is-green {
+  color: var(--green);
+}
+.tr-status-cell.is-orange {
+  color: var(--orange);
+}
+.tr-status-cell.is-red {
+  color: var(--red);
+}
+
+.tr-group-header td {
+  background: color-mix(in srgb, var(--panel-2) 75%, var(--purple) 25%) !important;
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tr-group-header .chev {
+  color: var(--purple);
+  margin-right: 6px;
+  font-size: 10px;
+}
+
+.tr-group-header .count {
+  color: var(--dim);
+  font-weight: 400;
+  margin-left: 6px;
+}
+
+mark.tr-match {
+  background: var(--match-bg);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+mark.tr-match.is-current {
+  background: var(--current-match-bg);
+}
+
+/* Diverging heatmap: high -> blue, low -> red, set inline per-cell via JS
+   custom property --heat (0..1) so the scale stays data-driven. */
+.tr-cell-heat {
+  background: color-mix(
+    in srgb,
+    var(--blue) calc(var(--heat, 0.5) * 100%),
+    var(--red) calc((1 - var(--heat, 0.5)) * 100%)
+  ) !important;
+  color: var(--panel-2);
+}
+
+:root[data-theme="light"] .tr-cell-heat {
+  color: var(--text);
+}
+
+.tr-empty-row td {
+  text-align: center;
+  color: var(--faint);
+  padding: 24px;
+  font-family: var(--font-chrome);
+}
+
+/* ---- 10. Status bar --------------------------------------------------------- */
+
+.tr-statusbar {
+  min-height: 30px;
+  flex: none;
+  display: flex;
+  align-items: stretch;
+  background: var(--panel-2);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  flex-wrap: wrap;
+}
+
+.tr-status-zone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  min-height: 30px;
+}
+
+.tr-status-left {
+  border-right: 1px solid var(--border);
+  color: var(--dim);
+  flex-wrap: wrap;
+}
+
+.tr-status-left .agg-label {
+  text-transform: uppercase;
+  font-size: 9.5px;
+  letter-spacing: 0.5px;
+  color: var(--faint);
+  margin-right: 3px;
+}
+
+.tr-status-left .agg-value {
+  color: var(--text);
+}
+
+.tr-status-center {
+  flex: 1;
+  gap: 7px;
+  flex-wrap: wrap;
+  min-width: 140px;
+}
+
+.tr-rules-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--faint);
+}
+
+.tr-rules-empty {
+  font-style: italic;
+  color: var(--faint);
+}
+
+.tr-status-right {
+  border-left: 1px solid var(--border);
+  color: var(--faint);
+  gap: 10px;
+  margin-left: auto;
+}
+
+.tr-badge {
+  padding: 2px 6px;
+}
+
+/* Rule pill (sort / filter / group) — tint@8% fill + tint@35% border. */
+.tr-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  border-radius: 999px;
+  font-size: 11px;
+  overflow: hidden;
+  border: 1px solid;
+}
+
+.tr-pill-icon,
+.tr-pill-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 6px;
+  cursor: pointer;
+}
+
+.tr-pill-label {
+  padding: 0 2px;
+  white-space: nowrap;
+}
+
+.tr-pill-close {
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.tr-pill-close:hover {
+  opacity: 1;
+}
+
+.tr-pill.is-sort {
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  color: var(--accent);
+}
+
+.tr-pill.is-filter {
+  background: color-mix(in srgb, var(--green) 8%, transparent);
+  border-color: color-mix(in srgb, var(--green) 35%, transparent);
+  color: var(--green);
+}
+
+.tr-pill.is-group {
+  background: color-mix(in srgb, var(--purple) 8%, transparent);
+  border-color: color-mix(in srgb, var(--purple) 35%, transparent);
+  color: var(--purple);
+}
+
+/* ---- 11. Search bar ---------------------------------------------------------- */
+
+.tr-searchbar {
+  display: none;
+  min-height: 30px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
+  background: var(--panel-2);
+  border-top: 1px solid var(--border);
+  font-family: var(--font-chrome);
+}
+
+.tr-searchbar.is-open {
+  display: flex;
+}
+
+.tr-searchbar input {
+  flex: 1;
+  min-width: 0;
+  background: var(--grid);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 5px 8px;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.tr-searchbar input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.tr-search-count {
+  font-size: 11.5px;
+  color: var(--faint);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+.tr-search-btn {
+  background: none;
+  border: none;
+  color: var(--faint);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 5px;
+}
+
+.tr-search-btn:hover {
+  background: var(--hover);
+  color: var(--text);
+}
+
+/* ---- 12. Popovers / dropdowns ------------------------------------------------ */
+
+.tr-popover-anchor {
+  position: relative;
+}
+
+.tr-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 190px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  box-shadow: 0 10px 30px var(--shadow-color);
+  padding: 5px;
+  z-index: 30;
+  display: none;
+}
+
+.tr-popover.is-open {
+  display: block;
+}
+
+.tr-popover-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--faint);
+  padding: 5px 8px 6px;
+}
+
+.tr-popover-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 5px 8px;
+  border-radius: 5px;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-family: var(--font-chrome);
+  font-size: 12.5px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.tr-popover-row:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tr-popover-row.is-selected {
+  color: var(--accent);
+}
+
+.tr-popover-row .sample {
+  margin-left: auto;
+  color: var(--faint);
+  font-size: 11px;
+}
+
+/* ---- 13. Download section ---------------------------------------------------- */
+
+.download-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+.download-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  transition: border-color 0.2s var(--ease);
+}
+
+.download-card.is-detected {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 6%, var(--panel));
+}
+
+.download-card-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.download-card .icon {
+  font-size: 24px;
+  color: var(--text);
+}
+
+.download-card h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.download-detected-badge {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 999px;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+.download-card p {
+  margin: 0;
+  color: var(--dim);
+  font-size: 13.5px;
+}
+
+.download-card .meta {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--faint);
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.download-card .btn {
+  margin-top: auto;
+  width: 100%;
+}
+
+.download-note {
+  text-align: center;
+  color: var(--faint);
+  font-size: 13px;
+  margin-top: var(--space-3);
+}
+
+.download-note a {
+  color: var(--dim);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ---- 14. Footer --------------------------------------------------------------- */
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding-block: var(--space-5);
+  margin-top: var(--space-6);
+}
+
+.footer-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+.footer-brand .brand-mark {
+  width: 12px;
+  height: 12px;
+}
+
+.footer-tagline {
+  color: var(--faint);
+  font-size: 13.5px;
+  margin: 6px 0 0;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.footer-col h4 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  margin: 0 0 var(--space-2);
+}
+
+.footer-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-col a {
+  text-decoration: none;
+  color: var(--dim);
+  font-size: 14px;
+}
+
+.footer-col a:hover {
+  color: var(--text);
+}
+
+.footer-bottom {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: space-between;
+  color: var(--faint);
+  font-size: 12.5px;
+}
+
+.footer-bottom a {
+  color: var(--faint);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ---- 15. Scrollbars (app-faithful, ~13px, thumb = border -> faint) ------------ */
+
+.tr-grid-scroll::-webkit-scrollbar,
+.tr-menubar::-webkit-scrollbar,
+.tr-tabstrip::-webkit-scrollbar {
+  width: 13px;
+  height: 13px;
+}
+
+.tr-grid-scroll::-webkit-scrollbar-thumb,
+.tr-menubar::-webkit-scrollbar-thumb,
+.tr-tabstrip::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 7px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+.tr-grid-scroll::-webkit-scrollbar-thumb:hover,
+.tr-menubar::-webkit-scrollbar-thumb:hover,
+.tr-tabstrip::-webkit-scrollbar-thumb:hover {
+  background: var(--faint);
+  background-clip: content-box;
+}
+
+.tr-grid-scroll::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ---- 16. Responsive ------------------------------------------------------------ */
+
+@media (min-width: 640px) {
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .download-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footer-grid {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .footer-links {
+    gap: var(--space-6);
+  }
+}
+
+@media (min-width: 860px) {
+  .main-nav {
+    display: flex;
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---- 17. Reduced motion / accessibility ----------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

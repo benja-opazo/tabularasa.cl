@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tabula Rasa — a blank slate for your data</title>
+  <meta name="description" content="Tabula Rasa is a fast, cross-platform CSV viewer and editor built in Rust. Opens huge files instantly, never hangs, and feels like Sublime Text for tabular data. Free to use, for Linux, Windows and macOS." />
+  <meta name="author" content="Benjamín Opazo" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Tabula Rasa — a blank slate for your data" />
+  <meta property="og:description" content="A fast, cross-platform CSV viewer/editor. Opens huge files instantly and never hangs. Free to use." />
+  <meta property="og:url" content="https://tabularasa.cl" />
+  <meta name="twitter:card" content="summary" />
+
+  <!-- Prevent dark/light flash before CSS+JS load — mirrors benjaopazoc.cl's
+       convention. Keep in sync with assets/js/theme.js (docs/decisions/theming.md). -->
+  <script>
+    (function () {
+      var stored = localStorage.getItem("theme");
+      var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      var theme = stored || (prefersDark ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="stylesheet" href="assets/css/tokens.css" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="site-header">
+    <div class="container">
+      <a class="brand" href="#top">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-name">Tabula Rasa</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary">
+        <a href="#features">Features</a>
+        <a href="#showcase">See it in action</a>
+        <a href="#download">Download</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark / light theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v3M12 18.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2.5 12h3M18.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
+        </button>
+        <a class="btn btn-primary btn-sm" href="#download">Download</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ================= Hero ================= -->
+    <section class="hero container" id="top">
+      <div class="hero-badge">
+        <span class="dot" aria-hidden="true"></span>
+        Beta &middot; free to use
+      </div>
+      <h1>A blank slate<br />for your <span class="accent-text">data</span>.</h1>
+      <p class="hero-sub">
+        Tabula Rasa is a fast, cross-platform CSV viewer and editor. It opens huge
+        files instantly, never hangs on bad data, and feels like a tool you keep
+        open all day — closer to Sublime Text than to a spreadsheet.
+      </p>
+      <div class="hero-ctas">
+        <div class="hero-cta-row">
+          <a class="btn btn-primary" href="#download" id="hero-download-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-4.5-4.5M12 15l4.5-4.5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+            <span id="hero-download-label">Download for your platform</span>
+          </a>
+          <a class="btn btn-secondary" href="#showcase">See it in action</a>
+        </div>
+        <p class="hero-meta">Linux &middot; Windows &middot; macOS (Apple Silicon) — no account, no telemetry by default.</p>
+      </div>
+    </section>
+
+    <!-- ================= Showcase ================= -->
+    <section class="section" id="showcase">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Try it here</p>
+          <h2>This is the real interface — hardcoded, but interactive.</h2>
+          <p>
+            The grid below mirrors Tabula Rasa's actual visual system pixel-for-pixel:
+            same colors, same fonts, same icons. Sort a column, group by region,
+            toggle the heatmap, or search — it's a frozen sample file, not the full
+            app, but everything you click here behaves the way it does on your desktop.
+          </p>
+        </div>
+
+        <div class="showcase-frame" id="tr-demo-root" tabindex="0" aria-label="Interactive Tabula Rasa demo — hardcoded sample data">
+          <!-- Rendered by assets/js/demo-table.js -->
+          <noscript>
+            <p style="padding:2rem;color:var(--dim);font-family:var(--font-chrome);">
+              This interactive preview needs JavaScript. Download the real app below —
+              it needs no JavaScript at all.
+            </p>
+          </noscript>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Features ================= -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Under the hood</p>
+          <h2>Built for people who live in tabular data.</h2>
+          <p>Every feature above is real — here's the fuller list, and what's still on the way.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <span class="icon" aria-hidden="true">&#xe4ff;</span>
+            <h3>Huge files, instantly</h3>
+            <p>Multi-gigabyte CSVs load in the background — the UI never hangs while a big file opens, and you get a first paint immediately.</p>
+            <span class="status-pill is-shipped">Shipped</span>
+          </article>
+
+          <article class="feature-card">
+            <span class="icon" aria-hidden="true">&#xe0dc;</span>
+            <h3>Filter, sort, group by</h3>
+            <p>Click a header to sort, stack multiple keys, group rows into collapsible bands, and build filters — all reflected as removable rule pills in the status bar.</p>
+            <span class="status-pill is-shipped">Shipped</span>
+          </article>
+
+          <article class="feature-card">
+            <span class="icon" aria-hidden="true">&#xe151;</span>
+            <h3>Instant search</h3>
+            <p>A find bar highlights every match live across the whole file, with a density rail showing where matches cluster, without ever filtering rows out.</p>
+            <span class="status-pill is-shipped">Shipped</span>
+          </article>
+
+          <article class="feature-card">
+            <span class="icon" aria-hidden="true">&#xe099;</span>
+            <h3>Column control</h3>
+            <p>Show/hide columns, auto-fit or fix widths, wrap text, freeze panes — the grid adapts to the shape of your data, not the other way around.</p>
+            <span class="status-pill is-shipped">Shipped</span>
+          </article>
+
+          <article class="feature-card">
+            <span class="icon" aria-hidden="true">&#xe1f9;</span>
+            <h3>Edit, in place</h3>
+            <p>It's a viewer <em>and</em> an editor. No file locking — the file stays editable by other tools, and Tabula Rasa reloads or prompts you on external change.</p>
+            <span class="status-pill is-roadmap">In progress</span>
+          </article>
+
+          <article class="feature-card">
+            <span class="icon" aria-hidden="true">&#xe58a;</span>
+            <h3>Beyond CSV</h3>
+            <p>Built as a semi-universal tabular viewer from day one — Parquet, JSON and more are the natural next formats, not a rewrite.</p>
+            <span class="status-pill is-roadmap">Roadmap</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Trust ================= -->
+    <section class="section" style="padding-block: 0 var(--space-6);">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">You can trust it with your data</p>
+          <h2>Three guarantees that never bend.</h2>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <h3>What you see is real</h3>
+            <p>The app never silently shows coerced, truncated, or placeholder values as if they were your file's actual content. If something can't be parsed, you're told.</p>
+          </article>
+          <article class="feature-card">
+            <h3>No surprise data loss</h3>
+            <p>If a file loaded in a lossy way, saving is guarded and you're clearly warned before anything is overwritten.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Corrupt data can't hang it</h3>
+            <p>Bad input may mean a failed or partial load — it never freezes or blocks the interface while you figure out why.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Download ================= -->
+    <section class="section" id="download">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Get Tabula Rasa</p>
+          <h2>Free to use, on every desktop platform.</h2>
+          <p>
+            No account, no trial timer. An occasional, easily-dismissable nag is the
+            only thing a one-time lifetime pass ever removes — that's the whole
+            monetization model.
+          </p>
+        </div>
+
+        <div class="download-grid" id="download-grid">
+          <article class="download-card" data-platform="linux">
+            <div class="download-card-head">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-1.3 0-2.4 1.4-2.4 3.6 0 1.1.3 1.9-.4 2.8-1 1.3-2.4 2.1-2.4 4.1 0 3 2.3 3 2.3 4.3 0 .7 1.4 1.2 3 1.2s2.9-.5 2.9-1.2c0-1.3 2.3-1.3 2.3-4.3 0-2-1.4-2.8-2.4-4.1-.7-.9-.4-1.7-.4-2.8C14.5 4.4 13.3 3 12 3Z"/><path d="M9.5 9.8c1.7 1 3.3 1 5 0"/></svg>
+              </span>
+              <h3>Linux</h3>
+              <span class="download-detected-badge" hidden>Detected</span>
+            </div>
+            <p>AppImage — runs on any modern distro, no installation required.</p>
+            <div class="meta">
+              <span class="dl-version">v&mdash;</span>
+              <span class="dl-size">&mdash;</span>
+            </div>
+            <a class="btn btn-primary dl-link" href="https://downloads.tabularasa.cl/latest/linux">Download .AppImage</a>
+          </article>
+
+          <article class="download-card" data-platform="windows">
+            <div class="download-card-head">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5.5 10.5 4.4V11H3V5.5Z"/><path d="M11.5 4.3 21 3v7.9h-9.5V4.3Z"/><path d="M3 12h7.5v6.5L3 17.5V12Z"/><path d="M11.5 12H21v8.9l-9.5-1.3V12Z"/></svg>
+              </span>
+              <h3>Windows</h3>
+              <span class="download-detected-badge" hidden>Detected</span>
+            </div>
+            <p>Installer (.exe) for 64-bit Windows 10/11.</p>
+            <div class="meta">
+              <span class="dl-version">v&mdash;</span>
+              <span class="dl-size">&mdash;</span>
+            </div>
+            <a class="btn btn-primary dl-link" href="https://downloads.tabularasa.cl/latest/windows">Download .exe</a>
+          </article>
+
+          <article class="download-card" data-platform="macos">
+            <div class="download-card-head">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16.4 12.9c0-2 1.6-3 1.7-3.1-1-1.4-2.4-1.6-2.9-1.6-1.3-.1-2.4.7-3.1.7-.6 0-1.6-.7-2.7-.7-1.4 0-2.6.8-3.3 2-1.4 2.5-.4 6.1 1 8.1.7 1 1.5 2.1 2.6 2 1-.1 1.4-.7 2.7-.7s1.6.7 2.7.6c1.1 0 1.8-1 2.5-2 .8-1.1 1.1-2.2 1.1-2.3-.1 0-2.3-.9-2.3-3Z"/><path d="M13.8 6.3c.6-.7 1-1.7.9-2.8-.9.1-2 .6-2.6 1.4-.5.6-1 1.7-.9 2.7 1 .1 2-.5 2.6-1.3Z"/></svg>
+              </span>
+              <h3>macOS</h3>
+              <span class="download-detected-badge" hidden>Detected</span>
+            </div>
+            <p>Disk image (.dmg) — Apple Silicon (M-series).</p>
+            <div class="meta">
+              <span class="dl-version">v&mdash;</span>
+              <span class="dl-size">&mdash;</span>
+            </div>
+            <a class="btn btn-primary dl-link" href="https://downloads.tabularasa.cl/latest/macos">Download .dmg</a>
+          </article>
+        </div>
+        <p class="download-note" id="download-note">
+          Fetching the latest release&hellip;
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <span class="brand-mark" aria-hidden="true"></span>
+            Tabula Rasa
+          </div>
+          <p class="footer-tagline">A blank slate for your data.</p>
+        </div>
+
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>Product</h4>
+            <ul>
+              <li><a href="#features">Features</a></li>
+              <li><a href="#showcase">Showcase</a></li>
+              <li><a href="#download">Download</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="mailto:benjamin.opazo.c@gmail.com">Contact</a></li>
+              <li><a href="#" data-todo="EULA not drafted yet — roadmap E8">License / EULA</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>More from the author</h4>
+            <ul>
+              <li><a href="https://benjaopazoc.cl" target="_blank" rel="noopener">benjaopazoc.cl</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; <span id="footer-year">2026</span> Benjamín Opazo. All rights reserved.</span>
+        <a href="https://benjaopazoc.cl" target="_blank" rel="noopener">Built by benjaopazoc.cl</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/demo-table.js"></script>
+  <script src="assets/js/downloads.js"></script>
+  <script>
+    document.getElementById("footer-year").textContent = new Date().getFullYear();
+    window.addEventListener("scroll", function () {
+      document.getElementById("site-header").classList.toggle("is-scrolled", window.scrollY > 4);
+    });
+  </script>
+</body>
+</html>
