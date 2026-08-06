@@ -26,6 +26,7 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 ## Deploy (`deploy.md`)
 
 - Deploy path is **GitHub Actions + `wrangler deploy`** against Cloudflare Workers static assets (`wrangler.toml`), not `benjaopazoc.cl`'s current dashboard-only Cloudflare Pages setup — chosen explicitly so the pipeline is versioned and visible in-repo.
+- **Deviation:** manual `workflow_dispatch` only, no push-to-`main` trigger — this site is still an active prototype, so deploys are a deliberate action, not automatic.
 - No build job: the JS syntax check is the only pre-deploy gate.
 
 ## Copy (`copy.md`)

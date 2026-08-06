@@ -44,19 +44,24 @@ confirm it before relying on this working in production. If it's missing, the
 
 If the manifest fetch fails (CORS, offline, R2 down, browser has no `fetch`), the
 download cards keep the **static hrefs already in `index.html`**:
-`https://downloads.tabularasa.cl/latest/<platform>`. Those are not a real endpoint
-today either — this is a "fail toward something plausible, not a dead link"
-choice, not a claim that the redirect exists. Two real options if the primary
-manifest path turns out to be unreliable in practice:
+`https://downloads.tabularasa.cl/latest/<platform>`. **Reversed decision (was:
+"not a real endpoint today"):** this redirect is going to be built —
+a small Cloudflare Worker route on `downloads.tabularasa.cl` that reads
+`manifest.json` server-side and 302s to the current installer per platform —
+so the fallback hrefs point at a real, intentional URL, not a placeholder. Until
+that redirect ships, these links are dead; that's expected and temporary, not a
+bug to work around here.
 
-1. **Build the `/latest/<platform>` redirect** — a tiny Cloudflare Worker route on
-   `downloads.tabularasa.cl` that reads `manifest.json` server-side and 302s to
-   the current installer per platform. Then the fallback hrefs become real, and
-   this becomes the primary mechanism (no CORS needed for a same-origin redirect
-   consumed as a normal link, not a `fetch`).
-2. **Fix CORS on the existing R2 bucket** and keep the manifest-driven JS as
-   primary (current implementation) — smaller change, but keeps a client-side
-   dependency in the critical download path.
+Once both exist, there are two live mechanisms:
 
-Not decided which — flagged here for Benjamin to pick when verifying the R2/CORS
-setup.
+1. **`/latest/<platform>` redirect** (coming soon) — the static/fallback hrefs.
+   No CORS needed since it's consumed as a normal link, not a `fetch`.
+2. **`manifest.json` fetch** (current implementation, primary when it works) —
+   rewrites hrefs to the exact versioned asset URL and fills in version/size
+   text. Still needs CORS on the R2 bucket (see above) — not yet verified as
+   configured.
+
+Kept as-is per explicit confirmation: once CORS is fixed, buttons should point
+at the exact per-version release file (manifest-driven), not the `/latest/`
+redirect — the redirect is just the resilient fallback path, not the intended
+steady state.

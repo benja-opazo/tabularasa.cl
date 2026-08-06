@@ -19,20 +19,45 @@ claim against its source before it goes live.
 | "Free to use... one-time lifetime pass removes the occasional nag" | `overview.md` §Monetization — **re-check this file if the monetization model changes**; the EULA itself is still undrafted per `roadmap.md`'s E8 Backlog |
 | "No file locking... reloads or prompts on external change" | `overview.md` §Core requirements |
 | Feature-card claims (huge files, filter/sort/group, search, column control) | `tabula-rasa/docs/ui-ux/components.md`'s "Status: built" rows |
-| "Edit, in place" marked **In progress** | `overview.md` non-goals + `roadmap.md` E5 (editing/save) is listed as entirely untouched — this is aspirational, not shipped, and the badge says so |
 | "Beyond CSV... Parquet, JSON" marked **Roadmap** | `overview.md` §Future direction |
 | Platform list (Linux AppImage / Windows .exe / macOS Apple Silicon .dmg) | `tabula-rasa/scripts/release/gen_manifest.py`'s `TARGETS` — note **Intel Mac is not built today**, only `aarch64-apple-darwin` |
-| "Beta" badge in the hero | `roadmap.md`'s "Current status" — beta scope is explicitly reopened/in progress as of the doc's last update |
+
+## Removed since the first draft
+
+- **"Beta · free to use" hero badge** — removed. Premature messaging for a
+  prototype still being fixed up; revisit once there's an actual beta to badge.
+- **"Edit, in place" feature card** — removed rather than left as **In
+  progress**. `roadmap.md` E5 (editing & save) is listed as entirely untouched,
+  so promising it — even as a roadmap item — overstated where the app actually
+  is. Re-add once editing genuinely ships.
+- **"no telemetry by default" hero-meta claim** — removed. The app doesn't have
+  telemetry today, but that's expected to change soon, so a blanket "no
+  telemetry" promise would go stale fast. Don't restore this claim without
+  checking the current telemetry posture first.
+- **Download-card "Detected" badge/highlight** — removed (`downloads.js`
+  `applyDetected`, the `.is-detected` card border/background, and the badge
+  markup/CSS). OS auto-detection still drives the hero CTA's label/link — only
+  the per-card visual highlight was cut.
+- **Contact email** — removed (`mailto:benjamin.opazo.c@gmail.com`) until a
+  public-facing address exists. The footer's Support column currently only has
+  the License/EULA stub; re-add a Contact link once there's an address to show.
+
+## License / EULA — why it's empty
+
+Not a bug: the EULA genuinely doesn't exist yet. `tabula-rasa/LICENSE` is a
+proprietary copyright notice, explicit that it is **not** the end-user licence
+agreement; `roadmap.md` E8 Backlog has "EULA drafting + legal review" as an
+open, `[post-beta]` item that blocks *charging money*, not shipping. Rather than
+a dead `href="#"` link, the footer now renders it as a non-interactive
+`.footer-stub` ("License / EULA — Coming soon") with a `title` tooltip
+explaining why — matches the demo table's own "honest stub, not a fake control"
+convention (`docs/decisions/demo-table.md`). Wire the real link once legal
+review lands; don't invent placeholder legal text here.
 
 ## Known placeholders still needing the owner's input
 
-- **License / EULA footer link** — points at `#` with a `data-todo` marker. The
-  EULA itself doesn't exist yet (`roadmap.md` E8 Backlog: "EULA drafting + legal
-  review... blocks charging money, not shipping"). Don't invent legal text here;
-  wire the real link once it exists.
-- **Contact** — uses `benjamin.opazo.c@gmail.com` directly (a `mailto:` link).
-  Swap for a dedicated address if one gets set up.
 - **OG image** — none set (`og:image` meta tag omitted rather than pointing at a
   placeholder). Add one before this URL gets shared anywhere link previews matter.
-- **"Beta" framing** — re-check `roadmap.md`'s status before a real release;
-  the badge and copy assume beta is still accurate as of this writing.
+- **Contact** — no public-facing email exists yet; the footer link was removed
+  rather than left pointing at a personal address (see above). Add it back once
+  one is set up.

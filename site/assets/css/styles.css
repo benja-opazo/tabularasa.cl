@@ -91,9 +91,21 @@ a {
   padding-block: var(--space-6);
 }
 
+/* Showcase gets less top padding than other sections — keeps the interactive
+   demo close enough to the fold to be visible on ~13" laptop viewports. */
+#showcase {
+  padding-top: var(--space-4);
+}
+
 .section-head {
   max-width: 640px;
   margin-bottom: var(--space-5);
+}
+
+/* Used on the showcase section-head so the interactive demo below it sits
+   higher on the page — visible without scrolling on ~13" laptop viewports. */
+.section-head-tight {
+  margin-bottom: var(--space-3);
 }
 
 .eyebrow {
@@ -251,7 +263,7 @@ a {
 /* ---- 4. Hero -------------------------------------------------------------- */
 
 .hero {
-  padding-block: var(--space-6) var(--space-5);
+  padding-block: var(--space-5);
   text-align: center;
 }
 
@@ -1070,11 +1082,6 @@ mark.tr-match.is-current {
   transition: border-color 0.2s var(--ease);
 }
 
-.download-card.is-detected {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 6%, var(--panel));
-}
-
 .download-card-head {
   display: flex;
   align-items: center;
@@ -1089,19 +1096,6 @@ mark.tr-match.is-current {
 .download-card h3 {
   margin: 0;
   font-size: 16px;
-}
-
-.download-detected-badge {
-  margin-left: auto;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--accent);
-  background: var(--accent-soft);
-  border-radius: 999px;
-  padding: 3px 8px;
-  white-space: nowrap;
 }
 
 .download-card p {
@@ -1201,6 +1195,26 @@ mark.tr-match.is-current {
 
 .footer-col a:hover {
   color: var(--text);
+}
+
+.footer-stub {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--faint);
+  font-size: 14px;
+  cursor: default;
+}
+
+.footer-stub-tag {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--faint);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 1px 6px;
 }
 
 .footer-bottom {

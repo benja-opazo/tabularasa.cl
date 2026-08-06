@@ -57,10 +57,6 @@
   <main id="main">
     <!-- ================= Hero ================= -->
     <section class="hero container" id="top">
-      <div class="hero-badge">
-        <span class="dot" aria-hidden="true"></span>
-        Beta &middot; free to use
-      </div>
       <h1>A blank slate<br />for your <span class="accent-text">data</span>.</h1>
       <p class="hero-sub">
         Tabula Rasa is a fast, cross-platform CSV viewer and editor. It opens huge
@@ -75,22 +71,17 @@
           </a>
           <a class="btn btn-secondary" href="#showcase">See it in action</a>
         </div>
-        <p class="hero-meta">Linux &middot; Windows &middot; macOS (Apple Silicon) — no account, no telemetry by default.</p>
+        <p class="hero-meta">Linux &middot; Windows &middot; macOS (Apple Silicon) — no account required.</p>
       </div>
     </section>
 
     <!-- ================= Showcase ================= -->
     <section class="section" id="showcase">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head section-head-tight">
           <p class="eyebrow">Try it here</p>
           <h2>This is the real interface — hardcoded, but interactive.</h2>
-          <p>
-            The grid below mirrors Tabula Rasa's actual visual system pixel-for-pixel:
-            same colors, same fonts, same icons. Sort a column, group by region,
-            toggle the heatmap, or search — it's a frozen sample file, not the full
-            app, but everything you click here behaves the way it does on your desktop.
-          </p>
+          <p>Same pixels as the app, frozen sample data — sort, group, filter, or search below.</p>
         </div>
 
         <div class="showcase-frame" id="tr-demo-root" tabindex="0" aria-label="Interactive Tabula Rasa demo — hardcoded sample data">
@@ -141,13 +132,6 @@
             <h3>Column control</h3>
             <p>Show/hide columns, auto-fit or fix widths, wrap text, freeze panes — the grid adapts to the shape of your data, not the other way around.</p>
             <span class="status-pill is-shipped">Shipped</span>
-          </article>
-
-          <article class="feature-card">
-            <span class="icon" aria-hidden="true">&#xe1f9;</span>
-            <h3>Edit, in place</h3>
-            <p>It's a viewer <em>and</em> an editor. No file locking — the file stays editable by other tools, and Tabula Rasa reloads or prompts you on external change.</p>
-            <span class="status-pill is-roadmap">In progress</span>
           </article>
 
           <article class="feature-card">
@@ -204,7 +188,6 @@
                 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-1.3 0-2.4 1.4-2.4 3.6 0 1.1.3 1.9-.4 2.8-1 1.3-2.4 2.1-2.4 4.1 0 3 2.3 3 2.3 4.3 0 .7 1.4 1.2 3 1.2s2.9-.5 2.9-1.2c0-1.3 2.3-1.3 2.3-4.3 0-2-1.4-2.8-2.4-4.1-.7-.9-.4-1.7-.4-2.8C14.5 4.4 13.3 3 12 3Z"/><path d="M9.5 9.8c1.7 1 3.3 1 5 0"/></svg>
               </span>
               <h3>Linux</h3>
-              <span class="download-detected-badge" hidden>Detected</span>
             </div>
             <p>AppImage — runs on any modern distro, no installation required.</p>
             <div class="meta">
@@ -220,7 +203,6 @@
                 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5.5 10.5 4.4V11H3V5.5Z"/><path d="M11.5 4.3 21 3v7.9h-9.5V4.3Z"/><path d="M3 12h7.5v6.5L3 17.5V12Z"/><path d="M11.5 12H21v8.9l-9.5-1.3V12Z"/></svg>
               </span>
               <h3>Windows</h3>
-              <span class="download-detected-badge" hidden>Detected</span>
             </div>
             <p>Installer (.exe) for 64-bit Windows 10/11.</p>
             <div class="meta">
@@ -236,7 +218,6 @@
                 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16.4 12.9c0-2 1.6-3 1.7-3.1-1-1.4-2.4-1.6-2.9-1.6-1.3-.1-2.4.7-3.1.7-.6 0-1.6-.7-2.7-.7-1.4 0-2.6.8-3.3 2-1.4 2.5-.4 6.1 1 8.1.7 1 1.5 2.1 2.6 2 1-.1 1.4-.7 2.7-.7s1.6.7 2.7.6c1.1 0 1.8-1 2.5-2 .8-1.1 1.1-2.2 1.1-2.3-.1 0-2.3-.9-2.3-3Z"/><path d="M13.8 6.3c.6-.7 1-1.7.9-2.8-.9.1-2 .6-2.6 1.4-.5.6-1 1.7-.9 2.7 1 .1 2-.5 2.6-1.3Z"/></svg>
               </span>
               <h3>macOS</h3>
-              <span class="download-detected-badge" hidden>Detected</span>
             </div>
             <p>Disk image (.dmg) — Apple Silicon (M-series).</p>
             <div class="meta">
@@ -276,8 +257,7 @@
           <div class="footer-col">
             <h4>Support</h4>
             <ul>
-              <li><a href="mailto:benjamin.opazo.c@gmail.com">Contact</a></li>
-              <li><a href="#" data-todo="EULA not drafted yet — roadmap E8">License / EULA</a></li>
+              <li><span class="footer-stub" title="Not drafted yet — pending legal review before the paid tier ships">License / EULA <span class="footer-stub-tag">Coming soon</span></span></li>
             </ul>
           </div>
           <div class="footer-col">

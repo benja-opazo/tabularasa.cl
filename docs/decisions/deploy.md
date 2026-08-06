@@ -17,10 +17,17 @@ with one difference: `[assets] directory = "./site"` instead of `"./_site"`,
 because there's no build step here — `site/` is hand-authored and IS the deploy
 artifact, not generated output.
 
+## Manual trigger only — a deliberate deviation from `benjaopazoc.cl`
+
+Unlike a typical site, this deploys **only via manual `workflow_dispatch`**, not
+on every push to `main`. This is a companion site still being actively
+prototyped/iterated on — auto-deploying every push would ship half-finished
+changes to production. Trigger a deploy from the repo's Actions tab when a
+change is actually ready to go live.
+
 ## Pipeline
 
-`.github/workflows/deploy.yml`, on every push to `main` (plus manual
-`workflow_dispatch`):
+`.github/workflows/deploy.yml`, run manually via `workflow_dispatch`:
 
 1. **`check`** — `node --check` on each JS file. No build step exists to catch a
    syntax error otherwise (this caught a real bug once already: a malformed

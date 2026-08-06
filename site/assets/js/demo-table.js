@@ -728,7 +728,15 @@
   });
 
   document.addEventListener("click", function (e) {
-    if (!root.contains(e.target)) closePopover();
+    // composedPath(), not root.contains(e.target): the root's own click
+    // handler above may have already called renderShell() and replaced
+    // e.target with a detached node by the time this listener runs (both
+    // listeners fire on the same bubbling click), which would make
+    // root.contains(e.target) wrongly return false and close the popover
+    // that was just opened. composedPath() reflects the tree at dispatch
+    // time, before any of this event's own handlers mutated the DOM.
+    var path = e.composedPath ? e.composedPath() : [];
+    if (path.indexOf(root) === -1) closePopover();
   });
 
   renderShell();

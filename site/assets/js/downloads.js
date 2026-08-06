@@ -56,15 +56,6 @@
     return (i === 0 ? n : n.toFixed(1)) + " " + units[i];
   }
 
-  function applyDetected(platform) {
-    document.querySelectorAll(".download-card").forEach(function (card) {
-      var isMatch = card.getAttribute("data-platform") === platform;
-      card.classList.toggle("is-detected", isMatch);
-      var badge = card.querySelector(".download-detected-badge");
-      if (badge) badge.hidden = !isMatch;
-    });
-  }
-
   function updateHeroCta(platform, manifest) {
     var label = document.getElementById("hero-download-label");
     var link = document.getElementById("hero-download-btn");
@@ -118,7 +109,6 @@
   }
 
   var platform = detectPlatform();
-  applyDetected(platform);
   updateHeroCta(platform, null);
 
   if (!("fetch" in window)) {
