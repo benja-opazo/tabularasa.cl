@@ -1,8 +1,8 @@
 /* ============================================================
-   tabularasa.cl — theme.js
+   tabularasa.cl - theme.js
    Handles ONLY the toggle button + persistence + OS-follow.
    The anti-flash theme pick itself is an inline <script> in
-   index.html's <head> (must run before first paint) — same split
+   index.html's <head> (must run before first paint) - same split
    as benjaopazoc.cl's convention. Keep both in sync if this logic
    changes; see docs/decisions/theming.md.
    ============================================================ */
@@ -24,7 +24,7 @@
     });
   }
 
-  // Follow OS theme changes — but only until the user makes an explicit choice.
+  // Follow OS theme changes - but only until the user makes an explicit choice.
   if (window.matchMedia) {
     window
       .matchMedia("(prefers-color-scheme: dark)")

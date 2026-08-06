@@ -1,10 +1,10 @@
 /* ============================================================
-   tabularasa.cl — demo-table.js
+   tabularasa.cl - demo-table.js
 
    A hardcoded, client-side-only replica of Tabula Rasa's grid chrome:
    same tokens (tokens.css), same icon glyphs (assets/fonts/lucide.ttf,
    same codepoints as tabula-rasa/src/icons.rs), same measurements
-   (docs/ui-ux/visual-system.md). There is no engine behind this — it's
+   (docs/ui-ux/visual-system.md). There is no engine behind this - it's
    ~18 rows of fixture data and a handful of client-side operations that
    mirror the app's actual feature set. See docs/decisions/demo-table.md
    for what's faithfully replicated vs. deliberately simplified.
@@ -12,7 +12,7 @@
    Rendering strategy: renderShell() rebuilds the whole showcase-frame
    and is used for every discrete action (sort/filter/group/heatmap/wrap/
    columns/popovers/search open-close). Search KEYSTROKES only refresh
-   <tbody> (refreshRows()) so the <input> element is never destroyed —
+   <tbody> (refreshRows()) so the <input> element is never destroyed -
    a full shell rebuild there would drop focus and cursor position on
    every character typed.
    ============================================================ */
@@ -22,7 +22,7 @@
   var root = document.getElementById("tr-demo-root");
   if (!root) return;
 
-  // Lucide codepoints — copied 1:1 from tabula-rasa/src/icons.rs. Never
+  // Lucide codepoints - copied 1:1 from tabula-rasa/src/icons.rs. Never
   // invent a codepoint here; if a control needs a glyph that file doesn't
   // have, it gets a "coming soon" treatment instead (see COMING_SOON below).
   var ICON = {
@@ -51,24 +51,150 @@
   var STATUS_TONE = { Shipped: "green", Pending: "orange", Cancelled: "red" };
 
   var DATA = [
-    { id: 1, customer: "Acme Corp", region: "North", status: "Shipped", amount: 1284.5, date: "2026-01-04" },
-    { id: 2, customer: "Nimbus Retail", region: "South", status: "Pending", amount: 342.1, date: "2026-01-05" },
-    { id: 3, customer: "Blue Harbor Ltd", region: "East", status: "Cancelled", amount: 89.99, date: "2026-01-06" },
-    { id: 4, customer: "Solstice Goods", region: "West", status: "Shipped", amount: 5120.0, date: "2026-01-07" },
-    { id: 5, customer: "Kepler Supply Co", region: "North", status: "Shipped", amount: 764.25, date: "2026-01-08" },
-    { id: 6, customer: "Rivet & Co", region: "South", status: "Cancelled", amount: 210.0, date: "2026-01-09" },
-    { id: 7, customer: "Marrow Studio", region: "East", status: "Pending", amount: 1502.75, date: "2026-01-10" },
-    { id: 8, customer: "Fernwood Traders", region: "West", status: "Shipped", amount: 998.4, date: "2026-01-11" },
-    { id: 9, customer: "Acme Corp", region: "North", status: "Pending", amount: 67.5, date: "2026-01-12" },
-    { id: 10, customer: "Vantage Point Inc", region: "South", status: "Shipped", amount: 3420.6, date: "2026-01-13" },
-    { id: 11, customer: "Blue Harbor Ltd", region: "East", status: "Shipped", amount: 458.0, date: "2026-01-14" },
-    { id: 12, customer: "Greyline Freight", region: "West", status: "Cancelled", amount: 129.99, date: "2026-01-15" },
-    { id: 13, customer: "Kepler Supply Co", region: "North", status: "Cancelled", amount: 2044.1, date: "2026-01-16" },
-    { id: 14, customer: "Nimbus Retail", region: "South", status: "Shipped", amount: 615.3, date: "2026-01-17" },
-    { id: 15, customer: "Solstice Goods", region: "West", status: "Pending", amount: 4210.0, date: "2026-01-18" },
-    { id: 16, customer: "Marrow Studio", region: "East", status: "Shipped", amount: 87.25, date: "2026-01-19" },
-    { id: 17, customer: "Vantage Point Inc", region: "South", status: "Pending", amount: 1875.0, date: "2026-01-20" },
-    { id: 18, customer: "Fernwood Traders", region: "West", status: "Shipped", amount: 322.4, date: "2026-01-21" },
+    {
+      id: 1,
+      customer: "Acme Corp",
+      region: "North",
+      status: "Shipped",
+      amount: 1284.5,
+      date: "2026-01-04",
+    },
+    {
+      id: 2,
+      customer: "Nimbus Retail",
+      region: "South",
+      status: "Pending",
+      amount: 342.1,
+      date: "2026-01-05",
+    },
+    {
+      id: 3,
+      customer: "Blue Harbor Ltd",
+      region: "East",
+      status: "Cancelled",
+      amount: 89.99,
+      date: "2026-01-06",
+    },
+    {
+      id: 4,
+      customer: "Solstice Goods",
+      region: "West",
+      status: "Shipped",
+      amount: 5120.0,
+      date: "2026-01-07",
+    },
+    {
+      id: 5,
+      customer: "Kepler Supply Co",
+      region: "North",
+      status: "Shipped",
+      amount: 764.25,
+      date: "2026-01-08",
+    },
+    {
+      id: 6,
+      customer: "Rivet & Co",
+      region: "South",
+      status: "Cancelled",
+      amount: 210.0,
+      date: "2026-01-09",
+    },
+    {
+      id: 7,
+      customer: "Marrow Studio",
+      region: "East",
+      status: "Pending",
+      amount: 1502.75,
+      date: "2026-01-10",
+    },
+    {
+      id: 8,
+      customer: "Fernwood Traders",
+      region: "West",
+      status: "Shipped",
+      amount: 998.4,
+      date: "2026-01-11",
+    },
+    {
+      id: 9,
+      customer: "Acme Corp",
+      region: "North",
+      status: "Pending",
+      amount: 67.5,
+      date: "2026-01-12",
+    },
+    {
+      id: 10,
+      customer: "Vantage Point Inc",
+      region: "South",
+      status: "Shipped",
+      amount: 3420.6,
+      date: "2026-01-13",
+    },
+    {
+      id: 11,
+      customer: "Blue Harbor Ltd",
+      region: "East",
+      status: "Shipped",
+      amount: 458.0,
+      date: "2026-01-14",
+    },
+    {
+      id: 12,
+      customer: "Greyline Freight",
+      region: "West",
+      status: "Cancelled",
+      amount: 129.99,
+      date: "2026-01-15",
+    },
+    {
+      id: 13,
+      customer: "Kepler Supply Co",
+      region: "North",
+      status: "Cancelled",
+      amount: 2044.1,
+      date: "2026-01-16",
+    },
+    {
+      id: 14,
+      customer: "Nimbus Retail",
+      region: "South",
+      status: "Shipped",
+      amount: 615.3,
+      date: "2026-01-17",
+    },
+    {
+      id: 15,
+      customer: "Solstice Goods",
+      region: "West",
+      status: "Pending",
+      amount: 4210.0,
+      date: "2026-01-18",
+    },
+    {
+      id: 16,
+      customer: "Marrow Studio",
+      region: "East",
+      status: "Shipped",
+      amount: 87.25,
+      date: "2026-01-19",
+    },
+    {
+      id: 17,
+      customer: "Vantage Point Inc",
+      region: "South",
+      status: "Pending",
+      amount: 1875.0,
+      date: "2026-01-20",
+    },
+    {
+      id: 18,
+      customer: "Fernwood Traders",
+      region: "West",
+      status: "Shipped",
+      amount: 322.4,
+      date: "2026-01-21",
+    },
   ];
 
   var COLUMNS = [
@@ -109,12 +235,24 @@
   };
 
   function money(v) {
-    return "$" + v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return (
+      "$" +
+      v.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+    );
   }
 
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      }[c];
     });
   }
 
@@ -135,20 +273,29 @@
     var key = state.sortKey;
     var dir = state.sortDir === "asc" ? 1 : -1;
     return rows.slice().sort(function (a, b) {
-      var av = a[key], bv = b[key];
-      if (typeof av === "number" && typeof bv === "number") return (av - bv) * dir;
+      var av = a[key],
+        bv = b[key];
+      if (typeof av === "number" && typeof bv === "number")
+        return (av - bv) * dir;
       return String(av).localeCompare(String(bv)) * dir;
     });
   }
 
-  // Builds { groups: [{ key, rows }] } — one group ("__all__") when groupBy
+  // Builds { groups: [{ key, rows }] } - one group ("__all__") when groupBy
   // is off, so the row-render path never has to special-case "no grouping".
   function groupRows(rows) {
     if (!state.groupBy) return [{ key: null, rows: sortRows(rows) }];
     var order = state.groupBy === "region" ? REGIONS : STATUSES;
     return order
       .map(function (g) {
-        return { key: g, rows: sortRows(rows.filter(function (r) { return r[state.groupBy] === g; })) };
+        return {
+          key: g,
+          rows: sortRows(
+            rows.filter(function (r) {
+              return r[state.groupBy] === g;
+            }),
+          ),
+        };
       })
       .filter(function (g) {
         return g.rows.length > 0;
@@ -156,7 +303,9 @@
   }
 
   function heatRange(rows) {
-    var vals = rows.map(function (r) { return r.amount; });
+    var vals = rows.map(function (r) {
+      return r.amount;
+    });
     return { min: Math.min.apply(null, vals), max: Math.max.apply(null, vals) };
   }
 
@@ -167,11 +316,18 @@
     groups.forEach(function (g) {
       g.rows.forEach(function (row) {
         cols.forEach(function (col) {
-          var text = String(col.fmt ? col.fmt(row[col.key]) : row[col.key]).toLowerCase();
+          var text = String(
+            col.fmt ? col.fmt(row[col.key]) : row[col.key],
+          ).toLowerCase();
           var from = 0;
           var idx;
           while ((idx = text.indexOf(q, from)) !== -1) {
-            matches.push({ rowId: row.id, colKey: col.key, start: idx, end: idx + q.length });
+            matches.push({
+              rowId: row.id,
+              colKey: col.key,
+              start: idx,
+              end: idx + q.length,
+            });
             from = idx + q.length;
           }
         });
@@ -184,8 +340,12 @@
     var q = state.searchQuery.trim();
     if (!q) return esc(raw);
     var own = matches
-      .map(function (m, i) { return Object.assign({ i: i }, m); })
-      .filter(function (m) { return m.rowId === rowId && m.colKey === colKey; });
+      .map(function (m, i) {
+        return Object.assign({ i: i }, m);
+      })
+      .filter(function (m) {
+        return m.rowId === rowId && m.colKey === colKey;
+      });
     if (!own.length) return esc(raw);
     var s = String(raw);
     var out = "";
@@ -194,7 +354,14 @@
       out += esc(s.slice(cursor, m.start));
       var cls = m.i === state.matchIndex ? "tr-match is-current" : "tr-match";
       var id = m.i === state.matchIndex ? ' id="tr-current-match"' : "";
-      out += '<mark class="' + cls + '"' + id + ">" + esc(s.slice(m.start, m.end)) + "</mark>";
+      out +=
+        '<mark class="' +
+        cls +
+        '"' +
+        id +
+        ">" +
+        esc(s.slice(m.start, m.end)) +
+        "</mark>";
       cursor = m.end;
     });
     out += esc(s.slice(cursor));
@@ -204,8 +371,12 @@
   function statusCell(value) {
     var tone = STATUS_TONE[value] || "green";
     return (
-      '<span class="tr-status-cell is-' + tone + '">' +
-      '<span class="tr-status-dot is-' + tone + '"></span>' +
+      '<span class="tr-status-cell is-' +
+      tone +
+      '">' +
+      '<span class="tr-status-dot is-' +
+      tone +
+      '"></span>' +
       esc(value) +
       "</span>"
     );
@@ -222,13 +393,27 @@
 
     groups.forEach(function (g) {
       if (state.groupBy) {
-        var chev = state.collapsed.has(g.key) ? ICON.CHEVRON_RIGHT : ICON.CHEVRON_DOWN;
+        var chev = state.collapsed.has(g.key)
+          ? ICON.CHEVRON_RIGHT
+          : ICON.CHEVRON_DOWN;
         html +=
-          '<tr class="tr-group-header" data-group-toggle="' + esc(g.key) + '">' +
-          '<td colspan="' + (cols.length + 1) + '">' +
-          '<span class="icon chev">' + chev + "</span>" +
-          esc(state.groupBy) + ": " + esc(g.key) +
-          '<span class="count">' + g.rows.length + " row" + (g.rows.length === 1 ? "" : "s") + "</span>" +
+          '<tr class="tr-group-header" data-group-toggle="' +
+          esc(g.key) +
+          '">' +
+          '<td colspan="' +
+          (cols.length + 1) +
+          '">' +
+          '<span class="icon chev">' +
+          chev +
+          "</span>" +
+          esc(state.groupBy) +
+          ": " +
+          esc(g.key) +
+          '<span class="count">' +
+          g.rows.length +
+          " row" +
+          (g.rows.length === 1 ? "" : "s") +
+          "</span>" +
           "</td></tr>";
       }
       if (state.groupBy && state.collapsed.has(g.key)) return;
@@ -236,10 +421,22 @@
       g.rows.forEach(function (row) {
         rowNum++;
         var zebra = rowNum % 2 === 0 ? "tr-row-even" : "tr-row-odd";
-        var selectedRowCls = state.selectedRow === row.id ? "is-row-selected" : "";
-        html += '<tr class="' + zebra + " " + selectedRowCls + '" data-row-id="' + row.id + '">';
+        var selectedRowCls =
+          state.selectedRow === row.id ? "is-row-selected" : "";
         html +=
-          '<td class="tr-col-gutter" data-gutter-row="' + row.id + '">' + rowNum + "</td>";
+          '<tr class="' +
+          zebra +
+          " " +
+          selectedRowCls +
+          '" data-row-id="' +
+          row.id +
+          '">';
+        html +=
+          '<td class="tr-col-gutter" data-gutter-row="' +
+          row.id +
+          '">' +
+          rowNum +
+          "</td>";
         cols.forEach(function (col) {
           var raw = row[col.key];
           var display = col.fmt ? col.fmt(raw) : raw;
@@ -253,14 +450,25 @@
           if (col.align === "right") styleParts.push("text-align:right");
           if (col.heat && heat) {
             classes.push("tr-cell-heat");
-            var t = heat.max === heat.min ? 0.5 : (raw - heat.min) / (heat.max - heat.min);
+            var t =
+              heat.max === heat.min
+                ? 0.5
+                : (raw - heat.min) / (heat.max - heat.min);
             styleParts.push("--heat:" + t.toFixed(3));
           }
-          var styleAttr = styleParts.length ? ' style="' + styleParts.join(";") + '"' : "";
+          var styleAttr = styleParts.length
+            ? ' style="' + styleParts.join(";") + '"'
+            : "";
           html +=
-            '<td class="' + classes.join(" ").trim() + '"' +
+            '<td class="' +
+            classes.join(" ").trim() +
+            '"' +
             styleAttr +
-            ' data-cell="' + row.id + ":" + col.key + '">' +
+            ' data-cell="' +
+            row.id +
+            ":" +
+            col.key +
+            '">' +
             cellHtml +
             "</td>";
         });
@@ -269,7 +477,10 @@
     });
 
     if (rowNum === 0) {
-      html = '<tr class="tr-empty-row"><td colspan="' + (cols.length + 1) + '">No rows match the current filter.</td></tr>';
+      html =
+        '<tr class="tr-empty-row"><td colspan="' +
+        (cols.length + 1) +
+        '">No rows match the current filter.</td></tr>';
     }
 
     return { html: html, matchCount: matches.length };
@@ -280,54 +491,91 @@
     if (state.sortKey) {
       pills +=
         '<span class="tr-pill is-sort">' +
-        '<span class="tr-pill-icon icon">' + ICON.ORDER_BY + "</span>" +
-        '<span class="tr-pill-label">' + esc(state.sortKey) + " " + (state.sortDir === "asc" ? "↑" : "↓") + "</span>" +
-        '<span class="tr-pill-close" data-remove-rule="sort" title="Remove sort">' + ICON.CLOSE + "</span>" +
+        '<span class="tr-pill-icon icon">' +
+        ICON.ORDER_BY +
+        "</span>" +
+        '<span class="tr-pill-label">' +
+        esc(state.sortKey) +
+        " " +
+        (state.sortDir === "asc" ? "↑" : "↓") +
+        "</span>" +
+        '<span class="tr-pill-close" data-remove-rule="sort" title="Remove sort">' +
+        ICON.CLOSE +
+        "</span>" +
         "</span>";
     }
     var included = Array.from(state.filterInclude);
     if (included.length < STATUSES.length) {
       pills +=
         '<span class="tr-pill is-filter">' +
-        '<span class="tr-pill-icon icon">' + ICON.FILTER + "</span>" +
-        '<span class="tr-pill-label">status: ' + esc(included.join(", ") || "none") + "</span>" +
-        '<span class="tr-pill-close" data-remove-rule="filter" title="Remove filter">' + ICON.CLOSE + "</span>" +
+        '<span class="tr-pill-icon icon">' +
+        ICON.FILTER +
+        "</span>" +
+        '<span class="tr-pill-label">status: ' +
+        esc(included.join(", ") || "none") +
+        "</span>" +
+        '<span class="tr-pill-close" data-remove-rule="filter" title="Remove filter">' +
+        ICON.CLOSE +
+        "</span>" +
         "</span>";
     }
     if (state.groupBy) {
       pills +=
         '<span class="tr-pill is-group">' +
-        '<span class="tr-pill-icon icon">' + ICON.GROUP_BY + "</span>" +
-        '<span class="tr-pill-label">group: ' + esc(state.groupBy) + "</span>" +
-        '<span class="tr-pill-close" data-remove-rule="group" title="Remove grouping">' + ICON.CLOSE + "</span>" +
+        '<span class="tr-pill-icon icon">' +
+        ICON.GROUP_BY +
+        "</span>" +
+        '<span class="tr-pill-label">group: ' +
+        esc(state.groupBy) +
+        "</span>" +
+        '<span class="tr-pill-close" data-remove-rule="group" title="Remove grouping">' +
+        ICON.CLOSE +
+        "</span>" +
         "</span>";
     }
-    return pills || '<span class="tr-rules-empty">No sort, filter, or group rules — click a header, or try Filter / Group by above</span>';
+    return (
+      pills ||
+      '<span class="tr-rules-empty">No sort, filter, or group rules - click a header, or try Filter / Group by above</span>'
+    );
   }
 
   function aggregateHtml() {
     var rows = filteredRows();
-    var sum = rows.reduce(function (a, r) { return a + r.amount; }, 0);
+    var sum = rows.reduce(function (a, r) {
+      return a + r.amount;
+    }, 0);
     return (
-      '<span class="agg-label">Rows</span><span class="agg-value">' + rows.length + "</span>" +
-      '<span class="agg-label">Sum(amount)</span><span class="agg-value">' + money(sum) + "</span>"
+      '<span class="agg-label">Rows</span><span class="agg-value">' +
+      rows.length +
+      "</span>" +
+      '<span class="agg-label">Sum(amount)</span><span class="agg-value">' +
+      money(sum) +
+      "</span>"
     );
   }
 
   function toolbarBtn(opts) {
     // opts: { icon, label, active, dataset: {action:...}, disabled, chevron }
     var attrs = Object.keys(opts.dataset || {})
-      .map(function (k) { return ' data-' + k + '="' + esc(opts.dataset[k]) + '"'; })
+      .map(function (k) {
+        return " data-" + k + '="' + esc(opts.dataset[k]) + '"';
+      })
       .join("");
     return (
-      '<button type="button" class="tr-btn' + (opts.active ? " is-active" : "") + '"' +
+      '<button type="button" class="tr-btn' +
+      (opts.active ? " is-active" : "") +
+      '"' +
       attrs +
       (opts.disabled ? " disabled" : "") +
       (opts.title ? ' title="' + esc(opts.title) + '"' : "") +
       ">" +
-      '<span class="icon">' + opts.icon + "</span>" +
+      '<span class="icon">' +
+      opts.icon +
+      "</span>" +
       (opts.label ? "<span>" + esc(opts.label) + "</span>" : "") +
-      (opts.chevron ? '<span class="chev icon">' + ICON.CHEVRON_DOWN + "</span>" : "") +
+      (opts.chevron
+        ? '<span class="chev icon">' + ICON.CHEVRON_DOWN + "</span>"
+        : "") +
       "</button>"
     );
   }
@@ -338,8 +586,14 @@
         var checked = !state.hiddenCols.has(c.key) ? " checked" : "";
         return (
           '<label class="tr-popover-row" style="cursor:pointer">' +
-          '<input type="checkbox" data-col-toggle="' + c.key + '"' + checked + " />" +
-          "<span>" + esc(c.label) + "</span>" +
+          '<input type="checkbox" data-col-toggle="' +
+          c.key +
+          '"' +
+          checked +
+          " />" +
+          "<span>" +
+          esc(c.label) +
+          "</span>" +
           "</label>"
         );
       }).join("");
@@ -350,12 +604,18 @@
         var checked = state.filterInclude.has(s) ? " checked" : "";
         return (
           '<label class="tr-popover-row" style="cursor:pointer">' +
-          '<input type="checkbox" data-status-toggle="' + s + '"' + checked + " />" +
-          "<span>" + esc(s) + "</span>" +
+          '<input type="checkbox" data-status-toggle="' +
+          s +
+          '"' +
+          checked +
+          " />" +
+          "<span>" +
+          esc(s) +
+          "</span>" +
           "</label>"
         );
       }).join("");
-      return popoverWrap("Filter — status includes", frows);
+      return popoverWrap("Filter - status includes", frows);
     }
     if (state.openPopover === "group") {
       var options = [
@@ -367,7 +627,11 @@
         .map(function (o) {
           var sel = state.groupBy === o.v ? " is-selected" : "";
           return (
-            '<button type="button" class="tr-popover-row' + sel + '" data-group-set="' + (o.v || "") + '">' +
+            '<button type="button" class="tr-popover-row' +
+            sel +
+            '" data-group-set="' +
+            (o.v || "") +
+            '">' +
             esc(o.label) +
             "</button>"
           );
@@ -380,8 +644,8 @@
       return popoverWrap(
         cs.label,
         '<div style="padding:6px 8px 10px;color:var(--dim);font-size:12.5px;font-family:var(--font-chrome);max-width:220px;">' +
-          "Not wired up in this static preview — it's real in the app.</div>" +
-          '<a class="btn btn-primary btn-sm" href="#download" style="margin:0 8px 6px;">Get the app</a>'
+          "Not wired up in this static preview - it's real in the app.</div>" +
+          '<a class="btn btn-primary btn-sm" href="#download" style="margin:0 8px 6px;">Get the app</a>',
       );
     }
     return "";
@@ -390,7 +654,9 @@
   function popoverWrap(title, body) {
     return (
       '<div class="tr-popover is-open">' +
-      '<div class="tr-popover-title">' + esc(title) + "</div>" +
+      '<div class="tr-popover-title">' +
+      esc(title) +
+      "</div>" +
       body +
       "</div>"
     );
@@ -404,12 +670,20 @@
       .map(function (c) {
         var sortChev = "";
         if (state.sortKey === c.key) {
-          sortChev = '<span class="icon sort-chev">' + (state.sortDir === "asc" ? ICON.CHEVRON_UP : ICON.CHEVRON_DOWN) + "</span>";
+          sortChev =
+            '<span class="icon sort-chev">' +
+            (state.sortDir === "asc" ? ICON.CHEVRON_UP : ICON.CHEVRON_DOWN) +
+            "</span>";
         }
         return (
-          '<th data-sort-key="' + c.key + '"' +
+          '<th data-sort-key="' +
+          c.key +
+          '"' +
           (c.align === "right" ? ' style="text-align:right"' : "") +
-          ">" + esc(c.label) + sortChev + "</th>"
+          ">" +
+          esc(c.label) +
+          sortChev +
+          "</th>"
         );
       })
       .join("");
@@ -428,73 +702,180 @@
       '<div class="tr-toolbar">' +
       '<span class="tr-group-label">Format</span>' +
       '<div class="tr-toolbar-group tr-popover-anchor">' +
-      toolbarBtn({ icon: ICON.COLUMNS, label: "Columns", chevron: true, active: state.openPopover === "columns", dataset: { action: "toggle-columns" } }) +
+      toolbarBtn({
+        icon: ICON.COLUMNS,
+        label: "Columns",
+        chevron: true,
+        active: state.openPopover === "columns",
+        dataset: { action: "toggle-columns" },
+      }) +
       (state.openPopover === "columns" ? popoverHtml() : "") +
       "</div>" +
-      toolbarBtn({ icon: ICON.WRAP, active: state.wrap, dataset: { action: "toggle-wrap" }, title: "Wrap text" }) +
+      toolbarBtn({
+        icon: ICON.WRAP,
+        active: state.wrap,
+        dataset: { action: "toggle-wrap" },
+        title: "Wrap text",
+      }) +
       '<div class="tr-toolbar-group tr-popover-anchor">' +
-      toolbarBtn({ icon: ICON.WIDTH, label: "Width", chevron: true, dataset: { action: "coming-soon", key: "width" }, title: "Column width" }) +
-      (state.openPopover === "comingsoon" && state.comingSoonKey === "width" ? popoverHtml() : "") +
+      toolbarBtn({
+        icon: ICON.WIDTH,
+        label: "Width",
+        chevron: true,
+        dataset: { action: "coming-soon", key: "width" },
+        title: "Column width",
+      }) +
+      (state.openPopover === "comingsoon" && state.comingSoonKey === "width"
+        ? popoverHtml()
+        : "") +
       "</div>" +
       '<div class="tr-toolbar-group tr-popover-anchor">' +
-      toolbarBtn({ icon: ICON.HEIGHT, label: "Height", chevron: true, dataset: { action: "coming-soon", key: "height" }, title: "Row height" }) +
-      (state.openPopover === "comingsoon" && state.comingSoonKey === "height" ? popoverHtml() : "") +
+      toolbarBtn({
+        icon: ICON.HEIGHT,
+        label: "Height",
+        chevron: true,
+        dataset: { action: "coming-soon", key: "height" },
+        title: "Row height",
+      }) +
+      (state.openPopover === "comingsoon" && state.comingSoonKey === "height"
+        ? popoverHtml()
+        : "") +
       "</div>" +
-      toolbarBtn({ icon: ICON.HEATMAP, active: state.heatmap, dataset: { action: "toggle-heatmap" }, title: "Heatmap the amount column" }) +
+      toolbarBtn({
+        icon: ICON.HEATMAP,
+        active: state.heatmap,
+        dataset: { action: "toggle-heatmap" },
+        title: "Heatmap the amount column",
+      }) +
       '<div class="tr-toolbar-group tr-popover-anchor">' +
-      toolbarBtn({ icon: ICON.NUMBER_FORMAT, dataset: { action: "coming-soon", key: "numfmt" }, title: "Number format" }) +
-      (state.openPopover === "comingsoon" && state.comingSoonKey === "numfmt" ? popoverHtml() : "") +
+      toolbarBtn({
+        icon: ICON.NUMBER_FORMAT,
+        dataset: { action: "coming-soon", key: "numfmt" },
+        title: "Number format",
+      }) +
+      (state.openPopover === "comingsoon" && state.comingSoonKey === "numfmt"
+        ? popoverHtml()
+        : "") +
       "</div>" +
       '<div class="tr-toolbar-group tr-popover-anchor">' +
-      toolbarBtn({ icon: ICON.FREEZE_COLS, dataset: { action: "coming-soon", key: "freezecols" }, title: "Freeze columns" }) +
-      (state.openPopover === "comingsoon" && state.comingSoonKey === "freezecols" ? popoverHtml() : "") +
+      toolbarBtn({
+        icon: ICON.FREEZE_COLS,
+        dataset: { action: "coming-soon", key: "freezecols" },
+        title: "Freeze columns",
+      }) +
+      (state.openPopover === "comingsoon" &&
+      state.comingSoonKey === "freezecols"
+        ? popoverHtml()
+        : "") +
       "</div>" +
       '<div class="tr-toolbar-group tr-popover-anchor">' +
-      toolbarBtn({ icon: ICON.FREEZE_ROWS, dataset: { action: "coming-soon", key: "freezerows" }, title: "Freeze rows" }) +
-      (state.openPopover === "comingsoon" && state.comingSoonKey === "freezerows" ? popoverHtml() : "") +
+      toolbarBtn({
+        icon: ICON.FREEZE_ROWS,
+        dataset: { action: "coming-soon", key: "freezerows" },
+        title: "Freeze rows",
+      }) +
+      (state.openPopover === "comingsoon" &&
+      state.comingSoonKey === "freezerows"
+        ? popoverHtml()
+        : "") +
       "</div>" +
       '<div class="tr-toolbar-group tr-popover-anchor">' +
-      toolbarBtn({ icon: ICON.FORMAT_PANEL, dataset: { action: "coming-soon", key: "formatpanel" }, title: "Format panel" }) +
-      (state.openPopover === "comingsoon" && state.comingSoonKey === "formatpanel" ? popoverHtml() : "") +
+      toolbarBtn({
+        icon: ICON.FORMAT_PANEL,
+        dataset: { action: "coming-soon", key: "formatpanel" },
+        title: "Format panel",
+      }) +
+      (state.openPopover === "comingsoon" &&
+      state.comingSoonKey === "formatpanel"
+        ? popoverHtml()
+        : "") +
       "</div>" +
       '<div class="tr-divider"></div>' +
       '<span class="tr-group-label">Data</span>' +
-      toolbarBtn({ icon: ICON.FIND, active: state.searchOpen, dataset: { action: "toggle-search" }, title: "Find (Ctrl/Cmd+F)" }) +
+      toolbarBtn({
+        icon: ICON.FIND,
+        active: state.searchOpen,
+        dataset: { action: "toggle-search" },
+        title: "Find (Ctrl/Cmd+F)",
+      }) +
       '<div class="tr-toolbar-group tr-popover-anchor">' +
-      toolbarBtn({ icon: ICON.GOTO, dataset: { action: "coming-soon", key: "goto" }, title: "Go to row" }) +
-      (state.openPopover === "comingsoon" && state.comingSoonKey === "goto" ? popoverHtml() : "") +
+      toolbarBtn({
+        icon: ICON.GOTO,
+        dataset: { action: "coming-soon", key: "goto" },
+        title: "Go to row",
+      }) +
+      (state.openPopover === "comingsoon" && state.comingSoonKey === "goto"
+        ? popoverHtml()
+        : "") +
       "</div>" +
-      toolbarBtn({ icon: ICON.ORDER_BY, label: "Order by", disabled: true, title: "Sort by clicking a column header instead" }) +
+      toolbarBtn({
+        icon: ICON.ORDER_BY,
+        label: "Order by",
+        disabled: true,
+        title: "Sort by clicking a column header instead",
+      }) +
       '<div class="tr-toolbar-group tr-popover-anchor">' +
-      toolbarBtn({ icon: ICON.GROUP_BY, label: "Group by", chevron: true, active: state.openPopover === "group" || !!state.groupBy, dataset: { action: "toggle-group" } }) +
+      toolbarBtn({
+        icon: ICON.GROUP_BY,
+        label: "Group by",
+        chevron: true,
+        active: state.openPopover === "group" || !!state.groupBy,
+        dataset: { action: "toggle-group" },
+      }) +
       (state.openPopover === "group" ? popoverHtml() : "") +
       "</div>" +
       '<div class="tr-toolbar-group tr-popover-anchor">' +
-      toolbarBtn({ icon: ICON.FILTER, label: "Filter", active: state.openPopover === "filter" || state.filterInclude.size < STATUSES.length, dataset: { action: "toggle-filter" } }) +
+      toolbarBtn({
+        icon: ICON.FILTER,
+        label: "Filter",
+        active:
+          state.openPopover === "filter" ||
+          state.filterInclude.size < STATUSES.length,
+        dataset: { action: "toggle-filter" },
+      }) +
       (state.openPopover === "filter" ? popoverHtml() : "") +
       "</div>" +
       "</div>" +
       '<div class="tr-grid-scroll">' +
-      '<table class="tr-grid' + (state.wrap ? " is-wrapped" : "") + '">' +
+      '<table class="tr-grid' +
+      (state.wrap ? " is-wrapped" : "") +
+      '">' +
       "<thead><tr>" +
       '<th class="tr-col-gutter">#</th>' +
       headCells +
       "</tr></thead>" +
-      "<tbody>" + rowsBuilt.html + "</tbody>" +
+      "<tbody>" +
+      rowsBuilt.html +
+      "</tbody>" +
       "</table>" +
       "</div>" +
-      '<div class="tr-searchbar' + (state.searchOpen ? " is-open" : "") + '">' +
-      '<span class="icon" style="color:var(--faint);font-size:14px;">' + ICON.FIND + "</span>" +
-      '<input id="tr-search-input" type="text" placeholder="Find in orders_q1.csv" value="' + esc(state.searchQuery) + '" />' +
-      '<span class="tr-search-count" id="tr-search-count">' +
-      (state.searchQuery ? (rowsBuilt.matchCount ? state.matchIndex + 1 + " of " + rowsBuilt.matchCount : "No matches") : "") +
+      '<div class="tr-searchbar' +
+      (state.searchOpen ? " is-open" : "") +
+      '">' +
+      '<span class="icon" style="color:var(--faint);font-size:14px;">' +
+      ICON.FIND +
       "</span>" +
-      '<button type="button" class="tr-search-btn" data-action="close-search" title="Close (Esc)">' + ICON.CLOSE + "</button>" +
+      '<input id="tr-search-input" type="text" placeholder="Find in orders_q1.csv" value="' +
+      esc(state.searchQuery) +
+      '" />' +
+      '<span class="tr-search-count" id="tr-search-count">' +
+      (state.searchQuery
+        ? rowsBuilt.matchCount
+          ? state.matchIndex + 1 + " of " + rowsBuilt.matchCount
+          : "No matches"
+        : "") +
+      "</span>" +
+      '<button type="button" class="tr-search-btn" data-action="close-search" title="Close (Esc)">' +
+      ICON.CLOSE +
+      "</button>" +
       "</div>" +
       '<div class="tr-statusbar">' +
-      '<div class="tr-status-zone tr-status-left">' + aggregateHtml() + "</div>" +
+      '<div class="tr-status-zone tr-status-left">' +
+      aggregateHtml() +
+      "</div>" +
       '<div class="tr-status-zone tr-status-center">' +
-      '<span class="tr-rules-label">Rules</span>' + pillsHtml() +
+      '<span class="tr-rules-label">Rules</span>' +
+      pillsHtml() +
       "</div>" +
       '<div class="tr-status-zone tr-status-right">' +
       '<span class="tr-badge">UTF-8</span><span class="tr-badge">CSV</span>' +
@@ -534,7 +915,8 @@
         : "";
     }
     var current = document.getElementById("tr-current-match");
-    if (current) current.scrollIntoView({ block: "nearest", inline: "nearest" });
+    if (current)
+      current.scrollIntoView({ block: "nearest", inline: "nearest" });
   }
 
   function onSearchInput(e) {
@@ -553,7 +935,8 @@
     var built = buildRowsHtml();
     if (!built.matchCount) return;
     var dir = e.shiftKey ? -1 : 1;
-    state.matchIndex = (state.matchIndex + dir + built.matchCount) % built.matchCount;
+    state.matchIndex =
+      (state.matchIndex + dir + built.matchCount) % built.matchCount;
     refreshRows();
   }
 
@@ -577,7 +960,7 @@
     var t = e.target;
 
     // Grid cells/rows aren't natively focusable, but the Ctrl/Cmd+F guard
-    // below needs a reliable "focus is inside the demo" signal — parks focus
+    // below needs a reliable "focus is inside the demo" signal - parks focus
     // on the root itself unless the click already landed on something
     // focusable (an input/button/link keeps its own native focus).
     if (!t.closest("input, button, a") && document.activeElement !== root) {
@@ -679,7 +1062,8 @@
         closeSearch();
       } else if (action === "coming-soon") {
         var key = actionBtn.getAttribute("data-key");
-        var already = state.openPopover === "comingsoon" && state.comingSoonKey === key;
+        var already =
+          state.openPopover === "comingsoon" && state.comingSoonKey === key;
         state.openPopover = already ? null : "comingsoon";
         state.comingSoonKey = already ? null : key;
         renderShell();
@@ -714,11 +1098,15 @@
 
   document.addEventListener("keydown", function (e) {
     var cmd = e.ctrlKey || e.metaKey;
-    // Only hijack Ctrl/Cmd+F when focus is actually inside the demo — never
+    // Only hijack Ctrl/Cmd+F when focus is actually inside the demo - never
     // globally, or it'd steal the browser's real find-in-page everywhere else
     // on the site. root.focus() below (on click) keeps this reliable even
     // when the click landed on a non-focusable cell/row.
-    if (cmd && (e.key === "f" || e.key === "F") && root.contains(document.activeElement)) {
+    if (
+      cmd &&
+      (e.key === "f" || e.key === "F") &&
+      root.contains(document.activeElement)
+    ) {
       e.preventDefault();
       state.searchOpen = true;
       state._justOpenedSearch = true;

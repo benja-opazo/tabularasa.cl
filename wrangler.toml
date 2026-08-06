@@ -1,7 +1,7 @@
-# Cloudflare Workers static-assets config — same shape as benjaopazoc.cl's
+# Cloudflare Workers static-assets config - same shape as benjaopazoc.cl's
 # wrangler.toml (see docs/decisions/deploy.md for why this pattern over
 # classic Cloudflare Pages). No `main` entry: a pure static-assets Worker
-# needs none. `directory` points at the hand-authored deploy root — there is
+# needs none. `directory` points at the hand-authored deploy root - there is
 # no build step, so `site/` IS the deployed output, not a generated artifact.
 name = "tabularasa-cl"
 compatibility_date = "2026-08-05"

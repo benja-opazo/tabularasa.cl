@@ -1,7 +1,7 @@
 /* ==========================================================================
-   Design tokens — mirrored 1:1 from tabula-rasa/src/theme.rs (Palette).
+   Design tokens - mirrored 1:1 from tabula-rasa/src/theme.rs (Palette).
    Source of truth is the APP, not this file: if the app's palette changes,
-   re-sync here. Do not "tidy" or round any hex — see docs/decisions/visuals.md.
+   re-sync here. Do not "tidy" or round any hex - see docs/decisions/visuals.md.
 
    Every token below has a comment noting its exact source line so a future
    sync is a mechanical diff, not a guess. Dark is the app's default theme,
@@ -10,91 +10,51 @@
 
 :root,
 :root[data-theme="dark"] {
-  /* ---- Backgrounds (back → front) -------------------------------------- */
-  --bg: #1c1d1a;
-  --panel: #232420;
-  --panel-2: #2a2b26;
-  --titlebar: #181915;
-  --grid: #1e1f1c;
-  --grid-alt: #232420;
-  --gutter: #191a17;
-  --hover: #2e2f29;
-  --elevated: #34352e;
-  --elevated-stroke: #6b6d62;
+    /* ---- Backgrounds (back → front) -------------------------------------- */
+    --bg: #1c1d1a;
+    --panel: #232420;
+    --panel-2: #2a2b26;
+    --titlebar: #181915;
+    --grid: #1e1f1c;
+    --grid-alt: #232420;
+    --gutter: #191a17;
+    --hover: #2e2f29;
+    --elevated: #34352e;
+    --elevated-stroke: #6b6d62;
 
-  /* ---- Text --------------------------------------------------------- */
-  --text: #e6e6df;
-  --dim: #8b8d83;
-  --faint: #5c5e55;
-  --gutter-text: #595b52;
+    /* ---- Text --------------------------------------------------------- */
+    --text: #e6e6df;
+    --dim: #8b8d83;
+    --faint: #5c5e55;
+    --gutter-text: #595b52;
 
-  /* ---- Structure ------------------------------------------------------ */
-  --border: #34352f;
+    /* ---- Structure ------------------------------------------------------ */
+    --border: #34352f;
 
-  /* ---- Semantic hues ---------------------------------------------------- */
-  --green: #a6e22e;
-  --orange: #fd971f;
-  --red: #f9685f;
-  --purple: #ae81ff;
-  --blue: #5aaff0;
-  --search: #e6db74;
+    /* ---- Semantic hues ---------------------------------------------------- */
+    --green: #a6e22e;
+    --orange: #fd971f;
+    --red: #f9685f;
+    --purple: #ae81ff;
+    --blue: #5aaff0;
+    --search: #e6db74;
 
-  /* ---- Brand accent — the one user-tweakable knob in the app ------------ */
-  --accent: #66d9ef;
+    /* ---- Brand accent - the one user-tweakable knob in the app ------------ */
+    --accent: #66d9ef;
 
-  /* ---- Derived tints (accent composited at a fixed alpha; exact bytes
+    /* ---- Derived tints (accent composited at a fixed alpha; exact bytes
      match Palette::accent_soft / block_selection / line_selection) -------- */
-  --accent-soft: #66d9ef29;      /* 16%, alpha 0x29 */
-  --block-selection: #66d9ef47;  /* 28%, alpha 0x47 */
-  --line-selection: #66d9ef21;   /* 13%, alpha 0x21 */
-  --match-bg: #e6db7466;         /* search @ 40%, alpha 0x66 */
-  --current-match-bg: #e6db74b8; /* search @ 72%, alpha 0xb8 */
+    --accent-soft: #66d9ef29; /* 16%, alpha 0x29 */
+    --block-selection: #66d9ef47; /* 28%, alpha 0x47 */
+    --line-selection: #66d9ef21; /* 13%, alpha 0x21 */
+    --match-bg: #e6db7466; /* search @ 40%, alpha 0x66 */
+    --current-match-bg: #e6db74b8; /* search @ 72%, alpha 0xb8 */
 
-  /* ---- Shadows (Dark theme shadow alpha ~115/255, see theme::apply) ----- */
-  --shadow-color: rgba(0, 0, 0, 0.45);
+    /* ---- Shadows (Dark theme shadow alpha ~115/255, see theme::apply) ----- */
+    --shadow-color: rgba(0, 0, 0, 0.45);
 }
 
 :root[data-theme="light"] {
-  --bg: #ecebe4;
-  --panel: #e4e3db;
-  --panel-2: #dedcd3;
-  --titlebar: #dcdbd2;
-  --grid: #faf9f5;
-  --grid-alt: #efeee7;
-  --gutter: #e7e6df;
-  --hover: #dad9d0;
-  --elevated: #ffffff;
-  --elevated-stroke: #b8b9ae;
-
-  --text: #2b2c27;
-  --dim: #74756b;
-  --faint: #a8a99e;
-  --gutter-text: #a3a499;
-
-  --border: #cfcec4;
-
-  --green: #4f9a18;
-  --orange: #c2700a;
-  --red: #cf4438;
-  --purple: #7d54c7;
-  --blue: #2f7bc4;
-  --search: #b58900;
-
-  --accent: #66d9ef; /* same accent as dark — tints re-derive over light bg */
-
-  --accent-soft: #66d9ef29;
-  --block-selection: #66d9ef47;
-  --line-selection: #66d9ef21;
-  --match-bg: #b5890066;
-  --current-match-bg: #b58900b8;
-
-  --shadow-color: rgba(0, 0, 0, 0.18);
-}
-
-/* OS-preference fallback for the instant before the anti-flash script (or
-   with JS disabled) picks a theme — see assets/js/theme.js. */
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme]) {
     --bg: #ecebe4;
     --panel: #e4e3db;
     --panel-2: #dedcd3;
@@ -105,52 +65,93 @@
     --hover: #dad9d0;
     --elevated: #ffffff;
     --elevated-stroke: #b8b9ae;
+
     --text: #2b2c27;
     --dim: #74756b;
     --faint: #a8a99e;
     --gutter-text: #a3a499;
+
     --border: #cfcec4;
+
     --green: #4f9a18;
     --orange: #c2700a;
     --red: #cf4438;
     --purple: #7d54c7;
     --blue: #2f7bc4;
     --search: #b58900;
+
+    --accent: #66d9ef; /* same accent as dark - tints re-derive over light bg */
+
     --accent-soft: #66d9ef29;
     --block-selection: #66d9ef47;
     --line-selection: #66d9ef21;
     --match-bg: #b5890066;
     --current-match-bg: #b58900b8;
+
     --shadow-color: rgba(0, 0, 0, 0.18);
-  }
+}
+
+/* OS-preference fallback for the instant before the anti-flash script (or
+   with JS disabled) picks a theme - see assets/js/theme.js. */
+@media (prefers-color-scheme: light) {
+    :root:not([data-theme]) {
+        --bg: #ecebe4;
+        --panel: #e4e3db;
+        --panel-2: #dedcd3;
+        --titlebar: #dcdbd2;
+        --grid: #faf9f5;
+        --grid-alt: #efeee7;
+        --gutter: #e7e6df;
+        --hover: #dad9d0;
+        --elevated: #ffffff;
+        --elevated-stroke: #b8b9ae;
+        --text: #2b2c27;
+        --dim: #74756b;
+        --faint: #a8a99e;
+        --gutter-text: #a3a499;
+        --border: #cfcec4;
+        --green: #4f9a18;
+        --orange: #c2700a;
+        --red: #cf4438;
+        --purple: #7d54c7;
+        --blue: #2f7bc4;
+        --search: #b58900;
+        --accent-soft: #66d9ef29;
+        --block-selection: #66d9ef47;
+        --line-selection: #66d9ef21;
+        --match-bg: #b5890066;
+        --current-match-bg: #b58900b8;
+        --shadow-color: rgba(0, 0, 0, 0.18);
+    }
 }
 
 /* ==========================================================================
-   Site-level tokens — NOT in the app, additive for the marketing shell around
+   Site-level tokens - NOT in the app, additive for the marketing shell around
    the app-faithful showcase. Named distinctly so the two token sets are never
    confused. Kept explicit + updatable per the brief's "polishing the theme"
    note: change these, not ad-hoc values in styles.css.
    ========================================================================== */
 :root {
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 16px;
-  --space-4: 24px;
-  --space-5: 40px;
-  --space-6: 64px;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 16px;
+    --space-4: 24px;
+    --space-5: 40px;
+    --space-6: 64px;
 
-  --radius-sm: 5px;   /* app control radius */
-  --radius-md: 7px;   /* app popover radius */
-  --radius-lg: 10px;  /* app window/card radius */
+    --radius-sm: 5px; /* app control radius */
+    --radius-md: 7px; /* app popover radius */
+    --radius-lg: 10px; /* app window/card radius */
 
-  --container-max: 1120px;
+    --container-max: 1120px;
 
-  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
 
-  --font-chrome:
-    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-    sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
-    monospace;
-  --font-icon: "lucide";
+    --font-chrome:
+        system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+        sans-serif;
+    --font-mono:
+        "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+        monospace;
+    --font-icon: "lucide";
 }

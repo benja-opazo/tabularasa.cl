@@ -1,12 +1,12 @@
 # Deploy pipeline for the tabularasa.cl companion site.
 #
-# There is no build step (plain HTML/CSS/JS, no npm) — `check` is a cheap
+# There is no build step (plain HTML/CSS/JS, no npm) - `check` is a cheap
 # syntax guard, and `deploy` just ships `site/` as-is via `wrangler deploy`
 # against the Workers static-assets config in wrangler.toml. See
 # docs/decisions/deploy.md for why this replaces benjaopazoc.cl's
 # dashboard-only Cloudflare Pages setup with an in-repo, reviewable pipeline.
 #
-# Deliberately manual-only (workflow_dispatch), NOT push-triggered — unlike a
+# Deliberately manual-only (workflow_dispatch), NOT push-triggered - unlike a
 # typical site, this is a prototype still being iterated on; auto-deploying
 # every push to main would ship half-finished changes. Trigger a deploy from
 # the Actions tab when a change is actually ready to go live.

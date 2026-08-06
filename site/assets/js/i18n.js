@@ -1,5 +1,5 @@
 /* ============================================================
-   tabularasa.cl — i18n.js
+   tabularasa.cl - i18n.js
 
    Applies window.TR_I18N (assets/js/i18n-strings.js) to the DOM, persists
    the choice, and exposes a tiny API other scripts (downloads.js) use for
@@ -11,7 +11,7 @@
      data-i18n-attr="attr:key[;attr2:key2]"   sets element attribute(s)
 
    The showcase demo (#tr-demo-root, rendered by demo-table.js) is
-   deliberately NOT translated — it's a pixel-faithful replica of the real
+   deliberately NOT translated - it's a pixel-faithful replica of the real
    app, which is English-only today. Translating the chrome around a still-
    English screenshot-alike would be a lie about what you get. Re-visit only
    if/when the app itself ships localization.
@@ -27,7 +27,11 @@
   function detectLocale() {
     var stored = localStorage.getItem(STORAGE_KEY);
     if (stored && SUPPORTED.indexOf(stored) !== -1) return stored;
-    var nav = (navigator.language || navigator.userLanguage || "").toLowerCase();
+    var nav = (
+      navigator.language ||
+      navigator.userLanguage ||
+      ""
+    ).toLowerCase();
     return nav.indexOf("es") === 0 ? "es" : DEFAULT_LOCALE;
   }
 
@@ -69,7 +73,7 @@
         });
     });
 
-    // The toggle always shows the *other* language's code — clicking it
+    // The toggle always shows the *other* language's code - clicking it
     // switches to whatever it's currently labeled.
     var toggleEl = document.getElementById("lang-toggle");
     if (toggleEl) toggleEl.textContent = current === "en" ? "ES" : "EN";
@@ -83,7 +87,9 @@
     listeners.forEach(function (cb) {
       cb(current);
     });
-    document.dispatchEvent(new CustomEvent("trlangchange", { detail: { locale: current } }));
+    document.dispatchEvent(
+      new CustomEvent("trlangchange", { detail: { locale: current } }),
+    );
   }
 
   window.TRI18N = {

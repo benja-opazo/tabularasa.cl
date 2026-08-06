@@ -1,5 +1,5 @@
 /* ============================================================
-   tabularasa.cl — downloads.js
+   tabularasa.cl - downloads.js
 
    Populates the download cards from the REAL release manifest instead of
    hand-maintained links, so this page never drifts from what the release
@@ -9,17 +9,17 @@
    Manifest: GET https://downloads.tabularasa.cl/releases/manifest.json
      { schema_version, version, released_at,
        targets: { "<rust-target-triple>": { installer: {url,sha256,size}, update: {...} } } }
-   Schema source: tabula-rasa/scripts/release/gen_manifest.py — keep in sync
+   Schema source: tabula-rasa/scripts/release/gen_manifest.py - keep in sync
    if that script's TARGETS or schema_version ever changes.
 
    Requires the manifest's R2 bucket to send
-   `Access-Control-Allow-Origin: https://tabularasa.cl` (or `*`) — see the
+   `Access-Control-Allow-Origin: https://tabularasa.cl` (or `*`) - see the
    CORS note in docs/decisions/downloads.md. Without it this fetch fails
    silently (browsers don't expose the reason) and the page just falls back
    to the static hrefs already in the HTML.
 
-   All user-facing strings route through window.TRI18N (assets/js/i18n.js) —
-   loaded before this script — so a language switch re-renders whatever this
+   All user-facing strings route through window.TRI18N (assets/js/i18n.js) -
+   loaded before this script - so a language switch re-renders whatever this
    file last computed. See docs/decisions/i18n.md.
    ============================================================ */
 (function () {
@@ -39,7 +39,7 @@
     macos: "download.btn_dmg",
   };
 
-  // Platform names are proper nouns — same in both locales, not looked up in TR_I18N.
+  // Platform names are proper nouns - same in both locales, not looked up in TR_I18N.
   var PLATFORM_NAMES = { linux: "Linux", windows: "Windows", macos: "macOS" };
 
   function t(key, vars) {
@@ -56,7 +56,7 @@
   }
 
   function humanSize(bytes) {
-    if (!bytes && bytes !== 0) return "—";
+    if (!bytes && bytes !== 0) return "-";
     var units = ["B", "KB", "MB", "GB"];
     var i = 0;
     var n = bytes;
@@ -77,7 +77,9 @@
     var link = document.getElementById("hero-download-btn");
     if (!label || !link) return;
     if (platform && PLATFORM_NAMES[platform]) {
-      label.textContent = t("download.cta_for_platform", { platform: PLATFORM_NAMES[platform] });
+      label.textContent = t("download.cta_for_platform", {
+        platform: PLATFORM_NAMES[platform],
+      });
       if (manifest) {
         var triple = TARGET_BY_PLATFORM[platform];
         var entry = manifest.targets && manifest.targets[triple];
@@ -96,7 +98,9 @@
     Object.keys(TARGET_BY_PLATFORM).forEach(function (platform) {
       var triple = TARGET_BY_PLATFORM[platform];
       var entry = manifest.targets && manifest.targets[triple];
-      var card = document.querySelector('.download-card[data-platform="' + platform + '"]');
+      var card = document.querySelector(
+        '.download-card[data-platform="' + platform + '"]',
+      );
       if (!card || !entry || !entry.installer) return;
 
       var versionEl = card.querySelector(".dl-version");
@@ -109,13 +113,17 @@
         linkEl.textContent = t(LABEL_KEY_BY_PLATFORM[platform]) || "Download";
       }
     });
-    if (note) note.textContent = t("download.note_latest", { version: manifest.version });
+    if (note)
+      note.textContent = t("download.note_latest", {
+        version: manifest.version,
+      });
   }
 
   function fallbackNote(reasonKey) {
     lastFallbackReason = reasonKey;
     var note = document.getElementById("download-note");
-    if (note) note.textContent = t("download.note_fallback", { reason: t(reasonKey) });
+    if (note)
+      note.textContent = t("download.note_fallback", { reason: t(reasonKey) });
   }
 
   var platform = detectPlatform();
