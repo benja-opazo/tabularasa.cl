@@ -29,6 +29,13 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 - **Deviation:** manual `workflow_dispatch` only, no push-to-`main` trigger — this site is still an active prototype, so deploys are a deliberate action, not automatic.
 - No build job: the JS syntax check is the only pre-deploy gate.
 
+## Internationalization (`i18n.md`)
+
+- Client-side dictionary swap (`i18n-strings.js` + `i18n.js` + `data-i18n*` attributes), not per-locale pages — no build step means no templating to generate `/en/`/`/es/` statically.
+- English is canonical; Spanish is kept in sync via the `sync-i18n` skill (`.claude/skills/sync-i18n/SKILL.md`).
+- The showcase demo (`#tr-demo-root`) is deliberately **not** translated — it replicates the real app, which is English-only today.
+- Accepted trade-off: a brief flash of English before JS re-writes to Spanish (no build step means no true zero-flash trick for text content, unlike the theme toggle's color swap).
+
 ## Copy (`copy.md`)
 
 - First-draft marketing copy was written from the app's own docs (`overview.md`, `roadmap.md`), not left as placeholder TODOs — a deliberate departure from `benjaopazoc.cl`'s "never invent the owner's prose" rule, because an unusable empty prototype wasn't the goal here.

@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tabula Rasa — a blank slate for your data</title>
-  <meta name="description" content="Tabula Rasa is a fast, cross-platform CSV viewer and editor built in Rust. Opens huge files instantly, never hangs, and feels like Sublime Text for tabular data. Free to use, for Linux, Windows and macOS." />
+  <title data-i18n="meta.title">Tabula Rasa — a blank slate for your data</title>
+  <meta name="description" data-i18n-attr="content:meta.description" content="Tabula Rasa is a fast, cross-platform CSV viewer and editor built in Rust. Opens huge files instantly, never hangs, and feels like Sublime Text for tabular data. Free to use, for Linux, Windows and macOS." />
   <meta name="author" content="Benjamín Opazo" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Tabula Rasa — a blank slate for your data" />
-  <meta property="og:description" content="A fast, cross-platform CSV viewer/editor. Opens huge files instantly and never hangs. Free to use." />
+  <meta property="og:title" data-i18n-attr="content:meta.og_title" content="Tabula Rasa — a blank slate for your data" />
+  <meta property="og:description" data-i18n-attr="content:meta.og_description" content="A fast, cross-platform CSV viewer/editor. Opens huge files instantly and never hangs. Free to use." />
   <meta property="og:url" content="https://tabularasa.cl" />
   <meta name="twitter:card" content="summary" />
 
@@ -29,7 +29,7 @@
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main" data-i18n="skip_link">Skip to content</a>
 
   <header class="site-header" id="site-header">
     <div class="container">
@@ -39,17 +39,18 @@
       </a>
 
       <nav class="main-nav" aria-label="Primary">
-        <a href="#features">Features</a>
-        <a href="#showcase">See it in action</a>
-        <a href="#download">Download</a>
+        <a href="#features" data-i18n="nav.features">Features</a>
+        <a href="#showcase" data-i18n="nav.showcase">See it in action</a>
+        <a href="#download" data-i18n="nav.download">Download</a>
       </nav>
 
       <div class="header-actions">
-        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark / light theme">
+        <button class="lang-toggle" id="lang-toggle" type="button" data-i18n-attr="aria-label:lang_toggle.aria_label" aria-label="Switch language">ES</button>
+        <button class="theme-toggle" id="theme-toggle" type="button" data-i18n-attr="aria-label:theme_toggle.aria_label" aria-label="Toggle dark / light theme">
           <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v3M12 18.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2.5 12h3M18.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
           <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
         </button>
-        <a class="btn btn-primary btn-sm" href="#download">Download</a>
+        <a class="btn btn-primary btn-sm" href="#download" data-i18n="header.download_btn">Download</a>
       </div>
     </div>
   </header>
@@ -57,8 +58,8 @@
   <main id="main">
     <!-- ================= Hero ================= -->
     <section class="hero container" id="top">
-      <h1>A blank slate<br />for your <span class="accent-text">data</span>.</h1>
-      <p class="hero-sub">
+      <h1 data-i18n-html="hero.title_html">A blank slate<br />for your <span class="accent-text">data</span>.</h1>
+      <p class="hero-sub" data-i18n="hero.subtitle">
         Tabula Rasa is a fast, cross-platform CSV viewer and editor. It opens huge
         files instantly, never hangs on bad data, and feels like a tool you keep
         open all day — closer to Sublime Text than to a spreadsheet.
@@ -67,11 +68,11 @@
         <div class="hero-cta-row">
           <a class="btn btn-primary" href="#download" id="hero-download-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-4.5-4.5M12 15l4.5-4.5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
-            <span id="hero-download-label">Download for your platform</span>
+            <span id="hero-download-label" data-i18n="hero.cta_download_default">Download for your platform</span>
           </a>
-          <a class="btn btn-secondary" href="#showcase">See it in action</a>
+          <a class="btn btn-secondary" href="#showcase" data-i18n="hero.cta_showcase">See it in action</a>
         </div>
-        <p class="hero-meta">Linux &middot; Windows &middot; macOS (Apple Silicon) — no account required.</p>
+        <p class="hero-meta" data-i18n-html="hero.meta">Linux &middot; Windows &middot; macOS (Apple Silicon) — no account required.</p>
       </div>
     </section>
 
@@ -79,15 +80,16 @@
     <section class="section" id="showcase">
       <div class="container">
         <div class="section-head section-head-tight">
-          <p class="eyebrow">Try it here</p>
-          <h2>This is the real interface — hardcoded, but interactive.</h2>
-          <p>Same pixels as the app, frozen sample data — sort, group, filter, or search below.</p>
+          <p class="eyebrow" data-i18n="showcase.eyebrow">Try it here</p>
+          <h2 data-i18n="showcase.title">This is the real interface — hardcoded, but interactive.</h2>
+          <p data-i18n="showcase.desc">Same pixels as the app, frozen sample data — sort, group, filter, or search below.</p>
         </div>
 
-        <div class="showcase-frame" id="tr-demo-root" tabindex="0" aria-label="Interactive Tabula Rasa demo — hardcoded sample data">
-          <!-- Rendered by assets/js/demo-table.js -->
+        <div class="showcase-frame" id="tr-demo-root" tabindex="0" data-i18n-attr="aria-label:showcase.aria_label" aria-label="Interactive Tabula Rasa demo — hardcoded sample data">
+          <!-- Rendered by assets/js/demo-table.js — deliberately NOT translated,
+               see docs/decisions/i18n.md: it replicates the real (English-only) app. -->
           <noscript>
-            <p style="padding:2rem;color:var(--dim);font-family:var(--font-chrome);">
+            <p style="padding:2rem;color:var(--dim);font-family:var(--font-chrome);" data-i18n="showcase.noscript">
               This interactive preview needs JavaScript. Download the real app below —
               it needs no JavaScript at all.
             </p>
@@ -100,45 +102,45 @@
     <section class="section" id="features">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">Under the hood</p>
-          <h2>Built for people who live in tabular data.</h2>
-          <p>Every feature above is real — here's the fuller list, and what's still on the way.</p>
+          <p class="eyebrow" data-i18n="features.eyebrow">Under the hood</p>
+          <h2 data-i18n="features.title">Built for people who live in tabular data.</h2>
+          <p data-i18n="features.desc">Every feature above is real — here's the fuller list, and what's still on the way.</p>
         </div>
 
         <div class="feature-grid">
           <article class="feature-card">
             <span class="icon" aria-hidden="true">&#xe4ff;</span>
-            <h3>Huge files, instantly</h3>
-            <p>Multi-gigabyte CSVs load in the background — the UI never hangs while a big file opens, and you get a first paint immediately.</p>
-            <span class="status-pill is-shipped">Shipped</span>
+            <h3 data-i18n="features.card1.title">Huge files, instantly</h3>
+            <p data-i18n="features.card1.desc">Multi-gigabyte CSVs load in the background — the UI never hangs while a big file opens, and you get a first paint immediately.</p>
+            <span class="status-pill is-shipped" data-i18n="status.shipped">Shipped</span>
           </article>
 
           <article class="feature-card">
             <span class="icon" aria-hidden="true">&#xe0dc;</span>
-            <h3>Filter, sort, group by</h3>
-            <p>Click a header to sort, stack multiple keys, group rows into collapsible bands, and build filters — all reflected as removable rule pills in the status bar.</p>
-            <span class="status-pill is-shipped">Shipped</span>
+            <h3 data-i18n="features.card2.title">Filter, sort, group by</h3>
+            <p data-i18n="features.card2.desc">Click a header to sort, stack multiple keys, group rows into collapsible bands, and build filters — all reflected as removable rule pills in the status bar.</p>
+            <span class="status-pill is-shipped" data-i18n="status.shipped">Shipped</span>
           </article>
 
           <article class="feature-card">
             <span class="icon" aria-hidden="true">&#xe151;</span>
-            <h3>Instant search</h3>
-            <p>A find bar highlights every match live across the whole file, with a density rail showing where matches cluster, without ever filtering rows out.</p>
-            <span class="status-pill is-shipped">Shipped</span>
+            <h3 data-i18n="features.card3.title">Instant search</h3>
+            <p data-i18n="features.card3.desc">A find bar highlights every match live across the whole file, with a density rail showing where matches cluster, without ever filtering rows out.</p>
+            <span class="status-pill is-shipped" data-i18n="status.shipped">Shipped</span>
           </article>
 
           <article class="feature-card">
             <span class="icon" aria-hidden="true">&#xe099;</span>
-            <h3>Column control</h3>
-            <p>Show/hide columns, auto-fit or fix widths, wrap text, freeze panes — the grid adapts to the shape of your data, not the other way around.</p>
-            <span class="status-pill is-shipped">Shipped</span>
+            <h3 data-i18n="features.card4.title">Column control</h3>
+            <p data-i18n="features.card4.desc">Show/hide columns, auto-fit or fix widths, wrap text, freeze panes — the grid adapts to the shape of your data, not the other way around.</p>
+            <span class="status-pill is-shipped" data-i18n="status.shipped">Shipped</span>
           </article>
 
           <article class="feature-card">
             <span class="icon" aria-hidden="true">&#xe58a;</span>
-            <h3>Beyond CSV</h3>
-            <p>Built as a semi-universal tabular viewer from day one — Parquet, JSON and more are the natural next formats, not a rewrite.</p>
-            <span class="status-pill is-roadmap">Roadmap</span>
+            <h3 data-i18n="features.card5.title">Beyond CSV</h3>
+            <p data-i18n="features.card5.desc">Built as a semi-universal tabular viewer from day one — Parquet, JSON and more are the natural next formats, not a rewrite.</p>
+            <span class="status-pill is-roadmap" data-i18n="status.roadmap">Roadmap</span>
           </article>
         </div>
       </div>
@@ -148,21 +150,21 @@
     <section class="section" style="padding-block: 0 var(--space-6);">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">You can trust it with your data</p>
-          <h2>Three guarantees that never bend.</h2>
+          <p class="eyebrow" data-i18n="trust.eyebrow">You can trust it with your data</p>
+          <h2 data-i18n="trust.title">Three guarantees that never bend.</h2>
         </div>
         <div class="feature-grid">
           <article class="feature-card">
-            <h3>What you see is real</h3>
-            <p>The app never silently shows coerced, truncated, or placeholder values as if they were your file's actual content. If something can't be parsed, you're told.</p>
+            <h3 data-i18n="trust.card1.title">What you see is real</h3>
+            <p data-i18n="trust.card1.desc">The app never silently shows coerced, truncated, or placeholder values as if they were your file's actual content. If something can't be parsed, you're told.</p>
           </article>
           <article class="feature-card">
-            <h3>No surprise data loss</h3>
-            <p>If a file loaded in a lossy way, saving is guarded and you're clearly warned before anything is overwritten.</p>
+            <h3 data-i18n="trust.card2.title">No surprise data loss</h3>
+            <p data-i18n="trust.card2.desc">If a file loaded in a lossy way, saving is guarded and you're clearly warned before anything is overwritten.</p>
           </article>
           <article class="feature-card">
-            <h3>Corrupt data can't hang it</h3>
-            <p>Bad input may mean a failed or partial load — it never freezes or blocks the interface while you figure out why.</p>
+            <h3 data-i18n="trust.card3.title">Corrupt data can't hang it</h3>
+            <p data-i18n="trust.card3.desc">Bad input may mean a failed or partial load — it never freezes or blocks the interface while you figure out why.</p>
           </article>
         </div>
       </div>
@@ -172,9 +174,9 @@
     <section class="section" id="download">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">Get Tabula Rasa</p>
-          <h2>Free to use, on every desktop platform.</h2>
-          <p>
+          <p class="eyebrow" data-i18n="download.eyebrow">Get Tabula Rasa</p>
+          <h2 data-i18n="download.title">Free to use, on every desktop platform.</h2>
+          <p data-i18n="download.desc">
             No account, no trial timer. An occasional, easily-dismissable nag is the
             only thing a one-time lifetime pass ever removes — that's the whole
             monetization model.
@@ -189,12 +191,12 @@
               </span>
               <h3>Linux</h3>
             </div>
-            <p>AppImage — runs on any modern distro, no installation required.</p>
+            <p data-i18n="download.linux.desc">AppImage — runs on any modern distro, no installation required.</p>
             <div class="meta">
               <span class="dl-version">v&mdash;</span>
               <span class="dl-size">&mdash;</span>
             </div>
-            <a class="btn btn-primary dl-link" href="https://downloads.tabularasa.cl/latest/linux">Download .AppImage</a>
+            <a class="btn btn-primary dl-link" href="https://downloads.tabularasa.cl/latest/linux" data-i18n="download.btn_appimage">Download .AppImage</a>
           </article>
 
           <article class="download-card" data-platform="windows">
@@ -204,12 +206,12 @@
               </span>
               <h3>Windows</h3>
             </div>
-            <p>Installer (.exe) for 64-bit Windows 10/11.</p>
+            <p data-i18n="download.windows.desc">Installer (.exe) for 64-bit Windows 10/11.</p>
             <div class="meta">
               <span class="dl-version">v&mdash;</span>
               <span class="dl-size">&mdash;</span>
             </div>
-            <a class="btn btn-primary dl-link" href="https://downloads.tabularasa.cl/latest/windows">Download .exe</a>
+            <a class="btn btn-primary dl-link" href="https://downloads.tabularasa.cl/latest/windows" data-i18n="download.btn_exe">Download .exe</a>
           </article>
 
           <article class="download-card" data-platform="macos">
@@ -219,15 +221,15 @@
               </span>
               <h3>macOS</h3>
             </div>
-            <p>Disk image (.dmg) — Apple Silicon (M-series).</p>
+            <p data-i18n="download.macos.desc">Disk image (.dmg) — Apple Silicon (M-series).</p>
             <div class="meta">
               <span class="dl-version">v&mdash;</span>
               <span class="dl-size">&mdash;</span>
             </div>
-            <a class="btn btn-primary dl-link" href="https://downloads.tabularasa.cl/latest/macos">Download .dmg</a>
+            <a class="btn btn-primary dl-link" href="https://downloads.tabularasa.cl/latest/macos" data-i18n="download.btn_dmg">Download .dmg</a>
           </article>
         </div>
-        <p class="download-note" id="download-note">
+        <p class="download-note" id="download-note" data-i18n="download.note_fetching">
           Fetching the latest release&hellip;
         </p>
       </div>
@@ -242,26 +244,26 @@
             <span class="brand-mark" aria-hidden="true"></span>
             Tabula Rasa
           </div>
-          <p class="footer-tagline">A blank slate for your data.</p>
+          <p class="footer-tagline" data-i18n="footer.tagline">A blank slate for your data.</p>
         </div>
 
         <div class="footer-links">
           <div class="footer-col">
-            <h4>Product</h4>
+            <h4 data-i18n="footer.col_product">Product</h4>
             <ul>
-              <li><a href="#features">Features</a></li>
-              <li><a href="#showcase">Showcase</a></li>
-              <li><a href="#download">Download</a></li>
+              <li><a href="#features" data-i18n="footer.link_features">Features</a></li>
+              <li><a href="#showcase" data-i18n="footer.link_showcase">Showcase</a></li>
+              <li><a href="#download" data-i18n="footer.link_download">Download</a></li>
             </ul>
           </div>
           <div class="footer-col">
-            <h4>Support</h4>
+            <h4 data-i18n="footer.col_support">Support</h4>
             <ul>
-              <li><span class="footer-stub" title="Not drafted yet — pending legal review before the paid tier ships">License / EULA <span class="footer-stub-tag">Coming soon</span></span></li>
+              <li><span class="footer-stub" data-i18n-attr="title:footer.eula_tooltip" title="Not drafted yet — pending legal review before the paid tier ships"><span data-i18n="footer.eula_label">License / EULA</span> <span class="footer-stub-tag" data-i18n="footer.eula_tag">Coming soon</span></span></li>
             </ul>
           </div>
           <div class="footer-col">
-            <h4>More from the author</h4>
+            <h4 data-i18n="footer.col_author">More from the author</h4>
             <ul>
               <li><a href="https://benjaopazoc.cl" target="_blank" rel="noopener">benjaopazoc.cl</a></li>
             </ul>
@@ -270,12 +272,14 @@
       </div>
 
       <div class="footer-bottom">
-        <span>&copy; <span id="footer-year">2026</span> Benjamín Opazo. All rights reserved.</span>
-        <a href="https://benjaopazoc.cl" target="_blank" rel="noopener">Built by benjaopazoc.cl</a>
+        <span><span data-i18n-html="footer.copyright_prefix">&copy;</span> <span id="footer-year">2026</span> <span data-i18n="footer.copyright_suffix">Benjamín Opazo. All rights reserved.</span></span>
+        <a href="https://benjaopazoc.cl" target="_blank" rel="noopener" data-i18n="footer.built_by">Built by benjaopazoc.cl</a>
       </div>
     </div>
   </footer>
 
+  <script src="assets/js/i18n-strings.js"></script>
+  <script src="assets/js/i18n.js"></script>
   <script src="assets/js/theme.js"></script>
   <script src="assets/js/demo-table.js"></script>
   <script src="assets/js/downloads.js"></script>

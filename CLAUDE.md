@@ -57,8 +57,11 @@ site/assets/js/demo-table.js     # The interactive grid replica — hardcoded da
 site/assets/js/downloads.js      # Fetches the real release manifest, detects OS, populates download cards. See downloads.md.
 site/assets/fonts/               # Vendored JetBrainsMono-Regular.ttf + lucide.ttf, copied byte-for-byte from tabula-rasa/assets/fonts/, plus their licenses.
 site/assets/img/favicon.svg      # Brand mark (accent-colored rounded square, matches the nav brand mark).
+site/assets/js/i18n-strings.js   # EN/ES string dictionary — single source of truth for all copy. See i18n.md.
+site/assets/js/i18n.js           # Applies the dictionary, persists choice, toggle button. See i18n.md.
+.claude/skills/sync-i18n/        # The official workflow for editing copy + syncing the ES translation.
 wrangler.toml                    # Cloudflare Workers static-assets config — directory = ./site.
-.github/workflows/deploy.yml     # CI: JS syntax check, then `wrangler deploy` on push to main.
+.github/workflows/deploy.yml     # CI: JS syntax check, then `wrangler deploy` — manual `workflow_dispatch` only, not on push.
 docs/README.md                   # Docs map — read this first for anything beyond quick edits.
 docs/decisions/                  # One file per topic; INDEX.md is the one-line index. Search before redesigning.
 ```
@@ -107,14 +110,27 @@ fallback if that fetch fails. **This needs CORS enabled on the R2 bucket** — s
 `docs/decisions/downloads.md` for the header required and what happens if it's
 missing (silent fallback, not a crash).
 
+## How i18n works
+
+All copy lives in `site/assets/js/i18n-strings.js` (`window.TR_I18N.en` /
+`.es`), applied to the DOM by `i18n.js` via `data-i18n`/`data-i18n-html`/
+`data-i18n-attr` attributes in `index.html`. English is canonical. **To edit
+copy, use the `sync-i18n` skill** (`.claude/skills/sync-i18n/SKILL.md`) rather
+than hand-editing both locale objects — it's the official workflow for
+keeping `en`/`es` in sync and surfacing translation subtleties for a human
+call instead of guessing them. The showcase demo (`#tr-demo-root`) is
+deliberately left untranslated — see `docs/decisions/i18n.md`.
+
 ## Deploy
 
 GitHub Actions (`.github/workflows/deploy.yml`) runs a JS syntax check, then
-`wrangler deploy` on every push to `main`, against `wrangler.toml`'s Workers
-static-assets config (`site/` as the asset directory, no `main` script). Needs
-`CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` repo secrets — setup steps and
-why this differs from `benjaopazoc.cl`'s current dashboard-only Cloudflare Pages
-setup: `docs/decisions/deploy.md`.
+`wrangler deploy`, against `wrangler.toml`'s Workers static-assets config
+(`site/` as the asset directory, no `main` script). **Manual trigger only**
+(`workflow_dispatch`) — this is still an active prototype, so nothing
+auto-deploys on push to `main`; trigger it from the Actions tab when a change
+is actually ready. Needs `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` repo
+secrets — setup steps and why this differs from `benjaopazoc.cl`'s current
+dashboard-only Cloudflare Pages setup: `docs/decisions/deploy.md`.
 
 ## Adding content
 
@@ -133,6 +149,10 @@ setup: `docs/decisions/deploy.md`.
 - **New demo-table feature:** extend the state machine in `demo-table.js` rather
   than adding a parallel mechanism — read `docs/decisions/demo-table.md` first for
   what's already been decided (dataset shape, rendering strategy, stub parity).
+- **New or changed copy:** edit the `en` object in `i18n-strings.js`, add the
+  matching `data-i18n*` attribute in `index.html` if it's a new string, then run
+  the `sync-i18n` skill to translate it into `es` — don't hand-write the Spanish
+  yourself or leave `es` out of sync.
 
 ### Checklist before finishing a change
 
@@ -142,4 +162,5 @@ setup: `docs/decisions/deploy.md`.
 - [ ] No hardcoded colors — tokens only, right tier.
 - [ ] `node --check` passes on every changed JS file (what CI runs).
 - [ ] Any icon used is either a named app codepoint or a deliberate hand-drawn SVG — never a guessed codepoint.
+- [ ] New/changed copy exists in `i18n-strings.js` for **both** `en` and `es` (via the `sync-i18n` skill), not just hardcoded in `index.html`.
 - [ ] Non-obvious decision? Add it to `docs/decisions/<topic>.md` + `INDEX.md`.

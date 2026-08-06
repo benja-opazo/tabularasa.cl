@@ -17,6 +17,10 @@
    CORS note in docs/decisions/downloads.md. Without it this fetch fails
    silently (browsers don't expose the reason) and the page just falls back
    to the static hrefs already in the HTML.
+
+   All user-facing strings route through window.TRI18N (assets/js/i18n.js) —
+   loaded before this script — so a language switch re-renders whatever this
+   file last computed. See docs/decisions/i18n.md.
    ============================================================ */
 (function () {
   "use strict";
@@ -29,11 +33,18 @@
     macos: "aarch64-apple-darwin",
   };
 
-  var LABEL_BY_PLATFORM = {
-    linux: "Download .AppImage",
-    windows: "Download .exe",
-    macos: "Download .dmg",
+  var LABEL_KEY_BY_PLATFORM = {
+    linux: "download.btn_appimage",
+    windows: "download.btn_exe",
+    macos: "download.btn_dmg",
   };
+
+  // Platform names are proper nouns — same in both locales, not looked up in TR_I18N.
+  var PLATFORM_NAMES = { linux: "Linux", windows: "Windows", macos: "macOS" };
+
+  function t(key, vars) {
+    return window.TRI18N ? window.TRI18N.t(key, vars) : key;
+  }
 
   function detectPlatform() {
     var ua = navigator.userAgent || "";
@@ -56,13 +67,17 @@
     return (i === 0 ? n : n.toFixed(1)) + " " + units[i];
   }
 
+  // Remembers the last real state so a language switch can re-render text
+  // without re-fetching the manifest.
+  var lastManifest = null;
+  var lastFallbackReason = null;
+
   function updateHeroCta(platform, manifest) {
     var label = document.getElementById("hero-download-label");
     var link = document.getElementById("hero-download-btn");
     if (!label || !link) return;
-    var names = { linux: "Linux", windows: "Windows", macos: "macOS" };
-    if (platform && names[platform]) {
-      label.textContent = "Download for " + names[platform];
+    if (platform && PLATFORM_NAMES[platform]) {
+      label.textContent = t("download.cta_for_platform", { platform: PLATFORM_NAMES[platform] });
       if (manifest) {
         var triple = TARGET_BY_PLATFORM[platform];
         var entry = manifest.targets && manifest.targets[triple];
@@ -76,6 +91,7 @@
   }
 
   function applyManifest(manifest) {
+    lastManifest = manifest;
     var note = document.getElementById("download-note");
     Object.keys(TARGET_BY_PLATFORM).forEach(function (platform) {
       var triple = TARGET_BY_PLATFORM[platform];
@@ -90,29 +106,31 @@
       if (sizeEl) sizeEl.textContent = humanSize(entry.installer.size);
       if (linkEl) {
         linkEl.setAttribute("href", entry.installer.url);
-        linkEl.textContent = LABEL_BY_PLATFORM[platform] || "Download";
+        linkEl.textContent = t(LABEL_KEY_BY_PLATFORM[platform]) || "Download";
       }
     });
-    if (note) {
-      note.textContent =
-        "Latest release: v" + manifest.version +
-        " · SHA-256 checksums ship alongside every download.";
-    }
+    if (note) note.textContent = t("download.note_latest", { version: manifest.version });
   }
 
-  function fallbackNote(reason) {
+  function fallbackNote(reasonKey) {
+    lastFallbackReason = reasonKey;
     var note = document.getElementById("download-note");
-    if (note) {
-      note.textContent =
-        "Showing the standard download links — " + reason + ". They still point to the latest release.";
-    }
+    if (note) note.textContent = t("download.note_fallback", { reason: t(reasonKey) });
   }
 
   var platform = detectPlatform();
   updateHeroCta(platform, null);
 
+  if (window.TRI18N) {
+    window.TRI18N.onChange(function () {
+      updateHeroCta(platform, lastManifest);
+      if (lastManifest) applyManifest(lastManifest);
+      else if (lastFallbackReason) fallbackNote(lastFallbackReason);
+    });
+  }
+
   if (!("fetch" in window)) {
-    fallbackNote("this browser can't check for the newest version automatically");
+    fallbackNote("download.note_no_fetch");
     return;
   }
 
@@ -126,6 +144,6 @@
       updateHeroCta(platform, manifest);
     })
     .catch(function () {
-      fallbackNote("couldn't reach the release server just now");
+      fallbackNote("download.note_fetch_failed");
     });
 })();

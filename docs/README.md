@@ -11,6 +11,7 @@ this folder is where the reasoning behind them lives.
 | `decisions/theming.md` | The two-tier token system, dark-default rationale, font/icon vendoring, responsive breakpoints. |
 | `decisions/demo-table.md` | What the interactive showcase faithfully replicates vs. simplifies, dataset design, rendering-strategy tradeoffs. |
 | `decisions/downloads.md` | Manifest-driven downloads vs. hardcoded links, the CORS dependency, fallback behavior. |
+| `decisions/i18n.md` | Client-side EN/ES dictionary swap, why not per-locale pages, why the showcase demo stays English-only. |
 | `decisions/deploy.md` | Why GitHub Actions + `wrangler deploy` over dashboard-only Cloudflare Pages, and the exact secret/dashboard setup steps a human still has to do. |
 | `decisions/copy.md` | Where every factual marketing claim on the page came from, so it can be re-verified instead of re-guessed. |
 
