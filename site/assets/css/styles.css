@@ -7,17 +7,18 @@
      4. Hero
      5. Buttons + badges (site-level marketing controls)
      6. Section headings / feature grid
-     7. Showcase window chrome (title bar, menu bar, tab strip) - app-faithful
-     8. Toolbar (app-faithful)
-     9. Grid (app-faithful)
-    10. Status bar (app-faithful)
-    11. Search bar (app-faithful)
-    12. Popovers / dropdowns (app-faithful)
-    13. Download section
-    14. Footer
-    15. Scrollbars (app-faithful)
-    16. Responsive
-    17. Reduced motion / accessibility
+     7. Feature card flip + demo modal
+     8. Showcase window chrome (title bar, menu bar, tab strip) - app-faithful
+     9. Toolbar (app-faithful)
+    10. Grid (app-faithful)
+    11. Status bar (app-faithful)
+    12. Search bar (app-faithful)
+    13. Popovers / dropdowns (app-faithful)
+    14. Download section
+    15. Footer
+    16. Scrollbars (app-faithful)
+    17. Responsive
+    18. Reduced motion / accessibility
    ========================================================================== */
 
 /* ---- 1. Reset + fonts --------------------------------------------------- */
@@ -122,6 +123,11 @@ a {
     font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.1rem);
     margin: 0 0 var(--space-2);
     letter-spacing: -0.01em;
+}
+
+.section-head h2 .accent-text,
+.section-head p .accent-text {
+    color: var(--accent);
 }
 
 .section-head p {
@@ -439,6 +445,11 @@ a {
     line-height: 1.55;
 }
 
+.feature-card p .accent-text,
+.feature-card h3 .accent-text {
+    color: var(--accent);
+}
+
 .feature-card .status-pill {
     display: inline-block;
     margin-top: var(--space-2);
@@ -460,7 +471,218 @@ a {
     background: color-mix(in srgb, var(--orange) 14%, transparent);
 }
 
-/* ---- 7. Showcase window chrome ------------------------------------------- */
+/* ---- 7. Feature card flip + demo modal ------------------------------------ */
+
+/* Only the four "Shipped" feature cards get `.is-flippable` (index.html) —
+   the roadmap card and the trust-section cards reuse `.feature-card` but
+   stay plain, since there's no real demo to show for an unbuilt feature. */
+.feature-card.is-flippable {
+    background: none;
+    border: none;
+    padding: 0;
+    perspective: 1200px;
+    cursor: pointer;
+}
+
+.feature-card.is-flippable:focus-visible {
+    outline: none; /* moved to the flipper so it traces the visible card, not this 0-size wrapper */
+}
+
+.feature-card-flipper {
+    position: relative;
+    transition: transform 0.5s var(--ease);
+    transform-style: preserve-3d;
+}
+
+.feature-card.is-flippable:focus-visible .feature-card-flipper {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-lg);
+}
+
+.feature-card.is-flipped .feature-card-flipper {
+    transform: rotateY(180deg);
+}
+
+.feature-card-face {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    backface-visibility: hidden;
+}
+
+.feature-card-front {
+    position: relative;
+}
+
+.feature-card-back {
+    position: absolute;
+    inset: 0;
+    transform: rotateY(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0;
+}
+
+.feature-card-gif {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.feature-card-back-fallback {
+    display: none;
+    color: var(--faint);
+    font-size: 12.5px;
+    font-family: var(--font-chrome);
+    text-align: center;
+    padding: var(--space-3);
+}
+
+.feature-card-back.has-no-gif .feature-card-gif {
+    display: none;
+}
+
+.feature-card-back.has-no-gif .feature-card-back-fallback {
+    display: block;
+}
+
+.feature-card-play {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--panel) 80%, transparent);
+    color: var(--text);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: background 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.feature-card-play:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.feature-card-play svg {
+    width: 15px;
+    height: 15px;
+}
+
+/* Demo modal — hidden by default via the `hidden` attribute in index.html.
+   `[hidden]` must be re-declared here: an author `display` rule on the same
+   element always beats the UA stylesheet's default `[hidden]{display:none}`,
+   so without this override the modal would stay visible (and eat clicks)
+   even while the `hidden` attribute is present. */
+.feature-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-3);
+}
+
+.feature-modal[hidden] {
+    display: none;
+}
+
+.feature-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, black 60%, transparent);
+}
+
+.feature-modal-dialog {
+    position: relative;
+    z-index: 1;
+    width: min(720px, 100%);
+    max-height: 85vh;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 60px -20px var(--shadow-color);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.feature-modal-title {
+    margin: 0;
+    font-size: 16px;
+    padding-right: var(--space-5);
+}
+
+.feature-modal-media {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--grid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 160px;
+}
+
+.feature-modal-gif {
+    display: block;
+    width: 100%;
+    max-height: 65vh;
+    object-fit: contain;
+}
+
+.feature-modal-fallback {
+    display: none;
+    color: var(--faint);
+    font-size: 13.5px;
+    font-family: var(--font-chrome);
+    padding: var(--space-5);
+    text-align: center;
+}
+
+.feature-modal-media.has-no-gif .feature-modal-gif {
+    display: none;
+}
+
+.feature-modal-media.has-no-gif .feature-modal-fallback {
+    display: block;
+}
+
+.feature-modal-close {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
+
+.feature-modal-close:hover {
+    background: var(--hover);
+}
+
+.feature-modal-close svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ---- 8. Showcase window chrome ------------------------------------------- */
 
 .showcase-frame {
     border-radius: var(--radius-lg);
@@ -564,7 +786,7 @@ a {
     flex: none;
 }
 
-/* ---- 8. Toolbar ------------------------------------------------------------ */
+/* ---- 9. Toolbar ------------------------------------------------------------ */
 
 .tr-toolbar {
     min-height: 46px;
@@ -652,7 +874,7 @@ a {
     background: none;
 }
 
-/* ---- 9. Grid ---------------------------------------------------------------- */
+/* ---- 10. Grid ---------------------------------------------------------------- */
 
 .tr-grid-scroll {
     overflow: auto;
@@ -844,7 +1066,7 @@ mark.tr-match.is-current {
     font-family: var(--font-chrome);
 }
 
-/* ---- 10. Status bar --------------------------------------------------------- */
+/* ---- 11. Status bar --------------------------------------------------------- */
 
 .tr-statusbar {
     min-height: 30px;
@@ -966,7 +1188,7 @@ mark.tr-match.is-current {
     color: var(--purple);
 }
 
-/* ---- 11. Search bar ---------------------------------------------------------- */
+/* ---- 12. Search bar ---------------------------------------------------------- */
 
 .tr-searchbar {
     display: none;
@@ -1024,7 +1246,7 @@ mark.tr-match.is-current {
     color: var(--text);
 }
 
-/* ---- 12. Popovers / dropdowns ------------------------------------------------ */
+/* ---- 13. Popovers / dropdowns ------------------------------------------------ */
 
 .tr-popover-anchor {
     position: relative;
@@ -1087,7 +1309,7 @@ mark.tr-match.is-current {
     font-size: 11px;
 }
 
-/* ---- 13. Download section ---------------------------------------------------- */
+/* ---- 14. Download section ---------------------------------------------------- */
 
 .download-grid {
     display: grid;
@@ -1155,7 +1377,7 @@ mark.tr-match.is-current {
     text-underline-offset: 2px;
 }
 
-/* ---- 14. Footer --------------------------------------------------------------- */
+/* ---- 15. Footer --------------------------------------------------------------- */
 
 .site-footer {
     border-top: 1px solid var(--border);
@@ -1259,7 +1481,7 @@ mark.tr-match.is-current {
     text-underline-offset: 2px;
 }
 
-/* ---- 15. Scrollbars (app-faithful, ~13px, thumb = border -> faint) ------------ */
+/* ---- 16. Scrollbars (app-faithful, ~13px, thumb = border -> faint) ------------ */
 
 .tr-grid-scroll::-webkit-scrollbar,
 .tr-menubar::-webkit-scrollbar,
@@ -1288,7 +1510,7 @@ mark.tr-match.is-current {
     background: transparent;
 }
 
-/* ---- 16. Responsive ------------------------------------------------------------ */
+/* ---- 17. Responsive ------------------------------------------------------------ */
 
 @media (min-width: 640px) {
     .feature-grid {
@@ -1319,7 +1541,7 @@ mark.tr-match.is-current {
     }
 }
 
-/* ---- 17. Reduced motion / accessibility ----------------------------------------- */
+/* ---- 18. Reduced motion / accessibility ----------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
     * {

@@ -36,6 +36,13 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 - The showcase demo (`#tr-demo-root`) is deliberately **not** translated - it replicates the real app, which is English-only today.
 - Accepted trade-off: a brief flash of English before JS re-writes to Spanish (no build step means no true zero-flash trick for text content, unlike the theme toggle's color swap).
 
+## Feature card flip + demo modal (`feature-media.md`)
+
+- Only the 4 "Shipped" feature cards are interactive (`.is-flippable`) — click flips to a GIF on the back, a separate play button opens the same GIF full-size in a modal. The Roadmap card and trust cards opt out entirely.
+- GIFs aren't shipped yet (`site/assets/img/features/<slug>.gif`, exact filenames in the doc) — missing files fall back to a "Demo coming soon" message instead of a broken image.
+- The play icon is a hand-drawn SVG (no Lucide play/video codepoint exists in `icons.rs`), matching the existing platform-icon/theme-toggle convention.
+- `.feature-modal[hidden] { display: none; }` is required — an author `display` rule otherwise always beats the UA `[hidden]` default.
+
 ## Copy (`copy.md`)
 
 - First-draft marketing copy was written from the app's own docs (`overview.md`, `roadmap.md`), not left as placeholder TODOs - a deliberate departure from `benjaopazoc.cl`'s "never invent the owner's prose" rule, because an unusable empty prototype wasn't the goal here.

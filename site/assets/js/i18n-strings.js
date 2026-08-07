@@ -16,78 +16,82 @@ window.TR_I18N = {
   en: {
     "meta.title": "Tabula Rasa: a blank slate for your data",
     "meta.description":
-      "Tabula Rasa is a fast, cross-platform CSV viewer and editor built in Rust. Opens huge files instantly, never hangs, and feels like Sublime Text for tabular data. Free to use, for Linux, Windows and macOS.",
-    "meta.og_title": "Tabula Rasa - a blank slate for your data",
+      "Tabula Rasa is a fast, cross-platform tabular viewer and editor built in Rust. Opens huge files instantly and it's free to use.",
+    "meta.og_title": "Tabula Rasa: a blank slate for your data",
     "meta.og_description":
-      "A fast, cross-platform CSV viewer/editor. Opens huge files instantly and never hangs. Free to use.",
+      "A fast, cross-platform tabular viewer/editor. Opens huge files instantly and it's free to use.",
 
     skip_link: "Skip to content",
     "nav.features": "Features",
     "nav.showcase": "See it in action",
-    "nav.download": "Download",
     "theme_toggle.aria_label": "Toggle dark / light theme",
     "lang_toggle.aria_label": "Switch language",
-    "header.download_btn": "Download",
+    "header.download_btn": "Downloads",
 
     "hero.title_html":
       'A blank slate<br />for your <span class="accent-text">data</span>.',
     "hero.subtitle":
-      "Tabula Rasa is a fast, cross-platform CSV viewer and editor. It opens huge files instantly, never hangs on bad data, and feels like a tool you keep open all day - closer to Sublime Text than to a spreadsheet.",
+      "Tabula Rasa is a fast, cross-platform tabular viewer and editor. It's stupidly fast, free to use, and so good that it disappears between your fingers!",
     "hero.cta_download_default": "Download for your platform",
     "hero.cta_showcase": "See it in action",
-    "hero.meta":
-      "Linux &middot; Windows &middot; macOS (Apple Silicon) - no account required.",
+    "hero.meta": "Linux &middot; Windows &middot; macOS (Apple Silicon)",
 
     "showcase.eyebrow": "Try it here",
     "showcase.title":
-      "This is the real interface - hardcoded, but interactive.",
+      'Check the interface and marvel at the real <span class="accent-text">Tabula Rasa</span> experience.',
     "showcase.desc":
-      "Same pixels as the app, frozen sample data - sort, group, filter, or search below.",
+      'This is how the app looks and feels, if you want the full feature set, <a href="#download" class="accent-text">Download the real app</a>.',
     "showcase.noscript":
       "This interactive preview needs JavaScript. Download the real app below - it needs no JavaScript at all.",
     "showcase.aria_label":
       "Interactive Tabula Rasa demo - hardcoded sample data",
 
     "features.eyebrow": "Under the hood",
-    "features.title": "Built for people who live in tabular data.",
+    "features.title":
+      'Built for people who live submerged in <span class="accent-text">data</span>.',
     "features.desc":
-      "Every feature above is real - here's the fuller list, and what's still on the way.",
+      "Tabula Rasa will disappear between your fingers, and these are the reasons why:",
     "features.card1.title": "Huge files, instantly",
     "features.card1.desc":
-      "Multi-gigabyte CSVs load in the background - the UI never hangs while a big file opens, and you get a first paint immediately.",
-    "features.card2.title": "Filter, sort, group by",
+      'Load Multi GB files while you are still blinking, the UI <span class="accent-text">will never hang</span>, no matter how big or complex the file is.',
+    "features.card2.title": "Stacked sort, filters or groups",
     "features.card2.desc":
-      "Click a header to sort, stack multiple keys, group rows into collapsible bands, and build filters - all reflected as removable rule pills in the status bar.",
+      "Manipulate your data however you want, add multiple filters, group by multiple keys, sort by multiple columns, and stack them on top of each other.",
     "features.card3.title": "Instant search",
     "features.card3.desc":
-      "A find bar highlights every match live across the whole file, with a density rail showing where matches cluster, without ever filtering rows out.",
+      "You search, the app handles the rest: you will find everything you need instantly.",
     "features.card4.title": "Column control",
     "features.card4.desc":
-      "Show/hide columns, auto-fit or fix widths, wrap text, freeze panes - the grid adapts to the shape of your data, not the other way around.",
+      "Easily show and hide columns, order them by drag and drop, and use our smart column resizing and wrapping: don't conform with the useless walls of text of other apps.",
     "features.card5.title": "Beyond CSV",
     "features.card5.desc":
-      "Built as a semi-universal tabular viewer from day one - Parquet, JSON and more are the natural next formats, not a rewrite.",
+      "The tabular viewer is so powerful, that it will gracefully handle multiple data types: Live Databases, Parquet, JSON, and more.",
     "status.shipped": "Shipped",
     "status.roadmap": "Roadmap",
+    "features.play_aria": "Watch demo",
+    "features.modal_close_aria": "Close",
+    "features.demo_coming_soon": "Demo coming soon",
 
     "trust.eyebrow": "You can trust it with your data",
-    "trust.title": "Three guarantees that never bend.",
-    "trust.card1.title": "What you see is real",
+    "trust.title":
+      '<span class="accent-text">Three</span> guarantees that never bend.',
+    "trust.card1.title": "Snappy",
     "trust.card1.desc":
-      "The app never silently shows coerced, truncated, or placeholder values as if they were your file's actual content. If something can't be parsed, you're told.",
-    "trust.card2.title": "No surprise data loss",
+      "Every feature is designed to be fast and responsive, so you can work with your data without any delays. Even updates are instant!",
+    "trust.card2.title": "No surprises",
     "trust.card2.desc":
-      "If a file loaded in a lossy way, saving is guarded and you're clearly warned before anything is overwritten.",
-    "trust.card3.title": "Corrupt data can't hang it",
+      "The interface is always intuitive, you click on something, and it does what you expect.",
+    "trust.card3.title":
+      'No <a href="https://en.wikipedia.org/wiki/Enshittification" target="_blank" rel="noopener" class="accent-text"><i>Enshittification</i></a>',
     "trust.card3.desc":
-      "Bad input may mean a failed or partial load - it never freezes or blocks the interface while you figure out why.",
+      "The user is at the center of the experience: to be honest, I hate it when you have to fight against the app to get it to do what you want, because some techno fascist corporation wants to squeeze the last penny out of you.",
 
     "download.eyebrow": "Get Tabula Rasa",
-    "download.title": "Free to use, on every desktop platform.",
+    "download.title": "Free to use*, on every desktop platform.",
     "download.desc":
-      "No account, no trial timer. An occasional, easily-dismissable nag is the only thing a one-time lifetime pass ever removes - that's the whole monetization model.",
+      "*For personal use, not for commercial purposes. A donation is always appreciated ❤️",
     "download.linux.desc":
-      "AppImage - runs on any modern distro, no installation required.",
+      "AppImage: runs on any modern distro, no installation required.",
     "download.windows.desc": "Installer (.exe) for 64-bit Windows 10/11.",
     "download.macos.desc": "Disk image (.dmg) - Apple Silicon (M-series).",
     "download.btn_appimage": "Download .AppImage",
@@ -120,80 +124,84 @@ window.TR_I18N = {
   },
 
   es: {
-    "meta.title": "Tabula Rasa - una hoja en blanco para tus datos",
+    "meta.title": "Tabula Rasa: una hoja en blanco para tus datos",
     "meta.description":
-      "Tabula Rasa es un visor y editor de CSV rápido y multiplataforma, hecho en Rust. Abre archivos enormes al instante, nunca se cuelga, y se siente como Sublime Text para datos tabulares. Gratis, para Linux, Windows y macOS.",
-    "meta.og_title": "Tabula Rasa - una hoja en blanco para tus datos",
+      "Tabula Rasa es un visor y editor tabular rápido y multiplataforma, hecho en Rust. Abre archivos enormes al instante y es gratis.",
+    "meta.og_title": "Tabula Rasa: una hoja en blanco para tus datos",
     "meta.og_description":
-      "Un visor/editor de CSV rápido y multiplataforma. Abre archivos enormes al instante y nunca se cuelga. Gratis.",
+      "Un visor/editor tabular rápido y multiplataforma. Abre archivos enormes al instante y es gratis.",
 
     skip_link: "Saltar al contenido",
     "nav.features": "Funciones",
     "nav.showcase": "Pruébalo en acción",
-    "nav.download": "Descargar",
     "theme_toggle.aria_label": "Cambiar tema claro / oscuro",
     "lang_toggle.aria_label": "Cambiar idioma",
-    "header.download_btn": "Descargar",
+    "header.download_btn": "Descargas",
 
     "hero.title_html":
       'Una hoja en blanco<br />para tus <span class="accent-text">datos</span>.',
     "hero.subtitle":
-      "Tabula Rasa es un visor y editor de CSV rápido y multiplataforma. Abre archivos enormes al instante, no se cuelga con datos corruptos, y se siente como una herramienta que dejas abierta todo el día - más cerca de Sublime Text que de una planilla de cálculo.",
+      "Tabula Rasa es un visor y editor tabular rápido y multiplataforma. ¡Es absurdamente rápido, gratis, y tan bueno que desaparece entre tus dedos!",
     "hero.cta_download_default": "Descarga para tu plataforma",
     "hero.cta_showcase": "Pruébalo en acción",
-    "hero.meta":
-      "Linux &middot; Windows &middot; macOS (Apple Silicon) - sin cuenta necesaria.",
+    "hero.meta": "Linux &middot; Windows &middot; macOS (Apple Silicon)",
 
     "showcase.eyebrow": "Pruébalo aquí",
     "showcase.title":
-      "Esta es la interfaz real - hardcodeada, pero interactiva.",
+      'Revisa la interfaz y maravíllate con la verdadera experiencia <span class="accent-text">Tabula Rasa</span>.',
     "showcase.desc":
-      "Los mismos píxeles que la app, con datos de muestra congelados - ordena, agrupa, filtra o busca abajo.",
+      'Así se ve y se siente la app. Si quieres el conjunto completo de funciones, <a href="#download" class="accent-text">descarga la app</a>.',
     "showcase.noscript":
       "Esta vista previa interactiva necesita JavaScript. Descarga la app real más abajo - no necesita JavaScript en absoluto.",
     "showcase.aria_label":
       "Demo interactiva de Tabula Rasa - datos de muestra hardcodeados",
 
     "features.eyebrow": "Por dentro",
-    "features.title": "Hecho para quienes viven en datos tabulares.",
+    "features.title":
+      'Hecho para quienes viven sumergidos en <span class="accent-text">datos</span>.',
     "features.desc":
-      "Cada función de arriba es real - aquí está la lista completa, y lo que todavía viene en camino.",
+      "Tabula Rasa va a desaparecer entre tus dedos, y estas son las razones:",
     "features.card1.title": "Archivos enormes, al instante",
     "features.card1.desc":
-      "Los CSV de varios gigabytes cargan en segundo plano - la interfaz nunca se cuelga mientras se abre un archivo grande, y ves el primer render de inmediato.",
-    "features.card2.title": "Filtra, ordena, agrupa",
+      'Carga archivos de varios GB en lo que dura un parpadeo: la interfaz <span class="accent-text">nunca se cuelga</span>, sin importar cuán grande o complejo sea el archivo.',
+    "features.card2.title": "Orden, filtros y agrupaciones combinables",
     "features.card2.desc":
-      "Haz clic en un encabezado para ordenar, combina varias claves, agrupa filas en bandas colapsables, y arma filtros - todo reflejado como chips removibles en la barra de estado.",
+      "Manipula tus datos como quieras: agrega múltiples filtros, agrupa por varias claves, ordena por varias columnas, y combínalos entre sí.",
     "features.card3.title": "Búsqueda instantánea",
     "features.card3.desc":
-      "Una barra de búsqueda resalta cada coincidencia en vivo en todo el archivo, con un riel de densidad que muestra dónde se agrupan, sin filtrar filas nunca.",
+      "Tú buscas, la app se encarga del resto: encontrarás todo lo que necesitas al instante.",
     "features.card4.title": "Control de columnas",
     "features.card4.desc":
-      "Muestra/oculta columnas, ajusta o fija anchos, envuelve texto, congela paneles - la grilla se adapta a la forma de tus datos, no al revés.",
+      "Muestra y oculta columnas fácilmente, reordénalas arrastrándolas, y usa nuestro ajuste y ancho de columna inteligente: no te conformes con las inútiles paredes de texto de otras apps.",
     "features.card5.title": "Más allá de CSV",
     "features.card5.desc":
-      "Construido desde el día uno como un visor tabular semi-universal - Parquet, JSON y más son los siguientes formatos naturales, no una reescritura.",
+      "El visor tabular es tan potente que maneja con elegancia múltiples tipos de datos: bases de datos en vivo, Parquet, JSON y más.",
     "status.shipped": "Disponible",
     "status.roadmap": "En camino",
+    "features.play_aria": "Ver demo",
+    "features.modal_close_aria": "Cerrar",
+    "features.demo_coming_soon": "Demo próximamente",
 
     "trust.eyebrow": "Puedes confiarle tus datos",
-    "trust.title": "Tres garantías que nunca se doblan.",
-    "trust.card1.title": "Lo que ves es real",
+    "trust.title":
+      'Nuestros <span class="accent-text">tres</span> sellos de garantía',
+    "trust.card1.title": "Ágil",
     "trust.card1.desc":
-      "La app nunca muestra silenciosamente valores forzados, truncados o de relleno como si fueran el contenido real de tu archivo. Si algo no se puede interpretar, se te avisa.",
-    "trust.card2.title": "Sin pérdida de datos sorpresa",
+      "Cada función está diseñada para ser rápida y responsiva, así trabajas con tus datos sin demoras. ¡Hasta las actualizaciones son instantáneas!",
+    "trust.card2.title": "Sin sorpresas",
     "trust.card2.desc":
-      "Si un archivo se cargó de forma imperfecta, guardar queda protegido y se te advierte claramente antes de sobrescribir nada.",
-    "trust.card3.title": "Los datos corruptos no la cuelgan",
+      "La interfaz siempre es intuitiva: haces clic en algo, y hace lo que esperas.",
+    "trust.card3.title":
+      'Sin <a href="https://es.wikipedia.org/wiki/Decadencia_de_plataformas" target="_blank" rel="noopener" class="accent-text"><i>Enshittification</i></a>',
     "trust.card3.desc":
-      "Una entrada mala puede significar una carga fallida o parcial - nunca congela ni bloquea la interfaz mientras averiguas por qué.",
+      "El usuario está en el centro de la experiencia: siendo honesto, odio cuando tienes que pelear contra la aplicación para que haga lo que quieres, porque alguna corporación tecnofascista quiere sacarte hasta el último centavo.",
 
     "download.eyebrow": "Consigue Tabula Rasa",
-    "download.title": "Gratis, en cada plataforma de escritorio.",
+    "download.title": "Gratis*, en cada plataforma de escritorio.",
     "download.desc":
-      "Sin cuenta, sin cronómetro de prueba. Un aviso ocasional y fácil de cerrar es lo único que una licencia única de por vida elimina - ese es todo el modelo de monetización.",
+      "*Para uso personal, no para fines comerciales. Una donación siempre se agradece ❤️",
     "download.linux.desc":
-      "AppImage - funciona en cualquier distro moderna, sin instalación.",
+      "AppImage: funciona en cualquier distro moderna, sin instalación.",
     "download.windows.desc": "Instalador (.exe) para Windows 10/11 de 64 bits.",
     "download.macos.desc": "Imagen de disco (.dmg) - Apple Silicon (serie M).",
     "download.btn_appimage": "Descargar .AppImage",

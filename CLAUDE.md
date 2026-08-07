@@ -55,6 +55,8 @@ site/assets/css/styles.css       # Every other style. Numbered TOC at top - keep
 site/assets/js/theme.js          # Toggle button + persistence + OS-follow (anti-flash script is inline in index.html's <head>).
 site/assets/js/demo-table.js     # The interactive grid replica - hardcoded dataset + state machine. See demo-table.md.
 site/assets/js/downloads.js      # Fetches the real release manifest, detects OS, populates download cards. See downloads.md.
+site/assets/js/feature-cards.js  # Flip-to-GIF + demo modal on the 4 Shipped feature cards. See feature-media.md.
+site/assets/img/features/        # Feature-card GIFs (huge-files.gif, filter-sort-group.gif, instant-search.gif, column-control.gif) - not shipped yet, see feature-media.md.
 site/assets/fonts/               # Vendored JetBrainsMono-Regular.ttf + lucide.ttf, copied byte-for-byte from tabula-rasa/assets/fonts/, plus their licenses.
 site/assets/img/favicon.svg      # Brand mark (accent-colored rounded square, matches the nav brand mark).
 site/assets/js/i18n-strings.js   # EN/ES string dictionary - single source of truth for all copy. See i18n.md.
@@ -99,6 +101,18 @@ cols/rows, Format panel, Order by, Go to row) mirrors what's **actually** still 
 stub in the app itself - that's deliberate parity, not laziness. Full rationale,
 the rendering-strategy tradeoff (why search keystrokes only refresh `<tbody>`, not
 the whole shell), and what's simplified: `docs/decisions/demo-table.md`.
+
+## How the feature cards work
+
+Only the 4 **Shipped** cards in `#features` (`.feature-card.is-flippable`) are
+interactive: click/Enter/Space flips the card to a GIF on the back
+(`feature-cards.js`), and a separate play button opens the same GIF full-size
+in a modal regardless of flip state. The Roadmap card and the trust-section
+cards deliberately opt out (no GIF exists for an unbuilt feature). GIFs live
+at `site/assets/img/features/<slug>.gif` and aren't shipped yet - a missing
+file falls back to "Demo coming soon" instead of a broken image. Full
+rationale, exact filenames, and a CSS `[hidden]` gotcha worth knowing before
+touching this file: `docs/decisions/feature-media.md`.
 
 ## How downloads work
 
@@ -153,6 +167,10 @@ dashboard-only Cloudflare Pages setup: `docs/decisions/deploy.md`.
   matching `data-i18n*` attribute in `index.html` if it's a new string, then run
   the `sync-i18n` skill to translate it into `es` - don't hand-write the Spanish
   yourself or leave `es` out of sync.
+- **New feature card with a demo:** only give it `.is-flippable` + a `data-gif`
+  once a real GIF exists (or is imminently coming) for it - a Roadmap/not-yet-
+  built feature should stay a plain, non-interactive `.feature-card` per
+  `docs/decisions/feature-media.md`.
 
 ### Checklist before finishing a change
 

@@ -61,7 +61,6 @@
                     <a href="#showcase" data-i18n="nav.showcase"
                         >See it in action</a
                     >
-                    <a href="#download" data-i18n="nav.download">Download</a>
                 </nav>
 
                 <div class="header-actions">
@@ -178,11 +177,11 @@
                         <p class="eyebrow" data-i18n="showcase.eyebrow">
                             Try it here
                         </p>
-                        <h2 data-i18n="showcase.title">
+                        <h2 data-i18n-html="showcase.title">
                             This is the real interface - hardcoded, but
                             interactive.
                         </h2>
-                        <p data-i18n="showcase.desc">
+                        <p data-i18n-html="showcase.desc">
                             Same pixels as the app, frozen sample data - sort,
                             group, filter, or search below.
                         </p>
@@ -222,7 +221,7 @@
                         <p class="eyebrow" data-i18n="features.eyebrow">
                             Under the hood
                         </p>
-                        <h2 data-i18n="features.title">
+                        <h2 data-i18n-html="features.title">
                             Built for people who live in tabular data.
                         </h2>
                         <p data-i18n="features.desc">
@@ -231,83 +230,175 @@
                         </p>
                     </div>
 
-                    <div class="feature-grid">
-                        <article class="feature-card">
-                            <span class="icon" aria-hidden="true"
-                                >&#xe4ff;</span
-                            >
-                            <h3 data-i18n="features.card1.title">
-                                Huge files, instantly
-                            </h3>
-                            <p data-i18n="features.card1.desc">
-                                Multi-gigabyte CSVs load in the background - the
-                                UI never hangs while a big file opens, and you
-                                get a first paint immediately.
-                            </p>
-                            <span
-                                class="status-pill is-shipped"
-                                data-i18n="status.shipped"
-                                >Shipped</span
-                            >
+                    <div class="feature-grid" id="feature-grid">
+                        <article
+                            class="feature-card is-flippable"
+                            data-gif="assets/img/features/huge-files.gif"
+                            tabindex="0"
+                            role="button"
+                            aria-pressed="false"
+                        >
+                            <div class="feature-card-flipper">
+                                <div class="feature-card-face feature-card-front">
+                                    <span class="icon" aria-hidden="true"
+                                        >&#xe4ff;</span
+                                    >
+                                    <h3 data-i18n="features.card1.title">
+                                        Huge files, instantly
+                                    </h3>
+                                    <p data-i18n-html="features.card1.desc">
+                                        Multi-gigabyte CSVs load in the background - the
+                                        UI never hangs while a big file opens, and you
+                                        get a first paint immediately.
+                                    </p>
+                                    <span
+                                        class="status-pill is-shipped"
+                                        data-i18n="status.shipped"
+                                        >Shipped</span
+                                    >
+                                    <button
+                                        type="button"
+                                        class="feature-card-play"
+                                        data-action="open-modal"
+                                        data-i18n-attr="aria-label:features.play_aria"
+                                        aria-label="Watch demo"
+                                    >
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.25"/><path d="M10 8.5v7l6-3.5-6-3.5Z" fill="currentColor" stroke="none"/></svg>
+                                    </button>
+                                </div>
+                                <div class="feature-card-face feature-card-back">
+                                    <img class="feature-card-gif" src="assets/img/features/huge-files.gif" alt="" loading="lazy" />
+                                    <p class="feature-card-back-fallback" data-i18n="features.demo_coming_soon">Demo coming soon</p>
+                                </div>
+                            </div>
                         </article>
 
-                        <article class="feature-card">
-                            <span class="icon" aria-hidden="true"
-                                >&#xe0dc;</span
-                            >
-                            <h3 data-i18n="features.card2.title">
-                                Filter, sort, group by
-                            </h3>
-                            <p data-i18n="features.card2.desc">
-                                Click a header to sort, stack multiple keys,
-                                group rows into collapsible bands, and build
-                                filters - all reflected as removable rule pills
-                                in the status bar.
-                            </p>
-                            <span
-                                class="status-pill is-shipped"
-                                data-i18n="status.shipped"
-                                >Shipped</span
-                            >
+                        <article
+                            class="feature-card is-flippable"
+                            data-gif="assets/img/features/filter-sort-group.gif"
+                            tabindex="0"
+                            role="button"
+                            aria-pressed="false"
+                        >
+                            <div class="feature-card-flipper">
+                                <div class="feature-card-face feature-card-front">
+                                    <span class="icon" aria-hidden="true"
+                                        >&#xe0dc;</span
+                                    >
+                                    <h3 data-i18n="features.card2.title">
+                                        Filter, sort, group by
+                                    </h3>
+                                    <p data-i18n="features.card2.desc">
+                                        Click a header to sort, stack multiple keys,
+                                        group rows into collapsible bands, and build
+                                        filters - all reflected as removable rule pills
+                                        in the status bar.
+                                    </p>
+                                    <span
+                                        class="status-pill is-shipped"
+                                        data-i18n="status.shipped"
+                                        >Shipped</span
+                                    >
+                                    <button
+                                        type="button"
+                                        class="feature-card-play"
+                                        data-action="open-modal"
+                                        data-i18n-attr="aria-label:features.play_aria"
+                                        aria-label="Watch demo"
+                                    >
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.25"/><path d="M10 8.5v7l6-3.5-6-3.5Z" fill="currentColor" stroke="none"/></svg>
+                                    </button>
+                                </div>
+                                <div class="feature-card-face feature-card-back">
+                                    <img class="feature-card-gif" src="assets/img/features/filter-sort-group.gif" alt="" loading="lazy" />
+                                    <p class="feature-card-back-fallback" data-i18n="features.demo_coming_soon">Demo coming soon</p>
+                                </div>
+                            </div>
                         </article>
 
-                        <article class="feature-card">
-                            <span class="icon" aria-hidden="true"
-                                >&#xe151;</span
-                            >
-                            <h3 data-i18n="features.card3.title">
-                                Instant search
-                            </h3>
-                            <p data-i18n="features.card3.desc">
-                                A find bar highlights every match live across
-                                the whole file, with a density rail showing
-                                where matches cluster, without ever filtering
-                                rows out.
-                            </p>
-                            <span
-                                class="status-pill is-shipped"
-                                data-i18n="status.shipped"
-                                >Shipped</span
-                            >
+                        <article
+                            class="feature-card is-flippable"
+                            data-gif="assets/img/features/instant-search.gif"
+                            tabindex="0"
+                            role="button"
+                            aria-pressed="false"
+                        >
+                            <div class="feature-card-flipper">
+                                <div class="feature-card-face feature-card-front">
+                                    <span class="icon" aria-hidden="true"
+                                        >&#xe151;</span
+                                    >
+                                    <h3 data-i18n="features.card3.title">
+                                        Instant search
+                                    </h3>
+                                    <p data-i18n="features.card3.desc">
+                                        A find bar highlights every match live across
+                                        the whole file, with a density rail showing
+                                        where matches cluster, without ever filtering
+                                        rows out.
+                                    </p>
+                                    <span
+                                        class="status-pill is-shipped"
+                                        data-i18n="status.shipped"
+                                        >Shipped</span
+                                    >
+                                    <button
+                                        type="button"
+                                        class="feature-card-play"
+                                        data-action="open-modal"
+                                        data-i18n-attr="aria-label:features.play_aria"
+                                        aria-label="Watch demo"
+                                    >
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.25"/><path d="M10 8.5v7l6-3.5-6-3.5Z" fill="currentColor" stroke="none"/></svg>
+                                    </button>
+                                </div>
+                                <div class="feature-card-face feature-card-back">
+                                    <img class="feature-card-gif" src="assets/img/features/instant-search.gif" alt="" loading="lazy" />
+                                    <p class="feature-card-back-fallback" data-i18n="features.demo_coming_soon">Demo coming soon</p>
+                                </div>
+                            </div>
                         </article>
 
-                        <article class="feature-card">
-                            <span class="icon" aria-hidden="true"
-                                >&#xe099;</span
-                            >
-                            <h3 data-i18n="features.card4.title">
-                                Column control
-                            </h3>
-                            <p data-i18n="features.card4.desc">
-                                Show/hide columns, auto-fit or fix widths, wrap
-                                text, freeze panes - the grid adapts to the
-                                shape of your data, not the other way around.
-                            </p>
-                            <span
-                                class="status-pill is-shipped"
-                                data-i18n="status.shipped"
-                                >Shipped</span
-                            >
+                        <article
+                            class="feature-card is-flippable"
+                            data-gif="assets/img/features/column-control.gif"
+                            tabindex="0"
+                            role="button"
+                            aria-pressed="false"
+                        >
+                            <div class="feature-card-flipper">
+                                <div class="feature-card-face feature-card-front">
+                                    <span class="icon" aria-hidden="true"
+                                        >&#xe099;</span
+                                    >
+                                    <h3 data-i18n="features.card4.title">
+                                        Column control
+                                    </h3>
+                                    <p data-i18n="features.card4.desc">
+                                        Show/hide columns, auto-fit or fix widths, wrap
+                                        text, freeze panes - the grid adapts to the
+                                        shape of your data, not the other way around.
+                                    </p>
+                                    <span
+                                        class="status-pill is-shipped"
+                                        data-i18n="status.shipped"
+                                        >Shipped</span
+                                    >
+                                    <button
+                                        type="button"
+                                        class="feature-card-play"
+                                        data-action="open-modal"
+                                        data-i18n-attr="aria-label:features.play_aria"
+                                        aria-label="Watch demo"
+                                    >
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.25"/><path d="M10 8.5v7l6-3.5-6-3.5Z" fill="currentColor" stroke="none"/></svg>
+                                    </button>
+                                </div>
+                                <div class="feature-card-face feature-card-back">
+                                    <img class="feature-card-gif" src="assets/img/features/column-control.gif" alt="" loading="lazy" />
+                                    <p class="feature-card-back-fallback" data-i18n="features.demo_coming_soon">Demo coming soon</p>
+                                </div>
+                            </div>
                         </article>
 
                         <article class="feature-card">
@@ -330,6 +421,33 @@
                 </div>
             </section>
 
+            <!-- Feature demo modal — shared by every .feature-card.is-flippable's
+                 play button, see assets/js/feature-cards.js. -->
+            <div class="feature-modal" id="feature-modal" hidden>
+                <div class="feature-modal-backdrop" data-action="close-modal"></div>
+                <div
+                    class="feature-modal-dialog"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="feature-modal-title"
+                >
+                    <button
+                        type="button"
+                        class="feature-modal-close"
+                        data-action="close-modal"
+                        data-i18n-attr="aria-label:features.modal_close_aria"
+                        aria-label="Close"
+                    >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+                    </button>
+                    <h3 class="feature-modal-title" id="feature-modal-title"></h3>
+                    <div class="feature-modal-media" id="feature-modal-media">
+                        <img class="feature-modal-gif" id="feature-modal-gif" src="" alt="" />
+                        <p class="feature-modal-fallback" data-i18n="features.demo_coming_soon">Demo coming soon</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- ================= Trust ================= -->
             <section class="section" style="padding-block: 0 var(--space-6)">
                 <div class="container">
@@ -337,7 +455,7 @@
                         <p class="eyebrow" data-i18n="trust.eyebrow">
                             You can trust it with your data
                         </p>
-                        <h2 data-i18n="trust.title">
+                        <h2 data-i18n-html="trust.title">
                             Three guarantees that never bend.
                         </h2>
                     </div>
@@ -364,7 +482,7 @@
                             </p>
                         </article>
                         <article class="feature-card">
-                            <h3 data-i18n="trust.card3.title">
+                            <h3 data-i18n-html="trust.card3.title">
                                 Corrupt data can't hang it
                             </h3>
                             <p data-i18n="trust.card3.desc">
@@ -593,6 +711,30 @@
                                         >benjaopazoc.cl</a
                                     >
                                 </li>
+                                <li>
+                                    <a
+                                        href="https://github.com/benja-opazo/kimu"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Kimu</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://github.com/benja-opazo/home-assistant-hand-recognition"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >HASS Hand Recognition</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://github.com/benja-opazo/dns-cloudflare-mpy"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >DNS Cloudflare mPy</a
+                                    >
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -624,6 +766,7 @@
         <script src="assets/js/theme.js"></script>
         <script src="assets/js/demo-table.js"></script>
         <script src="assets/js/downloads.js"></script>
+        <script src="assets/js/feature-cards.js"></script>
         <script>
             document.getElementById("footer-year").textContent =
                 new Date().getFullYear();
