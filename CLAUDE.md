@@ -57,6 +57,7 @@ site/assets/js/demo-table.js     # The interactive grid replica - hardcoded data
 site/assets/js/downloads.js      # Fetches the real release manifest, detects OS, populates download cards. See downloads.md.
 site/assets/js/feature-cards.js  # Flip-to-GIF + demo modal on the 4 Shipped feature cards. See feature-media.md.
 site/assets/img/features/        # Feature-card GIFs (huge-files.gif, filter-sort-group.gif, instant-search.gif, column-control.gif) - not shipped yet, see feature-media.md.
+site/assets/js/ambient-grid.js   # Mouse-tracked glow on the decorative side-gutter grid panels. See ambient-grid.md.
 site/assets/fonts/               # Vendored JetBrainsMono-Regular.ttf + lucide.ttf, copied byte-for-byte from tabula-rasa/assets/fonts/, plus their licenses.
 site/assets/img/favicon.svg      # Brand mark (accent-colored rounded square, matches the nav brand mark).
 site/assets/js/i18n-strings.js   # EN/ES string dictionary - single source of truth for all copy. See i18n.md.

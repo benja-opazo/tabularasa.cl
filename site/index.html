@@ -45,6 +45,19 @@
         <link rel="stylesheet" href="assets/css/styles.css" />
     </head>
     <body>
+        <!-- Purely decorative ambient background - see docs/decisions/ambient-grid.md.
+             aria-hidden + pointer-events:none, never part of the tab order. -->
+        <div class="ambient-grid" aria-hidden="true">
+            <div class="ambient-grid-panel is-left">
+                <div class="ambient-grid-pattern"></div>
+                <div class="ambient-grid-glow"></div>
+            </div>
+            <div class="ambient-grid-panel is-right">
+                <div class="ambient-grid-pattern"></div>
+                <div class="ambient-grid-glow"></div>
+            </div>
+        </div>
+
         <a class="skip-link" href="#main" data-i18n="skip_link"
             >Skip to content</a
         >
@@ -767,6 +780,7 @@
         <script src="assets/js/demo-table.js"></script>
         <script src="assets/js/downloads.js"></script>
         <script src="assets/js/feature-cards.js"></script>
+        <script src="assets/js/ambient-grid.js"></script>
         <script>
             document.getElementById("footer-year").textContent =
                 new Date().getFullYear();

@@ -19,6 +19,7 @@
     16. Scrollbars (app-faithful)
     17. Responsive
     18. Reduced motion / accessibility
+    19. Ambient background grid (decorative)
    ========================================================================== */
 
 /* ---- 1. Reset + fonts --------------------------------------------------- */
@@ -1550,4 +1551,85 @@ mark.tr-match.is-current {
         transition-duration: 0.001ms !important;
         scroll-behavior: auto !important;
     }
+}
+
+/* ---- 19. Ambient background grid (decorative) ------------------------------------ */
+
+/* Only shown once the gutters beside the centered content column are wide
+   enough to be worth decorating - see docs/decisions/ambient-grid.md for the
+   1300px breakpoint choice. ambient-grid.js no-ops below this width too. */
+.ambient-grid {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    display: none;
+}
+
+@media (min-width: 1300px) {
+    .ambient-grid {
+        display: block;
+    }
+}
+
+.ambient-grid-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: calc((100vw - var(--container-max)) / 2);
+    overflow: hidden;
+}
+
+.ambient-grid-panel.is-left {
+    left: 0;
+    mask-image: linear-gradient(to right, black, transparent);
+    -webkit-mask-image: linear-gradient(to right, black, transparent);
+}
+
+.ambient-grid-panel.is-right {
+    right: 0;
+    mask-image: linear-gradient(to left, black, transparent);
+    -webkit-mask-image: linear-gradient(to left, black, transparent);
+}
+
+/* Oversized + tilted in 3D so it reads as a table extending into the
+   distance. Static and decorative only - the interactive part is the flat
+   .ambient-grid-glow layer below, deliberately NOT given the same
+   transform (see the decision doc for why). */
+.ambient-grid-pattern {
+    position: absolute;
+    inset: -20% -70%;
+    background-image: repeating-linear-gradient(
+            var(--border) 0 1px,
+            transparent 1px 44px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            var(--border) 0 1px,
+            transparent 1px 44px
+        );
+    opacity: 0.5;
+}
+
+.ambient-grid-panel.is-left .ambient-grid-pattern {
+    transform: perspective(600px) rotateY(58deg);
+    transform-origin: right center;
+}
+
+.ambient-grid-panel.is-right .ambient-grid-pattern {
+    transform: perspective(600px) rotateY(-58deg);
+    transform-origin: left center;
+}
+
+/* Mouse-tracked glow, positioned via --gx/--gy (ambient-grid.js). Defaults
+   to off-screen so there's no stray glow in a corner before the first
+   pointermove. */
+.ambient-grid-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle 200px at var(--gx, -9999px) var(--gy, -9999px),
+        var(--accent-soft),
+        transparent 70%
+    );
 }

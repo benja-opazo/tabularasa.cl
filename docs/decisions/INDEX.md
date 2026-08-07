@@ -43,6 +43,13 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 - The play icon is a hand-drawn SVG (no Lucide play/video codepoint exists in `icons.rs`), matching the existing platform-icon/theme-toggle convention.
 - `.feature-modal[hidden] { display: none; }` is required — an author `display` rule otherwise always beats the UA `[hidden]` default.
 
+## Ambient background grid (`ambient-grid.md`)
+
+- Decorative 3D-tilted grid panels in the side gutters, dimming toward center via a `mask-image` on the panel (not the individual layers).
+- The mouse-tracked glow is a deliberately flat, untransformed layer sitting under the tilted grid pattern - avoids inverting a 3D transform just to position a soft blob.
+- Gated at `1300px` in both CSS (`display: none`) and JS (`matchMedia` skips attaching listeners entirely below it) - keep both in sync if the breakpoint changes.
+- `z-index: -1` + first-child-of-body placement works because the rest of the page has transparent section backgrounds - no component needs to coordinate z-index with it.
+
 ## Copy (`copy.md`)
 
 - First-draft marketing copy was written from the app's own docs (`overview.md`, `roadmap.md`), not left as placeholder TODOs - a deliberate departure from `benjaopazoc.cl`'s "never invent the owner's prose" rule, because an unusable empty prototype wasn't the goal here.
