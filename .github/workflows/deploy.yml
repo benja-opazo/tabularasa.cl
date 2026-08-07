@@ -30,9 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: node --check site/assets/js/theme.js
-      - run: node --check site/assets/js/demo-table.js
-      - run: node --check site/assets/js/downloads.js
+      # Globbed rather than listed file-by-file - the explicit list drifted
+      # out of sync with site/assets/js/ more than once (see git history).
+      - run: for f in site/assets/js/*.js; do node --check "$f"; done
 
   deploy:
     name: Deploy to Cloudflare Workers

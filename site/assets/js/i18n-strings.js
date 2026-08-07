@@ -24,6 +24,7 @@ window.TR_I18N = {
     skip_link: "Skip to content",
     "nav.features": "Features",
     "nav.showcase": "See it in action",
+    "nav.pricing": "Pricing",
     "theme_toggle.aria_label": "Toggle dark / light theme",
     "lang_toggle.aria_label": "Switch language",
     "header.download_btn": "Downloads",
@@ -107,6 +108,31 @@ window.TR_I18N = {
       "Latest release: v{version} · SHA-256 checksums ship alongside every download.",
     "download.cta_for_platform": "Download for {platform}",
 
+    "pricing.meta.title": "Tabula Rasa — Pricing",
+    "pricing.meta.description":
+      "Free for personal use, same full feature set for enterprise. See the comparison and get in touch.",
+    "pricing.eyebrow": "Pricing",
+    "pricing.title_html":
+      'One app, <span class="accent-text">zero</span> feature gates.',
+    "pricing.subtitle":
+      "Personal or enterprise, you get the exact same app. The only thing that changes is how you're allowed to use it.",
+    "pricing.personal.title": "Personal",
+    "pricing.personal.price": "Free",
+    "pricing.personal.tagline":
+      "For your own machine, your own data, your own rules.",
+    "pricing.enterprise.title": "Enterprise",
+    "pricing.enterprise.price": "Contact us",
+    "pricing.enterprise.tagline": "Using it across a company? Let's talk.",
+    "pricing.table.feature_col": "What you get",
+    "pricing.table.license_row": "License",
+    "pricing.personal.license_value": "Personal use",
+    "pricing.enterprise.license_value": "Commercial use",
+    "pricing.included": "Included",
+    "pricing.cta_download": "Download",
+    "pricing.cta_donate": "Donate ❤️",
+    "pricing.cta_contact": "Contact for pricing",
+    "pricing.cta_contact_tooltip": "Not wired up yet - check back soon",
+
     "footer.tagline": "A blank slate for your data.",
     "footer.col_product": "Product",
     "footer.col_support": "Support",
@@ -114,6 +140,7 @@ window.TR_I18N = {
     "footer.link_features": "Features",
     "footer.link_showcase": "Showcase",
     "footer.link_download": "Download",
+    "footer.link_pricing": "Pricing",
     "footer.eula_label": "License / EULA",
     "footer.eula_tag": "Coming soon",
     "footer.eula_tooltip":
@@ -134,6 +161,7 @@ window.TR_I18N = {
     skip_link: "Saltar al contenido",
     "nav.features": "Funciones",
     "nav.showcase": "Pruébalo en acción",
+    "nav.pricing": "Precios",
     "theme_toggle.aria_label": "Cambiar tema claro / oscuro",
     "lang_toggle.aria_label": "Cambiar idioma",
     "header.download_btn": "Descargas",
@@ -218,6 +246,31 @@ window.TR_I18N = {
       "Última versión: v{version} · las sumas SHA-256 vienen incluidas con cada descarga.",
     "download.cta_for_platform": "Descarga para {platform}",
 
+    "pricing.meta.title": "Tabula Rasa — Precios",
+    "pricing.meta.description":
+      "Gratis para uso personal, el mismo conjunto completo de funciones para empresas. Mira la comparación y contáctanos.",
+    "pricing.eyebrow": "Precios",
+    "pricing.title_html":
+      'Una sola app, <span class="accent-text">cero</span> funciones bloqueadas.',
+    "pricing.subtitle":
+      "Personal o empresarial, obtienes exactamente la misma app. Lo único que cambia es cómo se te permite usarla.",
+    "pricing.personal.title": "Personal",
+    "pricing.personal.price": "Gratis",
+    "pricing.personal.tagline":
+      "Para tu propio equipo, tus propios datos, tus propias reglas.",
+    "pricing.enterprise.title": "Empresas",
+    "pricing.enterprise.price": "Contáctanos",
+    "pricing.enterprise.tagline": "¿La usas en toda una empresa? Hablemos.",
+    "pricing.table.feature_col": "Qué obtienes",
+    "pricing.table.license_row": "Licencia",
+    "pricing.personal.license_value": "Uso personal",
+    "pricing.enterprise.license_value": "Uso comercial",
+    "pricing.included": "Incluido",
+    "pricing.cta_download": "Descargar",
+    "pricing.cta_donate": "Donar ❤️",
+    "pricing.cta_contact": "Contactar para precios",
+    "pricing.cta_contact_tooltip": "Todavía no está habilitado - vuelve pronto",
+
     "footer.tagline": "Una hoja en blanco para tus datos.",
     "footer.col_product": "Producto",
     "footer.col_support": "Soporte",
@@ -225,6 +278,7 @@ window.TR_I18N = {
     "footer.link_features": "Funciones",
     "footer.link_showcase": "Demo",
     "footer.link_download": "Descargar",
+    "footer.link_pricing": "Precios",
     "footer.eula_label": "Licencia / EULA",
     "footer.eula_tag": "Próximamente",
     "footer.eula_tooltip":

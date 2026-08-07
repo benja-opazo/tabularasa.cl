@@ -20,6 +20,7 @@
     17. Responsive
     18. Reduced motion / accessibility
     19. Ambient background grid (decorative)
+    20. Pricing page
    ========================================================================== */
 
 /* ---- 1. Reset + fonts --------------------------------------------------- */
@@ -228,6 +229,11 @@ a {
 
 .main-nav a:hover {
     color: var(--text);
+}
+
+.main-nav a.is-current {
+    color: var(--text);
+    font-weight: 600;
 }
 
 .header-actions {
@@ -1632,4 +1638,140 @@ mark.tr-match.is-current {
         var(--accent-soft),
         transparent 70%
     );
+}
+
+/* ---- 20. Pricing page ------------------------------------------------------------- */
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+}
+
+@media (min-width: 640px) {
+    .pricing-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.pricing-card .pricing-price {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: var(--space-2) 0;
+}
+
+.pricing-card:not(.is-enterprise) .pricing-price {
+    color: var(--accent);
+}
+
+.pricing-card.is-enterprise .pricing-price {
+    font-size: 1.4rem;
+}
+
+.pricing-table-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-5);
+}
+
+.pricing-table {
+    width: 100%;
+    min-width: 480px;
+    border-collapse: collapse;
+    background: var(--panel);
+}
+
+.pricing-table th,
+.pricing-table td {
+    padding: var(--space-2) var(--space-3);
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+}
+
+.pricing-table th {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--faint);
+    font-weight: 700;
+    background: var(--panel-2);
+}
+
+.pricing-table th:not(:first-child),
+.pricing-table td:not(:first-child) {
+    text-align: center;
+}
+
+.pricing-table tbody tr:last-child th,
+.pricing-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.pricing-check {
+    display: inline-flex;
+    color: var(--accent);
+}
+
+.pricing-check svg {
+    width: 18px;
+    height: 18px;
+}
+
+.pricing-cta-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    text-align: center;
+}
+
+@media (min-width: 640px) {
+    .pricing-cta-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.pricing-cta-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+/* More visually prominent than .btn-primary - sits directly under the
+   Download CTA, on purpose (see docs/decisions/pricing.md). */
+.btn-donate {
+    height: 52px;
+    padding: 0 28px;
+    font-size: 15.5px;
+    background: var(--accent);
+    color: var(--panel-2);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent),
+        0 12px 28px -10px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+.btn-donate:hover {
+    filter: brightness(1.06);
+    transform: translateY(-2px);
+}
+
+/* Honest stub, same convention as .footer-stub - not a real destination
+   yet, styled to look intentionally inert rather than broken. */
+.btn-stub {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 46px;
+    padding: 0 20px;
+    border-radius: var(--radius-sm);
+    font-size: 14.5px;
+    font-weight: 600;
+    border: 1px dashed var(--border);
+    color: var(--faint);
+    cursor: not-allowed;
+    white-space: nowrap;
 }

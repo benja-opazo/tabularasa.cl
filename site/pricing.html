@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title data-i18n="pricing.meta.title">Tabula Rasa — Pricing</title>
+        <meta
+            name="description"
+            data-i18n-attr="content:pricing.meta.description"
+            content="Free for personal use, same full feature set for enterprise. See the comparison and get in touch."
+        />
+        <meta name="author" content="Benjamín Opazo" />
+
+        <meta property="og:type" content="website" />
+        <meta
+            property="og:title"
+            data-i18n-attr="content:pricing.meta.title"
+            content="Tabula Rasa — Pricing"
+        />
+        <meta
+            property="og:description"
+            data-i18n-attr="content:pricing.meta.description"
+            content="Free for personal use, same full feature set for enterprise. See the comparison and get in touch."
+        />
+        <meta property="og:url" content="https://tabularasa.cl/pricing.html" />
+        <meta name="twitter:card" content="summary" />
+
+        <!-- Prevent dark/light flash before CSS+JS load - mirrors benjaopazoc.cl's
+       convention. Keep in sync with assets/js/theme.js (docs/decisions/theming.md). -->
+        <script>
+            (function () {
+                var stored = localStorage.getItem("theme");
+                var prefersDark = window.matchMedia(
+                    "(prefers-color-scheme: dark)",
+                ).matches;
+                var theme = stored || (prefersDark ? "dark" : "light");
+                document.documentElement.setAttribute("data-theme", theme);
+            })();
+        </script>
+
+        <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+        <link rel="stylesheet" href="assets/css/tokens.css" />
+        <link rel="stylesheet" href="assets/css/styles.css" />
+    </head>
+    <body>
+        <!-- Purely decorative ambient background - see docs/decisions/ambient-grid.md.
+             aria-hidden + pointer-events:none, never part of the tab order. -->
+        <div class="ambient-grid" aria-hidden="true">
+            <div class="ambient-grid-panel is-left">
+                <div class="ambient-grid-pattern"></div>
+                <div class="ambient-grid-glow"></div>
+            </div>
+            <div class="ambient-grid-panel is-right">
+                <div class="ambient-grid-pattern"></div>
+                <div class="ambient-grid-glow"></div>
+            </div>
+        </div>
+
+        <a class="skip-link" href="#main" data-i18n="skip_link"
+            >Skip to content</a
+        >
+
+        <header class="site-header" id="site-header">
+            <div class="container">
+                <a class="brand" href="index.html#top">
+                    <span class="brand-mark" aria-hidden="true"></span>
+                    <span class="brand-name">Tabula Rasa</span>
+                </a>
+
+                <nav class="main-nav" aria-label="Primary">
+                    <a href="index.html#features" data-i18n="nav.features"
+                        >Features</a
+                    >
+                    <a href="index.html#showcase" data-i18n="nav.showcase"
+                        >See it in action</a
+                    >
+                    <a
+                        href="pricing.html"
+                        class="is-current"
+                        data-i18n="nav.pricing"
+                        >Pricing</a
+                    >
+                </nav>
+
+                <div class="header-actions">
+                    <button
+                        class="lang-toggle"
+                        id="lang-toggle"
+                        type="button"
+                        data-i18n-attr="aria-label:lang_toggle.aria_label"
+                        aria-label="Switch language"
+                    >
+                        ES
+                    </button>
+                    <button
+                        class="theme-toggle"
+                        id="theme-toggle"
+                        type="button"
+                        data-i18n-attr="aria-label:theme_toggle.aria_label"
+                        aria-label="Toggle dark / light theme"
+                    >
+                        <svg
+                            class="icon-sun"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                        >
+                            <circle cx="12" cy="12" r="4.2" />
+                            <path
+                                d="M12 2.5v3M12 18.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2.5 12h3M18.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"
+                            />
+                        </svg>
+                        <svg
+                            class="icon-moon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path
+                                d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"
+                            />
+                        </svg>
+                    </button>
+                    <a
+                        class="btn btn-primary btn-sm"
+                        href="index.html#download"
+                        data-i18n="header.download_btn"
+                        >Downloads</a
+                    >
+                </div>
+            </div>
+        </header>
+
+        <main id="main">
+            <!-- ================= Pricing hero ================= -->
+            <section class="hero container">
+                <p class="eyebrow" data-i18n="pricing.eyebrow">Pricing</p>
+                <h1 data-i18n-html="pricing.title_html">
+                    One app, <span class="accent-text">zero</span> feature
+                    gates.
+                </h1>
+                <p class="hero-sub" data-i18n="pricing.subtitle">
+                    Personal or enterprise, you get the exact same app. The
+                    only thing that changes is how you're allowed to use it.
+                </p>
+            </section>
+
+            <!-- ================= Pricing table ================= -->
+            <section class="section" style="padding-top: 0">
+                <div class="container">
+                    <div class="pricing-grid">
+                        <article class="feature-card pricing-card">
+                            <h2 data-i18n="pricing.personal.title">
+                                Personal
+                            </h2>
+                            <p
+                                class="pricing-price"
+                                data-i18n="pricing.personal.price"
+                            >
+                                Free
+                            </p>
+                            <p data-i18n="pricing.personal.tagline">
+                                For your own machine, your own data, your own
+                                rules.
+                            </p>
+                        </article>
+                        <article class="feature-card pricing-card is-enterprise">
+                            <h2 data-i18n="pricing.enterprise.title">
+                                Enterprise
+                            </h2>
+                            <p
+                                class="pricing-price"
+                                data-i18n="pricing.enterprise.price"
+                            >
+                                Contact us
+                            </p>
+                            <p data-i18n="pricing.enterprise.tagline">
+                                Using it across a company? Let's talk.
+                            </p>
+                        </article>
+                    </div>
+
+                    <div class="pricing-table-scroll">
+                        <table class="pricing-table">
+                            <thead>
+                                <tr>
+                                    <th data-i18n="pricing.table.feature_col">
+                                        What you get
+                                    </th>
+                                    <th data-i18n="pricing.personal.title">
+                                        Personal
+                                    </th>
+                                    <th data-i18n="pricing.enterprise.title">
+                                        Enterprise
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row" data-i18n="features.card1.title">
+                                        Huge files, instantly
+                                    </th>
+                                    <td>
+                                        <span
+                                            class="pricing-check"
+                                            aria-hidden="true"
+                                            ><svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            ><path d="M20 6 9 17l-5-5" /></svg
+                                        ></span>
+                                        <span
+                                            class="visually-hidden"
+                                            data-i18n="pricing.included"
+                                            >Included</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="pricing-check"
+                                            aria-hidden="true"
+                                            ><svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            ><path d="M20 6 9 17l-5-5" /></svg
+                                        ></span>
+                                        <span
+                                            class="visually-hidden"
+                                            data-i18n="pricing.included"
+                                            >Included</span
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" data-i18n="features.card2.title">
+                                        Stacked sort, filters or groups
+                                    </th>
+                                    <td>
+                                        <span
+                                            class="pricing-check"
+                                            aria-hidden="true"
+                                            ><svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            ><path d="M20 6 9 17l-5-5" /></svg
+                                        ></span>
+                                        <span
+                                            class="visually-hidden"
+                                            data-i18n="pricing.included"
+                                            >Included</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="pricing-check"
+                                            aria-hidden="true"
+                                            ><svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            ><path d="M20 6 9 17l-5-5" /></svg
+                                        ></span>
+                                        <span
+                                            class="visually-hidden"
+                                            data-i18n="pricing.included"
+                                            >Included</span
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" data-i18n="features.card3.title">
+                                        Instant search
+                                    </th>
+                                    <td>
+                                        <span
+                                            class="pricing-check"
+                                            aria-hidden="true"
+                                            ><svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            ><path d="M20 6 9 17l-5-5" /></svg
+                                        ></span>
+                                        <span
+                                            class="visually-hidden"
+                                            data-i18n="pricing.included"
+                                            >Included</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="pricing-check"
+                                            aria-hidden="true"
+                                            ><svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            ><path d="M20 6 9 17l-5-5" /></svg
+                                        ></span>
+                                        <span
+                                            class="visually-hidden"
+                                            data-i18n="pricing.included"
+                                            >Included</span
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" data-i18n="features.card4.title">
+                                        Column control
+                                    </th>
+                                    <td>
+                                        <span
+                                            class="pricing-check"
+                                            aria-hidden="true"
+                                            ><svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            ><path d="M20 6 9 17l-5-5" /></svg
+                                        ></span>
+                                        <span
+                                            class="visually-hidden"
+                                            data-i18n="pricing.included"
+                                            >Included</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="pricing-check"
+                                            aria-hidden="true"
+                                            ><svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            ><path d="M20 6 9 17l-5-5" /></svg
+                                        ></span>
+                                        <span
+                                            class="visually-hidden"
+                                            data-i18n="pricing.included"
+                                            >Included</span
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" data-i18n="features.card5.title">
+                                        Beyond CSV
+                                    </th>
+                                    <td>
+                                        <span
+                                            class="pricing-check"
+                                            aria-hidden="true"
+                                            ><svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            ><path d="M20 6 9 17l-5-5" /></svg
+                                        ></span>
+                                        <span
+                                            class="visually-hidden"
+                                            data-i18n="pricing.included"
+                                            >Included</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="pricing-check"
+                                            aria-hidden="true"
+                                            ><svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            ><path d="M20 6 9 17l-5-5" /></svg
+                                        ></span>
+                                        <span
+                                            class="visually-hidden"
+                                            data-i18n="pricing.included"
+                                            >Included</span
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" data-i18n="pricing.table.license_row">
+                                        License
+                                    </th>
+                                    <td data-i18n="pricing.personal.license_value">
+                                        Personal use
+                                    </td>
+                                    <td data-i18n="pricing.enterprise.license_value">
+                                        Commercial use
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pricing-cta-row">
+                        <div class="pricing-cta-col">
+                            <a
+                                class="btn btn-primary"
+                                href="index.html#download"
+                                data-i18n="pricing.cta_download"
+                                >Download</a
+                            >
+                            <a
+                                class="btn btn-donate"
+                                href="#"
+                                data-i18n="pricing.cta_donate"
+                                >Donate ❤️</a
+                            >
+                        </div>
+                        <div class="pricing-cta-col">
+                            <span
+                                class="btn-stub"
+                                data-i18n-attr="title:pricing.cta_contact_tooltip"
+                                title="Not wired up yet - check back soon"
+                                data-i18n="pricing.cta_contact"
+                                >Contact for pricing</span
+                            >
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div>
+                        <div class="footer-brand">
+                            <span class="brand-mark" aria-hidden="true"></span>
+                            Tabula Rasa
+                        </div>
+                        <p class="footer-tagline" data-i18n="footer.tagline">
+                            A blank slate for your data.
+                        </p>
+                    </div>
+
+                    <div class="footer-links">
+                        <div class="footer-col">
+                            <h4 data-i18n="footer.col_product">Product</h4>
+                            <ul>
+                                <li>
+                                    <a
+                                        href="index.html#features"
+                                        data-i18n="footer.link_features"
+                                        >Features</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="index.html#showcase"
+                                        data-i18n="footer.link_showcase"
+                                        >Showcase</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="index.html#download"
+                                        data-i18n="footer.link_download"
+                                        >Download</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="pricing.html"
+                                        data-i18n="footer.link_pricing"
+                                        >Pricing</a
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="footer-col">
+                            <h4 data-i18n="footer.col_support">Support</h4>
+                            <ul>
+                                <li>
+                                    <span
+                                        class="footer-stub"
+                                        data-i18n-attr="title:footer.eula_tooltip"
+                                        title="Not drafted yet - pending legal review before the paid tier ships"
+                                        ><span data-i18n="footer.eula_label"
+                                            >License / EULA</span
+                                        >
+                                        <span
+                                            class="footer-stub-tag"
+                                            data-i18n="footer.eula_tag"
+                                            >Coming soon</span
+                                        ></span
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="footer-col">
+                            <h4 data-i18n="footer.col_author">
+                                More from the author
+                            </h4>
+                            <ul>
+                                <li>
+                                    <a
+                                        href="https://benjaopazoc.cl"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >benjaopazoc.cl</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://github.com/benja-opazo/kimu"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Kimu</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://github.com/benja-opazo/home-assistant-hand-recognition"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >HASS Hand Recognition</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://github.com/benja-opazo/dns-cloudflare-mpy"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >DNS Cloudflare mPy</a
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <span
+                        ><span data-i18n-html="footer.copyright_prefix"
+                            >&copy;</span
+                        >
+                        <span id="footer-year">2026</span>
+                        <span data-i18n="footer.copyright_suffix"
+                            >Benjamín Opazo. All rights reserved.</span
+                        ></span
+                    >
+                    <a
+                        href="https://benjaopazoc.cl"
+                        target="_blank"
+                        rel="noopener"
+                        data-i18n="footer.built_by"
+                        >Built by benjaopazoc.cl</a
+                    >
+                </div>
+            </div>
+        </footer>
+
+        <script src="assets/js/i18n-strings.js"></script>
+        <script src="assets/js/i18n.js"></script>
+        <script src="assets/js/theme.js"></script>
+        <script src="assets/js/ambient-grid.js"></script>
+        <script>
+            document.getElementById("footer-year").textContent =
+                new Date().getFullYear();
+            window.addEventListener("scroll", function () {
+                document
+                    .getElementById("site-header")
+                    .classList.toggle("is-scrolled", window.scrollY > 4);
+            });
+        </script>
+    </body>
+</html>

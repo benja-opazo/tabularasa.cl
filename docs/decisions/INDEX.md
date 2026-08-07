@@ -50,6 +50,13 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 - Gated at `1300px` in both CSS (`display: none`) and JS (`matchMedia` skips attaching listeners entirely below it) - keep both in sync if the breakpoint changes.
 - `z-index: -1` + first-child-of-body placement works because the rest of the page has transparent section backgrounds - no component needs to coordinate z-index with it.
 
+## Pricing page (`pricing.md`)
+
+- The site's first second page - `site/pricing.html` duplicates `index.html`'s head/header/footer by hand (no build step means no shared-layout mechanism); both files need manual edits kept in sync.
+- Feature comparison table shows the **same** feature set for Personal and Enterprise on purpose - only the License row differs, by design (not a bug).
+- "Contact for pricing" and "Donate" are both honest stubs (`.btn-stub`, `href="#"`) - no real destinations exist yet, same convention as the footer's License/EULA stub. No donation URL exists anywhere in either repo; don't invent one.
+- `.btn-donate` is deliberately more visually prominent (bigger, glowing) than `.btn-primary` - direct request, not a mistake.
+
 ## Copy (`copy.md`)
 
 - First-draft marketing copy was written from the app's own docs (`overview.md`, `roadmap.md`), not left as placeholder TODOs - a deliberate departure from `benjaopazoc.cl`'s "never invent the owner's prose" rule, because an unusable empty prototype wasn't the goal here.
