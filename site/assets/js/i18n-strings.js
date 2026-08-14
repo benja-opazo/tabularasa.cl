@@ -88,7 +88,8 @@ window.TR_I18N = {
       "The user is at the center of the experience: to be honest, I hate it when you have to fight against the app to get it to do what you want, because some techno fascist corporation wants to squeeze the last penny out of you.",
 
     "download.eyebrow": "Get Tabula Rasa",
-    "download.title": "Free to use*, on every desktop platform.",
+    "download.title_html":
+      '<span class="accent-text">Free</span> to use*, on every desktop platform.',
     "download.desc":
       "*For personal use, not for commercial purposes. A donation is always appreciated ❤️",
     "download.linux.desc":
@@ -120,9 +121,16 @@ window.TR_I18N = {
     "pricing.personal.price": "Free",
     "pricing.personal.tagline":
       "For your own machine, your own data, your own rules.",
+    "pricing.personal.highlight1": "Every feature, no restrictions",
+    "pricing.personal.highlight2": "Personal, non-commercial license",
+    "pricing.personal.highlight3":
+      "No subscription - one-time optional donation",
     "pricing.enterprise.title": "Enterprise",
     "pricing.enterprise.price": "Contact us",
     "pricing.enterprise.tagline": "Using it across a company? Let's talk.",
+    "pricing.enterprise.highlight1": "Every feature, no restrictions",
+    "pricing.enterprise.highlight2": "Commercial-use license",
+    "pricing.enterprise.highlight3": "Direct support and custom terms",
     "pricing.table.feature_col": "What you get",
     "pricing.table.license_row": "License",
     "pricing.personal.license_value": "Personal use",
@@ -225,7 +233,8 @@ window.TR_I18N = {
       "El usuario está en el centro de la experiencia: siendo honesto, odio cuando tienes que pelear contra la aplicación para que haga lo que quieres, porque alguna corporación tecnofascista quiere sacarte hasta el último centavo.",
 
     "download.eyebrow": "Consigue Tabula Rasa",
-    "download.title": "Gratis*, en cada plataforma de escritorio.",
+    "download.title_html":
+      '<span class="accent-text">Gratis</span>*, en cada plataforma.',
     "download.desc":
       "*Para uso personal, no para fines comerciales. Una donación siempre se agradece ❤️",
     "download.linux.desc":
@@ -258,9 +267,17 @@ window.TR_I18N = {
     "pricing.personal.price": "Gratis",
     "pricing.personal.tagline":
       "Para tu propio equipo, tus propios datos, tus propias reglas.",
+    "pricing.personal.highlight1": "Todas las funciones, sin restricciones",
+    "pricing.personal.highlight2": "Licencia personal, sin uso comercial",
+    "pricing.personal.highlight3":
+      "Sin suscripción - donación única opcional",
     "pricing.enterprise.title": "Empresas",
     "pricing.enterprise.price": "Contáctanos",
     "pricing.enterprise.tagline": "¿La usas en toda una empresa? Hablemos.",
+    "pricing.enterprise.highlight1": "Todas las funciones, sin restricciones",
+    "pricing.enterprise.highlight2": "Licencia de uso comercial",
+    "pricing.enterprise.highlight3":
+      "Soporte directo y términos personalizados",
     "pricing.table.feature_col": "Qué obtienes",
     "pricing.table.license_row": "Licencia",
     "pricing.personal.license_value": "Uso personal",

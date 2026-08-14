@@ -1647,12 +1647,33 @@ mark.tr-match.is-current {
     grid-template-columns: 1fr;
     gap: var(--space-3);
     margin-bottom: var(--space-5);
+    align-items: stretch;
 }
 
 @media (min-width: 640px) {
     .pricing-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+}
+
+/* Cards are the actual decision point now (title, price, highlights, CTA) -
+   the table below is supporting detail, not a duplicate action surface. */
+.pricing-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.pricing-card h2 {
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.pricing-card:not(.is-enterprise) h2 {
+    color: var(--accent);
+}
+
+.pricing-card.is-enterprise {
+    border-color: var(--accent-soft);
 }
 
 .pricing-card .pricing-price {
@@ -1670,11 +1691,65 @@ mark.tr-match.is-current {
     font-size: 1.4rem;
 }
 
+.pricing-highlights {
+    list-style: none;
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.pricing-highlights li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--dim);
+}
+
+.pricing-highlights .pricing-check {
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.pricing-card-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+}
+
+.pricing-card-actions .btn,
+.pricing-card-actions .btn-stub {
+    width: 100%;
+}
+
+/* Deliberately a plain text link, not a button - donating shouldn't compete
+   visually with the Download action it sits under (docs/decisions/pricing.md). */
+.pricing-donate-link {
+    font-size: 13.5px;
+    color: var(--dim);
+    text-decoration: underline;
+    text-decoration-color: var(--border);
+    text-underline-offset: 3px;
+}
+
+.pricing-donate-link:hover {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+}
+
 .pricing-table-scroll {
     overflow-x: auto;
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     margin-bottom: var(--space-5);
+    max-width: 760px;
+    margin-inline: auto;
 }
 
 .pricing-table {
@@ -1692,19 +1767,29 @@ mark.tr-match.is-current {
     font-size: 14px;
 }
 
-.pricing-table th {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--faint);
-    font-weight: 700;
-    background: var(--panel-2);
+.pricing-table th:first-child,
+.pricing-table td:first-child {
+    width: 46%;
 }
 
 .pricing-table th:not(:first-child),
 .pricing-table td:not(:first-child) {
+    width: 27%;
     text-align: center;
+}
+
+.pricing-table th {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text);
+    font-weight: 700;
+    background: var(--panel-2);
+}
+
+.pricing-table th:not(:first-child) {
+    color: var(--accent);
 }
 
 .pricing-table tbody tr:last-child th,
@@ -1720,43 +1805,6 @@ mark.tr-match.is-current {
 .pricing-check svg {
     width: 18px;
     height: 18px;
-}
-
-.pricing-cta-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-    text-align: center;
-}
-
-@media (min-width: 640px) {
-    .pricing-cta-row {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-.pricing-cta-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-2);
-}
-
-/* More visually prominent than .btn-primary - sits directly under the
-   Download CTA, on purpose (see docs/decisions/pricing.md). */
-.btn-donate {
-    height: 52px;
-    padding: 0 28px;
-    font-size: 15.5px;
-    background: var(--accent);
-    color: var(--panel-2);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent),
-        0 12px 28px -10px color-mix(in srgb, var(--accent) 60%, transparent);
-}
-
-.btn-donate:hover {
-    filter: brightness(1.06);
-    transform: translateY(-2px);
 }
 
 /* Honest stub, same convention as .footer-stub - not a real destination
