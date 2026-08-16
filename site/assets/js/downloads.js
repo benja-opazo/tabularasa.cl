@@ -70,7 +70,6 @@
   // Remembers the last real state so a language switch can re-render text
   // without re-fetching the manifest.
   var lastManifest = null;
-  var lastFallbackReason = null;
 
   function updateHeroCta(platform, manifest) {
     var label = document.getElementById("hero-download-label");
@@ -119,11 +118,13 @@
       });
   }
 
-  function fallbackNote(reasonKey) {
-    lastFallbackReason = reasonKey;
+  // Silent fallback (docs/decisions/downloads.md): if the manifest can't be
+  // reached we just drop the note - the static hrefs in index.html already
+  // point at the latest release, so there's nothing for the visitor to act on.
+  // `.download-note` sets no `display`, so the UA `[hidden]` rule is enough.
+  function hideNote() {
     var note = document.getElementById("download-note");
-    if (note)
-      note.textContent = t("download.note_fallback", { reason: t(reasonKey) });
+    if (note) note.hidden = true;
   }
 
   var platform = detectPlatform();
@@ -133,12 +134,11 @@
     window.TRI18N.onChange(function () {
       updateHeroCta(platform, lastManifest);
       if (lastManifest) applyManifest(lastManifest);
-      else if (lastFallbackReason) fallbackNote(lastFallbackReason);
     });
   }
 
   if (!("fetch" in window)) {
-    fallbackNote("download.note_no_fetch");
+    hideNote();
     return;
   }
 
@@ -152,6 +152,6 @@
       updateHeroCta(platform, manifest);
     })
     .catch(function () {
-      fallbackNote("download.note_fetch_failed");
+      hideNote();
     });
 })();

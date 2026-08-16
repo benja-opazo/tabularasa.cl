@@ -22,6 +22,7 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 - Download cards are populated by fetching the real `manifest.json` the release pipeline publishes, not hand-maintained links.
 - This requires CORS to be enabled on the `downloads.tabularasa.cl` R2 bucket for `tabularasa.cl` - not yet verified as configured.
 - The static `/latest/<platform>` hrefs in the HTML are the fallback if that fetch fails; they are not a real endpoint today (see the decision for what would need to exist for them to be).
+- The fallback is **silent**: on any failure `#download-note` is hidden outright. The old "Showing the standard download links - {reason}" note was cut deliberately - the visitor can't act on it and the links work anyway.
 
 ## Deploy (`deploy.md`)
 
@@ -35,6 +36,8 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 - English is canonical; Spanish is kept in sync via the `sync-i18n` skill (`.claude/skills/sync-i18n/SKILL.md`).
 - The showcase demo (`#tr-demo-root`) is deliberately **not** translated - it replicates the real app, which is English-only today.
 - Accepted trade-off: a brief flash of English before JS re-writes to Spanish (no build step means no true zero-flash trick for text content, unlike the theme toggle's color swap).
+- The inline English text on each `data-i18n` element is only a fallback (JS overwrites it) - it drifts silently and must be re-synced whenever `en` changes; it's what non-JS crawlers index.
+- `<noscript>` content is unreachable by `i18n.js` in both states (raw text when JS is on, no JS to run when it's off) - its `data-i18n` is inert, the hardcoded English always shows.
 
 ## Feature card flip + demo modal (`feature-media.md`)
 
@@ -54,7 +57,7 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 
 - The site's first second page - `site/pricing.html` duplicates `index.html`'s head/header/footer by hand (no build step means no shared-layout mechanism); both files need manual edits kept in sync.
 - Feature comparison table shows the **same** feature set for Personal and Enterprise on purpose - only the License row differs, by design (not a bug).
-- "Contact for pricing" and "Donate" are both honest stubs (`.btn-stub`, `href="#"`) - no real destinations exist yet, same convention as the footer's License/EULA stub. No donation URL exists anywhere in either repo; don't invent one.
+- "Contact for pricing" is wired to `mailto:tabularasa@benjaopazoc.cl` and styled as a normal `.btn-primary`; "Donate" is still an honest stub (`href="#"`) - no donation URL exists anywhere in either repo, don't invent one.
 - `.btn-donate` is deliberately more visually prominent (bigger, glowing) than `.btn-primary` - direct request, not a mistake.
 
 ## Copy (`copy.md`)

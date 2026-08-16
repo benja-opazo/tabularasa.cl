@@ -47,14 +47,17 @@ the product. A `License` row (Personal use / Commercial use) was added as the
 one row that *does* differ, specifically so the table doesn't read as a
 copy-paste bug when every other row is identical.
 
-## Two honest stubs, matching the existing convention
+## One honest stub left (Contact is now wired up)
 
-- **"Contact for pricing"** (enterprise CTA) — not a real link yet, styled as
-  `.btn-stub` (dashed border, `cursor: not-allowed`, tooltip explaining it's
-  not wired up). Same "visible but honestly inert" treatment as the footer's
-  License/EULA stub (`docs/decisions/copy.md`) — a `#` href here would be a
-  dead link pretending to work.
-- **"Donate ❤️"** — also `href="#"`, same reasoning. No donation URL exists
+- **"Contact for pricing"** (enterprise CTA) — **resolved:** it is now a real
+  `mailto:tabularasa@benjaopazoc.cl` link (subject prefilled `Tabula Rasa -
+  Enterprise`), promoted from `.btn-stub` to `.btn .btn-primary` so it reads
+  as a peer of the Personal column's Download button. The stub styling and
+  the `pricing.cta_contact_tooltip` key were removed with it — a working link
+  wearing `cursor: not-allowed` would be worse than either honest state.
+  `.btn-stub` in styles.css now has no users; left in place for the next stub
+  rather than deleted.
+- **"Donate ❤️"** — still `href="#"`, unchanged. No donation URL exists
   anywhere in this repo or `tabula-rasa` (checked before building this) —
   wiring a guessed payment link would be actively wrong, not just
   incomplete. Placeholder until a real URL is provided.

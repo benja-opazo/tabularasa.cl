@@ -61,6 +61,22 @@ Once both exist, there are two live mechanisms:
    text. Still needs CORS on the R2 bucket (see above) - not yet verified as
    configured.
 
+### The fallback is silent - no explanatory note
+
+The note under the cards (`#download-note`) only ever says something on the
+**success** path (`download.note_latest`, the version + checksum line). On any
+failure - fetch missing, CORS, offline, R2 down - `hideNote()` removes it
+entirely rather than explaining what went wrong.
+
+This was a deliberate removal: the earlier version composed
+`download.note_fallback` ("Showing the standard download links - {reason}.
+They still point to the latest release.") with a `{reason}` string per failure
+mode. It was cut because the visitor can't act on any of it - the static
+hrefs work, so the note was an infrastructure excuse in front of a download
+button that functions fine. If a future change needs to surface a real,
+actionable failure here, add a new key; don't resurrect the `{reason}`
+composition pattern.
+
 Kept as-is per explicit confirmation: once CORS is fixed, buttons should point
 at the exact per-version release file (manifest-driven), not the `/latest/`
 redirect - the redirect is just the resilient fallback path, not the intended

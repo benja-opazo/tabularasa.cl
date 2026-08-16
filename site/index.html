@@ -4,12 +4,12 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title data-i18n="meta.title">
-            Tabula Rasa - a blank slate for your data
+            Tabula Rasa: a blank slate for your data
         </title>
         <meta
             name="description"
             data-i18n-attr="content:meta.description"
-            content="Tabula Rasa is a fast, cross-platform CSV viewer and editor built in Rust. Opens huge files instantly, never hangs, and feels like Sublime Text for tabular data. Free to use, for Linux, Windows and macOS."
+            content="Tabula Rasa is a fast, cross-platform tabular viewer and editor written in Rust. Instantly opens massive files and it's free to use."
         />
         <meta name="author" content="Benjamín Opazo" />
 
@@ -17,12 +17,12 @@
         <meta
             property="og:title"
             data-i18n-attr="content:meta.og_title"
-            content="Tabula Rasa - a blank slate for your data"
+            content="Tabula Rasa: a blank slate for your data"
         />
         <meta
             property="og:description"
             data-i18n-attr="content:meta.og_description"
-            content="A fast, cross-platform CSV viewer/editor. Opens huge files instantly and never hangs. Free to use."
+            content="A fast, cross-platform tabular viewer/editor. Instantly opens massive files and it's free to use."
         />
         <meta property="og:url" content="https://tabularasa.cl" />
         <meta name="twitter:card" content="summary" />
@@ -72,7 +72,7 @@
                 <nav class="main-nav" aria-label="Primary">
                     <a href="#features" data-i18n="nav.features">Features</a>
                     <a href="#showcase" data-i18n="nav.showcase"
-                        >See it in action</a
+                        >Demo</a
                     >
                     <a href="pricing.html" data-i18n="nav.pricing">Pricing</a>
                 </nav>
@@ -92,7 +92,7 @@
                         id="theme-toggle"
                         type="button"
                         data-i18n-attr="aria-label:theme_toggle.aria_label"
-                        aria-label="Toggle dark / light theme"
+                        aria-label="Toggle theme"
                     >
                         <svg
                             class="icon-sun"
@@ -139,10 +139,9 @@
                     <span class="accent-text">data</span>.
                 </h1>
                 <p class="hero-sub" data-i18n="hero.subtitle">
-                    Tabula Rasa is a fast, cross-platform CSV viewer and editor.
-                    It opens huge files instantly, never hangs on bad data, and
-                    feels like a tool you keep open all day - closer to Sublime
-                    Text than to a spreadsheet.
+                    Tabula Rasa is a fast, cross-platform tabular viewer and
+                    editor. It's ridiculously fast, free to use, and so good
+                    that it disappears between your fingers!
                 </p>
                 <div class="hero-ctas">
                     <div class="hero-cta-row">
@@ -174,12 +173,12 @@
                             class="btn btn-secondary"
                             href="#showcase"
                             data-i18n="hero.cta_showcase"
-                            >See it in action</a
+                            >Demo</a
                         >
                     </div>
                     <p class="hero-meta" data-i18n-html="hero.meta">
-                        Linux &middot; Windows &middot; macOS (Apple Silicon) -
-                        no account required.
+                        Linux &middot; Windows &middot; macOS (Apple
+                        Silicon)
                     </p>
                 </div>
             </section>
@@ -189,15 +188,17 @@
                 <div class="container">
                     <div class="section-head section-head-tight">
                         <p class="eyebrow" data-i18n="showcase.eyebrow">
-                            Try it here
+                            Try the demo here
                         </p>
                         <h2 data-i18n-html="showcase.title">
-                            This is the real interface - hardcoded, but
-                            interactive.
+                            Check the interface and marvel at the real
+                            <span class="accent-text">Tabula Rasa</span>
+                            experience.
                         </h2>
                         <p data-i18n-html="showcase.desc">
-                            Same pixels as the app, frozen sample data - sort,
-                            group, filter, or search below.
+                            This is the app.
+                            <a href="#download" class="accent-text">Download
+                            it</a> to get the full feature set.
                         </p>
                     </div>
 
@@ -206,7 +207,7 @@
                         id="tr-demo-root"
                         tabindex="0"
                         data-i18n-attr="aria-label:showcase.aria_label"
-                        aria-label="Interactive Tabula Rasa demo - hardcoded sample data"
+                        aria-label="Interactive Tabula Rasa demo"
                     >
                         <!-- Rendered by assets/js/demo-table.js - deliberately NOT translated,
                see docs/decisions/i18n.md: it replicates the real (English-only) app. -->
@@ -220,8 +221,7 @@
                                 data-i18n="showcase.noscript"
                             >
                                 This interactive preview needs JavaScript.
-                                Download the real app below - it needs no
-                                JavaScript at all.
+                                Download the app below.
                             </p>
                         </noscript>
                     </div>
@@ -233,14 +233,14 @@
                 <div class="container">
                     <div class="section-head">
                         <p class="eyebrow" data-i18n="features.eyebrow">
-                            Under the hood
+                            Features
                         </p>
                         <h2 data-i18n-html="features.title">
-                            Built for people who live in tabular data.
+                            Built for people who live submerged in
+                            <span class="accent-text">data</span>.
                         </h2>
                         <p data-i18n="features.desc">
-                            Every feature above is real - here's the fuller
-                            list, and what's still on the way.
+                            Tabula Rasa will disappear between your fingers:
                         </p>
                     </div>
 
@@ -258,12 +258,14 @@
                                         >&#xe4ff;</span
                                     >
                                     <h3 data-i18n="features.card1.title">
-                                        Huge files, instantly
+                                        Instantly open gigantic files
                                     </h3>
                                     <p data-i18n-html="features.card1.desc">
-                                        Multi-gigabyte CSVs load in the background - the
-                                        UI never hangs while a big file opens, and you
-                                        get a first paint immediately.
+                                        Load multi-GB files in the blink of
+                                        an eye: the UI
+                                        <span class="accent-text">will never
+                                        freeze</span>, no matter how big
+                                        your file is.
                                     </p>
                                     <span
                                         class="status-pill is-shipped"
@@ -300,13 +302,13 @@
                                         >&#xe0dc;</span
                                     >
                                     <h3 data-i18n="features.card2.title">
-                                        Filter, sort, group by
+                                        Stacked sort, filters or groups
                                     </h3>
                                     <p data-i18n="features.card2.desc">
-                                        Click a header to sort, stack multiple keys,
-                                        group rows into collapsible bands, and build
-                                        filters - all reflected as removable rule pills
-                                        in the status bar.
+                                        Your data can be manipulated however
+                                        you want: apply multiple filters,
+                                        group rows, and sort them in a
+                                        stacked fashion.
                                     </p>
                                     <span
                                         class="status-pill is-shipped"
@@ -346,10 +348,9 @@
                                         Instant search
                                     </h3>
                                     <p data-i18n="features.card3.desc">
-                                        A find bar highlights every match live across
-                                        the whole file, with a density rail showing
-                                        where matches cluster, without ever filtering
-                                        rows out.
+                                        You search, the app handles the
+                                        rest: you will find everything you
+                                        need in a <span class="accent-text">flash</span>.
                                     </p>
                                     <span
                                         class="status-pill is-shipped"
@@ -389,9 +390,10 @@
                                         Column control
                                     </h3>
                                     <p data-i18n="features.card4.desc">
-                                        Show/hide columns, auto-fit or fix widths, wrap
-                                        text, freeze panes - the grid adapts to the
-                                        shape of your data, not the other way around.
+                                        Easily show and hide columns,
+                                        reorder them, and use our smart
+                                        column wrapping: don't settle for
+                                        the walls of text of other apps.
                                     </p>
                                     <span
                                         class="status-pill is-shipped"
@@ -419,11 +421,11 @@
                             <span class="icon" aria-hidden="true"
                                 >&#xe58a;</span
                             >
-                            <h3 data-i18n="features.card5.title">Beyond CSV</h3>
+                            <h3 data-i18n="features.card5.title">Much more than just CSV</h3>
                             <p data-i18n="features.card5.desc">
-                                Built as a semi-universal tabular viewer from
-                                day one - Parquet, JSON and more are the natural
-                                next formats, not a rewrite.
+                                The tabular viewer is so powerful that it
+                                will gracefully handle any tabular data:
+                                databases, Parquet, JSON, and more.
                             </p>
                             <span
                                 class="status-pill is-roadmap"
@@ -467,42 +469,43 @@
                 <div class="container">
                     <div class="section-head">
                         <p class="eyebrow" data-i18n="trust.eyebrow">
-                            You can trust it with your data
+                            Trust Tabula Rasa
                         </p>
                         <h2 data-i18n-html="trust.title">
-                            Three guarantees that never bend.
+                            <span class="accent-text">Three</span>
+                            guarantees that never bend.
                         </h2>
                     </div>
                     <div class="feature-grid">
                         <article class="feature-card">
                             <h3 data-i18n="trust.card1.title">
-                                What you see is real
+                                Snappy
                             </h3>
                             <p data-i18n="trust.card1.desc">
-                                The app never silently shows coerced, truncated,
-                                or placeholder values as if they were your
-                                file's actual content. If something can't be
-                                parsed, you're told.
+                                Every feature is designed to be fast and
+                                responsive. Even updates are instant!
                             </p>
                         </article>
                         <article class="feature-card">
                             <h3 data-i18n="trust.card2.title">
-                                No surprise data loss
+                                No surprises
                             </h3>
                             <p data-i18n="trust.card2.desc">
-                                If a file loaded in a lossy way, saving is
-                                guarded and you're clearly warned before
-                                anything is overwritten.
+                                The interface is always intuitive, you click
+                                on something, and it does what you expect.
                             </p>
                         </article>
                         <article class="feature-card">
                             <h3 data-i18n-html="trust.card3.title">
-                                Corrupt data can't hang it
+                                No
+                                <a href="https://en.wikipedia.org/wiki/Enshittification" target="_blank" rel="noopener" class="accent-text"><i>Enshittification</i></a>
                             </h3>
                             <p data-i18n="trust.card3.desc">
-                                Bad input may mean a failed or partial load - it
-                                never freezes or blocks the interface while you
-                                figure out why.
+                                The user is at the center of the experience:
+                                to be honest, I hate having to fight against
+                                an app to get it to do what you want,
+                                because some techno fascist corporation
+                                wants to squeeze the last penny out of you.
                             </p>
                         </article>
                     </div>
@@ -517,14 +520,12 @@
                             Get Tabula Rasa
                         </p>
                         <h2 data-i18n-html="download.title_html">
-                            <span class="accent-text">Free</span> to use, on
-                            every desktop platform.
+                            <span class="accent-text">Free</span> to use*,
+                            on every desktop platform.
                         </h2>
                         <p data-i18n="download.desc">
-                            No account, no trial timer. An occasional,
-                            easily-dismissable nag is the only thing a one-time
-                            lifetime pass ever removes - that's the whole
-                            monetization model.
+                            *For personal use, not for commercial purposes.
+                            A donation is always welcome ❤️
                         </p>
                     </div>
 
@@ -551,8 +552,7 @@
                                 <h3>Linux</h3>
                             </div>
                             <p data-i18n="download.linux.desc">
-                                AppImage - runs on any modern distro, no
-                                installation required.
+                                Portable AppImage for 64-bit Linux.
                             </p>
                             <div class="meta">
                                 <span class="dl-version">v&mdash;</span>
@@ -628,7 +628,8 @@
                                 <h3>macOS</h3>
                             </div>
                             <p data-i18n="download.macos.desc">
-                                Disk image (.dmg) - Apple Silicon (M-series).
+                                Disk image (.dmg) for Apple Silicon
+                                (M-series).
                             </p>
                             <div class="meta">
                                 <span class="dl-version">v&mdash;</span>
