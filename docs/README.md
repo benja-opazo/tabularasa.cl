@@ -17,6 +17,7 @@ this folder is where the reasoning behind them lives.
 | `decisions/feature-media.md` | Feature card flip + demo modal - scope (Shipped cards only), expected GIF filenames, the `[hidden]` CSS gotcha, hand-drawn play icon rationale. |
 | `decisions/deploy.md`     | Why GitHub Actions + `wrangler deploy` over dashboard-only Cloudflare Pages, and the exact secret/dashboard setup steps a human still has to do. |
 | `decisions/copy.md`       | Where every factual marketing claim on the page came from, so it can be re-verified instead of re-guessed.                                       |
+| `decisions/download-redirect.md` | The `/latest/<platform>` Worker-rendered landing page - why a click-through OG page over a bare 302, why this repo owns it, what's unverified (Cloudflare zone, token scope). |
 
 ## Cold-start read order
 

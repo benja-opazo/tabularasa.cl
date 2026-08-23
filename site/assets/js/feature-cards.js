@@ -1,22 +1,5 @@
-/* ============================================================
-   tabularasa.cl — feature-cards.js
-
-   Two independent interactions on the four "Shipped" feature cards
-   (#feature-grid .feature-card.is-flippable — the Roadmap card and the
-   trust-section cards reuse .feature-card but opt out, no is-flippable
-   class, this file never touches them):
-
-     1. Click/Enter/Space anywhere on a card (except its play button) flips
-        it 180° to reveal a GIF of that feature on the back.
-     2. The play button opens the SAME gif full-size in a shared modal,
-        independent of flip state.
-
-   GIFs live at assets/img/features/<slug>.gif (see docs/decisions/
-   feature-media.md for exact filenames) and don't ship with this repo yet —
-   if a card's <img> 404s, its `error` handler swaps in a "Demo coming soon"
-   fallback instead of a broken-image icon, matching the site's existing
-   honest-stub convention (demo-table.js's "coming soon" popovers).
-   ============================================================ */
+// Flip-to-GIF + shared play-button modal on the four "Shipped" feature cards
+// (.feature-card.is-flippable only). See docs/decisions/feature-media.md.
 (function () {
   "use strict";
 

@@ -33,6 +33,12 @@ jobs:
       # Globbed rather than listed file-by-file - the explicit list drifted
       # out of sync with site/assets/js/ more than once (see git history).
       - run: for f in site/assets/js/*.js; do node --check "$f"; done
+      # worker/index.js is an ES module (export default), unlike the plain
+      # scripts above - needs --input-type=module or node --check misreports
+      # the `export` as a syntax error.
+      - run: node --input-type=module --check < worker/index.js
+      # Comments policy guard (CLAUDE.md) - no new deps, plain Node.
+      - run: node scripts/check-comments.mjs
 
   deploy:
     name: Deploy to Cloudflare Workers

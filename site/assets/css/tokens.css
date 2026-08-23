@@ -1,12 +1,6 @@
-/* ==========================================================================
-   Design tokens - mirrored 1:1 from tabula-rasa/src/theme.rs (Palette).
-   Source of truth is the APP, not this file: if the app's palette changes,
-   re-sync here. Do not "tidy" or round any hex - see docs/decisions/visuals.md.
-
-   Every token below has a comment noting its exact source line so a future
-   sync is a mechanical diff, not a guess. Dark is the app's default theme,
-   so dark is this site's default too (see docs/decisions/theming.md).
-   ========================================================================== */
+/* Mirrored 1:1 from tabula-rasa/src/theme.rs (Palette) - the app is the
+   source of truth, never "tidy" or round a hex here. See
+   docs/decisions/theming.md for the two-tier token system and resync steps. */
 
 :root,
 :root[data-theme="dark"] {

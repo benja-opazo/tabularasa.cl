@@ -44,18 +44,19 @@ confirm it before relying on this working in production. If it's missing, the
 
 If the manifest fetch fails (CORS, offline, R2 down, browser has no `fetch`), the
 download cards keep the **static hrefs already in `index.html`**:
-`https://downloads.tabularasa.cl/latest/<platform>`. **Reversed decision (was:
-"not a real endpoint today"):** this redirect is going to be built -
-a small Cloudflare Worker route on `downloads.tabularasa.cl` that reads
-`manifest.json` server-side and 302s to the current installer per platform -
-so the fallback hrefs point at a real, intentional URL, not a placeholder. Until
-that redirect ships, these links are dead; that's expected and temporary, not a
-bug to work around here.
+`https://downloads.tabularasa.cl/latest/<platform>`. **Built** (was: "coming
+soon"): a Cloudflare Worker route on `downloads.tabularasa.cl/latest/*`,
+owned by *this* repo (`worker/index.js` + `wrangler.toml`'s `routes` entry) -
+not a bare 302, but a click-through HTML landing page with Open Graph tags,
+so links shared raw (WhatsApp/Slack/etc.) still unfurl a decent preview card.
+Full rationale and what's still unverified (Cloudflare zone name, API token
+scope): `docs/decisions/download-redirect.md`.
 
-Once both exist, there are two live mechanisms:
+There are two live mechanisms:
 
-1. **`/latest/<platform>` redirect** (coming soon) - the static/fallback hrefs.
-   No CORS needed since it's consumed as a normal link, not a `fetch`.
+1. **`/latest/<platform>` landing page** (built) - the static/fallback hrefs.
+   No CORS needed: the Worker reads `manifest.json` server-side, and the
+   browser only ever sees a normal same-origin-to-the-link-target HTML page.
 2. **`manifest.json` fetch** (current implementation, primary when it works) -
    rewrites hrefs to the exact versioned asset URL and fills in version/size
    text. Still needs CORS on the R2 bucket (see above) - not yet verified as

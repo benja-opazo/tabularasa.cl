@@ -1,28 +1,19 @@
-/* ============================================================
-   tabularasa.cl - i18n.js
-
-   Applies window.TR_I18N (assets/js/i18n-strings.js) to the DOM, persists
-   the choice, and exposes a tiny API other scripts (downloads.js) use for
-   strings they build dynamically at runtime. See docs/decisions/i18n.md.
-
-   Marking conventions read by apply():
-     data-i18n="key"        textContent = dict[key]
-     data-i18n-html="key"   innerHTML = dict[key] (trusted, static strings only)
-     data-i18n-attr="attr:key[;attr2:key2]"   sets element attribute(s)
-
-   The showcase demo (#tr-demo-root, rendered by demo-table.js) is
-   deliberately NOT translated - it's a pixel-faithful replica of the real
-   app, which is English-only today. Translating the chrome around a still-
-   English screenshot-alike would be a lie about what you get. Re-visit only
-   if/when the app itself ships localization.
-   ============================================================ */
+// Fetches each locale's dictionary from assets/i18n/<locale>.json on demand
+// (only the active locale up front, the rest in the background after
+// `load`) instead of shipping every locale to every visitor. Applies to the
+// DOM via data-i18n*/data-i18n-html/data-i18n-attr, persists the choice, and
+// exposes window.TRI18N for other scripts (downloads.js). See
+// docs/decisions/i18n.md for the loading strategy and its trade-offs.
 (function () {
   "use strict";
 
   var STORAGE_KEY = "lang";
   var DEFAULT_LOCALE = "en";
   var SUPPORTED = ["en", "es"];
+  var BASE_URL = "assets/i18n/";
   var listeners = [];
+  var loaded = {};
+  var inFlight = {};
 
   function detectLocale() {
     var stored = localStorage.getItem(STORAGE_KEY);
@@ -38,7 +29,7 @@
   var current = detectLocale();
 
   function dict() {
-    return window.TR_I18N[current] || window.TR_I18N[DEFAULT_LOCALE];
+    return loaded[current] || loaded[DEFAULT_LOCALE] || {};
   }
 
   function t(key, vars) {
@@ -50,6 +41,29 @@
       });
     }
     return s;
+  }
+
+  // Cache-or-fetch: resolves immediately if already loaded, dedupes
+  // concurrent requests for the same locale, never rejects into caller code
+  // that isn't expecting it (callers add their own .catch()).
+  function loadLocale(locale) {
+    if (loaded[locale]) return Promise.resolve(loaded[locale]);
+    if (inFlight[locale]) return inFlight[locale];
+    inFlight[locale] = fetch(BASE_URL + locale + ".json")
+      .then(function (res) {
+        if (!res.ok) throw new Error("i18n fetch failed: " + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        loaded[locale] = data;
+        delete inFlight[locale];
+        return data;
+      })
+      .catch(function (err) {
+        delete inFlight[locale];
+        throw err;
+      });
+    return inFlight[locale];
   }
 
   function apply() {
@@ -79,10 +93,12 @@
     if (toggleEl) toggleEl.textContent = current === "en" ? "ES" : "EN";
   }
 
-  function setLocale(locale) {
-    if (SUPPORTED.indexOf(locale) === -1 || locale === current) return;
-    current = locale;
-    localStorage.setItem(STORAGE_KEY, locale);
+  // Shared by the initial load AND every explicit switch, so anything
+  // subscribed via onChange (downloads.js) also gets a correct re-render the
+  // first time real strings arrive, not just on subsequent toggles - without
+  // this, code that computes a string via t() before the first fetch
+  // resolves (e.g. the hero CTA label) would stay stuck on a raw key.
+  function finishApply() {
     apply();
     listeners.forEach(function (cb) {
       cb(current);
@@ -90,6 +106,19 @@
     document.dispatchEvent(
       new CustomEvent("trlangchange", { detail: { locale: current } }),
     );
+  }
+
+  function setLocale(locale) {
+    if (SUPPORTED.indexOf(locale) === -1 || locale === current) return;
+    loadLocale(locale)
+      .then(function () {
+        current = locale;
+        localStorage.setItem(STORAGE_KEY, locale);
+        finishApply();
+      })
+      .catch(function () {
+        // Network hiccup - stay on the current locale, no partial switch.
+      });
   }
 
   window.TRI18N = {
@@ -103,7 +132,21 @@
     },
   };
 
-  apply();
+  loadLocale(current)
+    .then(finishApply)
+    .catch(function () {
+      // Leave the hardcoded English already in the DOM - no dictionary to
+      // apply, same spirit as the existing silent-fallback convention
+      // (docs/decisions/downloads.md).
+    });
+
+  // Background-warm every other locale once the page has finished loading,
+  // so a later toggle click applies instantly instead of waiting on a fetch.
+  window.addEventListener("load", function () {
+    SUPPORTED.forEach(function (locale) {
+      if (locale !== current) loadLocale(locale).catch(function () {});
+    });
+  });
 
   var toggle = document.getElementById("lang-toggle");
   if (toggle) {

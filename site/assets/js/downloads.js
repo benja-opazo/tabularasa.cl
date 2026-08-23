@@ -1,27 +1,6 @@
-/* ============================================================
-   tabularasa.cl - downloads.js
-
-   Populates the download cards from the REAL release manifest instead of
-   hand-maintained links, so this page never drifts from what the release
-   pipeline actually publishes. Contract + why this exists over hardcoded
-   /latest/<platform> URLs: docs/decisions/downloads.md.
-
-   Manifest: GET https://downloads.tabularasa.cl/releases/manifest.json
-     { schema_version, version, released_at,
-       targets: { "<rust-target-triple>": { installer: {url,sha256,size}, update: {...} } } }
-   Schema source: tabula-rasa/scripts/release/gen_manifest.py - keep in sync
-   if that script's TARGETS or schema_version ever changes.
-
-   Requires the manifest's R2 bucket to send
-   `Access-Control-Allow-Origin: https://tabularasa.cl` (or `*`) - see the
-   CORS note in docs/decisions/downloads.md. Without it this fetch fails
-   silently (browsers don't expose the reason) and the page just falls back
-   to the static hrefs already in the HTML.
-
-   All user-facing strings route through window.TRI18N (assets/js/i18n.js) -
-   loaded before this script - so a language switch re-renders whatever this
-   file last computed. See docs/decisions/i18n.md.
-   ============================================================ */
+// Populates the download cards from the real release manifest, not
+// hand-maintained links. Manifest schema, the CORS dependency, and the
+// fallback behavior: docs/decisions/downloads.md.
 (function () {
   "use strict";
 
@@ -39,7 +18,7 @@
     macos: "download.btn_dmg",
   };
 
-  // Platform names are proper nouns - same in both locales, not looked up in TR_I18N.
+  // Platform names are proper nouns - same in both locales, not looked up via t().
   var PLATFORM_NAMES = { linux: "Linux", windows: "Windows", macos: "macOS" };
 
   function t(key, vars) {

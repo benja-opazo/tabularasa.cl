@@ -46,6 +46,19 @@ visitor who downloads the app afterwards feels zero discontinuity.
   preference until the visitor picks explicitly - same convention as
   `benjaopazoc.cl`. Persisted in `localStorage.theme`.
 
+## Comments policy
+
+Comments should be a short pointer (what's non-obvious + a `docs/decisions/*.md`
+link), not a duplicated explanation - the rationale lives in docs, not in a
+20-line file-header essay. A one-to-three-line comment is fine (and often the
+right call for a genuinely hidden constraint or bug workaround right next to
+the code it affects); CI fails a comment block over 10 lines
+(`scripts/check-comments.mjs`, run on `site/assets/js/` + `worker/`) as a
+guard against header blocks creeping back - if you need more than that,
+that's a sign the rationale belongs in a decision doc instead, linked from a
+short pointer. `styles.css`'s numbered TOC is a deliberate, documented
+exception to this (see the file map below) - not something the linter checks.
+
 ## File map
 
 ```
@@ -61,11 +74,14 @@ site/assets/img/features/        # Feature-card GIFs (huge-files.gif, filter-sor
 site/assets/js/ambient-grid.js   # Mouse-tracked glow on the decorative side-gutter grid panels. See ambient-grid.md.
 site/assets/fonts/               # Vendored JetBrainsMono-Regular.ttf + lucide.ttf, copied byte-for-byte from tabula-rasa/assets/fonts/, plus their licenses.
 site/assets/img/favicon.svg      # Brand mark (accent-colored rounded square, matches the nav brand mark).
-site/assets/js/i18n-strings.js   # EN/ES string dictionary - single source of truth for all copy. See i18n.md.
-site/assets/js/i18n.js           # Applies the dictionary, persists choice, toggle button. See i18n.md.
+site/assets/i18n/en.json         # Canonical EN string dictionary, one flat key per string. See i18n.md.
+site/assets/i18n/es.json         # ES translation, same key set as en.json - kept in sync via the sync-i18n skill.
+site/assets/js/i18n.js           # Fetches the active locale, background-loads the rest, applies the dictionary, toggle button. See i18n.md.
 .claude/skills/sync-i18n/        # The official workflow for editing copy + syncing the ES translation.
-wrangler.toml                    # Cloudflare Workers static-assets config - directory = ./site.
-.github/workflows/deploy.yml     # CI: JS syntax check, then `wrangler deploy` - manual `workflow_dispatch` only, not on push.
+worker/index.js                  # Worker `main` script - /latest/<platform> OG landing page on downloads.tabularasa.cl; falls through to the static site otherwise. See download-redirect.md.
+wrangler.toml                    # Cloudflare Workers static-assets config - directory = ./site, plus the worker/routes above.
+scripts/check-comments.mjs       # CI guard for the comments policy above - no npm deps, plain Node.
+.github/workflows/deploy.yml     # CI: JS syntax check (site/ + worker/) + comments-policy check, then `wrangler deploy` - manual `workflow_dispatch` only, not on push.
 docs/README.md                   # Docs map - read this first for anything beyond quick edits.
 docs/decisions/                  # One file per topic; INDEX.md is the one-line index. Search before redesigning.
 ```
@@ -129,22 +145,42 @@ fallback if that fetch fails. **This needs CORS enabled on the R2 bucket** - see
 `docs/decisions/downloads.md` for the header required and what happens if it's
 missing (silent fallback, not a crash).
 
+## How the download redirect worker works
+
+`worker/index.js` is this repo's own Worker `main` script (see
+`wrangler.toml`'s `routes`), handling exactly one path pattern:
+`downloads.tabularasa.cl/latest/<platform>`. It fetches `manifest.json`
+**server-side** (no CORS involved) and renders a small click-through HTML
+landing page with Open Graph tags - not a bare redirect, so links shared raw
+into WhatsApp/Slack/etc. still unfurl a real preview card. Every other
+request (all of `tabularasa.cl`, any other path) falls through to
+`env.ASSETS.fetch()`, i.e. the static site unchanged. Full rationale, the
+options considered, and what's still unverified (Cloudflare zone name, API
+token scope): `docs/decisions/download-redirect.md`.
+
 ## How i18n works
 
-All copy lives in `site/assets/js/i18n-strings.js` (`window.TR_I18N.en` /
-`.es`), applied to the DOM by `i18n.js` via `data-i18n`/`data-i18n-html`/
-`data-i18n-attr` attributes in `index.html`. English is canonical. **To edit
-copy, use the `sync-i18n` skill** (`.claude/skills/sync-i18n/SKILL.md`) rather
-than hand-editing both locale objects - it's the official workflow for
-keeping `en`/`es` in sync and surfacing translation subtleties for a human
-call instead of guessing them. The showcase demo (`#tr-demo-root`) is
-deliberately left untranslated - see `docs/decisions/i18n.md`.
+Copy lives in per-locale JSON files (`site/assets/i18n/en.json`, `es.json`,
+one flat key per string), not one shared JS file. `i18n.js` fetches only the
+**active** locale up front, applies it to the DOM via
+`data-i18n`/`data-i18n-html`/`data-i18n-attr` attributes, then background-
+fetches every other locale after the page's `load` event so a later toggle
+click applies instantly from cache. English is canonical. **To edit copy, use
+the `sync-i18n` skill** (`.claude/skills/sync-i18n/SKILL.md`) rather than
+hand-editing both files - it's the official workflow for keeping `en`/`es` in
+sync and surfacing translation subtleties for a human call instead of
+guessing them. Adding a new locale is "new JSON file + one entry in `i18n.js`'s
+`SUPPORTED` array" - no edits to existing locale files. The showcase demo
+(`#tr-demo-root`) is deliberately left untranslated - see
+`docs/decisions/i18n.md`.
 
 ## Deploy
 
 GitHub Actions (`.github/workflows/deploy.yml`) runs a JS syntax check, then
 `wrangler deploy`, against `wrangler.toml`'s Workers static-assets config
-(`site/` as the asset directory, no `main` script). **Manual trigger only**
+(`site/` as the asset directory, plus `main = "worker/index.js"` for the
+`/latest/<platform>` redirect route - see "How the download redirect worker
+works" above). **Manual trigger only**
 (`workflow_dispatch`) - this is still an active prototype, so nothing
 auto-deploys on push to `main`; trigger it from the Actions tab when a change
 is actually ready. Needs `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` repo
@@ -168,10 +204,10 @@ dashboard-only Cloudflare Pages setup: `docs/decisions/deploy.md`.
 - **New demo-table feature:** extend the state machine in `demo-table.js` rather
   than adding a parallel mechanism - read `docs/decisions/demo-table.md` first for
   what's already been decided (dataset shape, rendering strategy, stub parity).
-- **New or changed copy:** edit the `en` object in `i18n-strings.js`, add the
-  matching `data-i18n*` attribute in `index.html` if it's a new string, then run
-  the `sync-i18n` skill to translate it into `es` - don't hand-write the Spanish
-  yourself or leave `es` out of sync.
+- **New or changed copy:** edit `site/assets/i18n/en.json`, add the matching
+  `data-i18n*` attribute in `index.html` if it's a new string, then run the
+  `sync-i18n` skill to translate it into `es.json` - don't hand-write the
+  Spanish yourself or leave it out of sync.
 - **New feature card with a demo:** only give it `.is-flippable` + a `data-gif`
   once a real GIF exists (or is imminently coming) for it - a Roadmap/not-yet-
   built feature should stay a plain, non-interactive `.feature-card` per
@@ -184,6 +220,7 @@ dashboard-only Cloudflare Pages setup: `docs/decisions/deploy.md`.
 - [ ] Looks right at ~375px, ~768px, and desktop widths - mobile first.
 - [ ] No hardcoded colors - tokens only, right tier.
 - [ ] `node --check` passes on every changed JS file (what CI runs).
+- [ ] No comment block over 10 lines (`node scripts/check-comments.mjs`, what CI runs) - move rationale to `docs/decisions/*.md` instead.
 - [ ] Any icon used is either a named app codepoint or a deliberate hand-drawn SVG - never a guessed codepoint.
-- [ ] New/changed copy exists in `i18n-strings.js` for **both** `en` and `es` (via the `sync-i18n` skill), not just hardcoded in `index.html`.
+- [ ] New/changed copy exists in **both** `en.json` and `es.json` (via the `sync-i18n` skill), not just hardcoded in `index.html`.
 - [ ] Non-obvious decision? Add it to `docs/decisions/<topic>.md` + `INDEX.md`.

@@ -1,21 +1,6 @@
-/* ============================================================
-   tabularasa.cl - demo-table.js
-
-   A hardcoded, client-side-only replica of Tabula Rasa's grid chrome:
-   same tokens (tokens.css), same icon glyphs (assets/fonts/lucide.ttf,
-   same codepoints as tabula-rasa/src/icons.rs), same measurements
-   (docs/ui-ux/visual-system.md). There is no engine behind this - it's
-   ~18 rows of fixture data and a handful of client-side operations that
-   mirror the app's actual feature set. See docs/decisions/demo-table.md
-   for what's faithfully replicated vs. deliberately simplified.
-
-   Rendering strategy: renderShell() rebuilds the whole showcase-frame
-   and is used for every discrete action (sort/filter/group/heatmap/wrap/
-   columns/popovers/search open-close). Search KEYSTROKES only refresh
-   <tbody> (refreshRows()) so the <input> element is never destroyed -
-   a full shell rebuild there would drop focus and cursor position on
-   every character typed.
-   ============================================================ */
+// Hardcoded, client-side-only replica of Tabula Rasa's grid chrome - no
+// engine behind it. See docs/decisions/demo-table.md for what's faithfully
+// replicated vs. simplified, and the renderShell()/refreshRows() split below.
 (function () {
   "use strict";
 

@@ -1,12 +1,30 @@
 # Cloudflare Workers static-assets config - same shape as benjaopazoc.cl's
 # wrangler.toml (see docs/decisions/deploy.md for why this pattern over
-# classic Cloudflare Pages). No `main` entry: a pure static-assets Worker
-# needs none. `directory` points at the hand-authored deploy root - there is
-# no build step, so `site/` IS the deployed output, not a generated artifact.
+# classic Cloudflare Pages). `[assets] directory` points at the hand-authored
+# deploy root - there is no build step, so `site/` IS the deployed output, not
+# a generated artifact.
+#
+# `main` + the `routes` entry below exist for exactly one reason: the
+# /latest/<platform> redirect landing page on downloads.tabularasa.cl (see
+# docs/decisions/download-redirect.md). worker/index.js handles that one
+# route and falls through to env.ASSETS.fetch() for every other request,
+# including all of tabularasa.cl itself - the static site behaves exactly as
+# before.
 name = "tabularasa-cl"
 compatibility_date = "2026-08-05"
 workers_dev = true
 preview_urls = true
+main = "worker/index.js"
 
 [assets]
 directory = "./site"
+binding = "ASSETS"
+
+# downloads.tabularasa.cl already has an R2 Custom Domain serving /releases/*
+# (owned by the tabula-rasa repo's release pipeline) - a Worker Route on a
+# more specific path pattern takes precedence over that without needing to
+# move /releases/* off R2. Assumes downloads.tabularasa.cl lives in the same
+# "tabularasa.cl" zone - not yet verified (see the decision doc).
+routes = [
+  { pattern = "downloads.tabularasa.cl/latest/*", zone_name = "tabularasa.cl" },
+]

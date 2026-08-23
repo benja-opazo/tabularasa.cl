@@ -24,19 +24,28 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 - The static `/latest/<platform>` hrefs in the HTML are the fallback if that fetch fails; they are not a real endpoint today (see the decision for what would need to exist for them to be).
 - The fallback is **silent**: on any failure `#download-note` is hidden outright. The old "Showing the standard download links - {reason}" note was cut deliberately - the visitor can't act on it and the links work anyway.
 
+## Download redirect worker (`download-redirect.md`)
+
+- `/latest/<platform>` is a Cloudflare Worker-rendered **click-through HTML landing page** with OG tags, not a bare 302 - a redirect straight to the binary can't produce a link-preview card.
+- This repo owns the worker (`worker/index.js` + `wrangler.toml`'s `main`/`routes`), not `tabula-rasa` - it's visitor-facing copy/branding, same responsibility this repo already has for the rest of the site.
+- Manifest is fetched **server-side** in the Worker - no CORS dependency, unlike the client-side `fetch()` in `downloads.js`.
+- Not yet verified: the Cloudflare zone name for the new route, and whether the deploy API token's scope covers `Workers Routes:Edit`.
+
 ## Deploy (`deploy.md`)
 
 - Deploy path is **GitHub Actions + `wrangler deploy`** against Cloudflare Workers static assets (`wrangler.toml`), not `benjaopazoc.cl`'s current dashboard-only Cloudflare Pages setup - chosen explicitly so the pipeline is versioned and visible in-repo.
 - **Deviation:** manual `workflow_dispatch` only, no push-to-`main` trigger - this site is still an active prototype, so deploys are a deliberate action, not automatic.
 - No build job: the JS syntax check is the only pre-deploy gate.
+- Includes a step-by-step **runbook** for the one-time Cloudflare setup the `/latest/<platform>` redirect route needs (zone check, token scope, dry run, smoke test).
 
 ## Internationalization (`i18n.md`)
 
-- Client-side dictionary swap (`i18n-strings.js` + `i18n.js` + `data-i18n*` attributes), not per-locale pages - no build step means no templating to generate `/en/`/`/es/` statically.
+- Client-side dictionary swap (per-locale `assets/i18n/*.json` + `i18n.js` + `data-i18n*` attributes), not per-locale pages - no build step means no templating to generate `/en/`/`/es/` statically.
+- **Active locale loads first, the rest load in the background** after `load` and get cached - a toggle click applies instantly once warm, without shipping every locale to every visitor.
 - English is canonical; Spanish is kept in sync via the `sync-i18n` skill (`.claude/skills/sync-i18n/SKILL.md`).
 - The showcase demo (`#tr-demo-root`) is deliberately **not** translated - it replicates the real app, which is English-only today.
-- Accepted trade-off: a brief flash of English before JS re-writes to Spanish (no build step means no true zero-flash trick for text content, unlike the theme toggle's color swap).
-- The inline English text on each `data-i18n` element is only a fallback (JS overwrites it) - it drifts silently and must be re-synced whenever `en` changes; it's what non-JS crawlers index.
+- Accepted trade-off: a brief flash of English before JS re-writes to Spanish, now with a small same-origin fetch layered on top - no build step means no true zero-flash trick for text content, unlike the theme toggle's color swap.
+- The inline English text on each `data-i18n` element is only a fallback (JS overwrites it) - it drifts silently and must be re-synced whenever `en.json` changes; it's what non-JS crawlers index.
 - `<noscript>` content is unreachable by `i18n.js` in both states (raw text when JS is on, no JS to run when it's off) - its `data-i18n` is inert, the hardcoded English always shows.
 
 ## Feature card flip + demo modal (`feature-media.md`)

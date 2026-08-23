@@ -36,7 +36,7 @@ site/assets/img/features/column-control.gif
 Until a file exists at that path, the `<img>`'s `error` handler adds
 `.has-no-gif` to its container (`.feature-card-back` / `#feature-modal-media`),
 which swaps in a "Demo coming soon" fallback (`features.demo_coming_soon` in
-`i18n-strings.js`) instead of a broken-image icon — the same honest-stub
+`site/assets/i18n/en.json`) instead of a broken-image icon — the same honest-stub
 pattern as `demo-table.js`'s "coming soon" popovers. Drop a GIF in at the
 right filename and it starts working with zero code changes.
 

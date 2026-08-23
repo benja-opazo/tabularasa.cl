@@ -1,19 +1,6 @@
-/* ============================================================
-   tabularasa.cl — ambient-grid.js
-
-   Drives the mouse-tracked glow on the decorative side panels
-   (.ambient-grid-panel, styles.css section 19). Purely cosmetic — the grid
-   lines and the perspective tilt are static CSS; this file's only job is
-   updating each panel's --gx/--gy custom properties so the flat (untilted)
-   glow layer underneath tracks the cursor. See docs/decisions/ambient-grid.md
-   for why the glow itself isn't rotated with the grid (avoids inverting a
-   3D transform just to place a soft blob — not worth the complexity for a
-   decorative effect).
-
-   Only active at the breakpoint where the CSS actually shows the panels
-   (matches styles.css's `min-width: 1300px`) — no listeners attached below
-   that width, so this does zero work on mobile/tablet.
-   ============================================================ */
+// Updates each .ambient-grid-panel's --gx/--gy so the flat glow layer tracks
+// the cursor. See docs/decisions/ambient-grid.md. Breakpoint below must match
+// styles.css's `min-width: 1300px` - no listeners attached below it.
 (function () {
   "use strict";
 
