@@ -76,7 +76,7 @@
                     >
                     <a
                         href="pricing.html"
-                        class="is-current"
+                        class="is-current nav-pricing"
                         data-i18n="nav.pricing"
                         >Pricing</a
                     >
@@ -127,14 +127,61 @@
                         </svg>
                     </button>
                     <a
-                        class="btn btn-primary btn-sm"
+                        class="btn btn-primary btn-sm nav-download-desktop"
                         href="index.html#download"
                         data-i18n="header.download_btn"
                         >Download</a
                     >
+                    <button
+                        class="nav-toggle"
+                        id="nav-toggle"
+                        type="button"
+                        aria-expanded="false"
+                        aria-controls="mobile-nav"
+                        data-i18n-attr="aria-label:nav_toggle.aria_label"
+                        aria-label="Menu"
+                    >
+                        <svg
+                            class="icon-menu"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                        >
+                            <path d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg
+                            class="icon-close"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                        >
+                            <path d="M6 6l12 12M18 6 6 18" />
+                        </svg>
+                    </button>
                 </div>
             </div>
         </header>
+
+        <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile" hidden>
+            <div class="container">
+                <a href="index.html#features" data-i18n="nav.features"
+                    >Features</a
+                >
+                <a href="index.html#showcase" data-i18n="nav.showcase"
+                    >Demo</a
+                >
+                <a
+                    class="btn btn-primary"
+                    href="index.html#download"
+                    data-i18n="header.download_btn"
+                    >Download</a
+                >
+            </div>
+        </nav>
 
         <main id="main">
             <!-- ================= Pricing hero ================= -->
@@ -233,12 +280,6 @@
                                     data-i18n="pricing.cta_download"
                                     >Download</a
                                 >
-                                <a
-                                    class="pricing-donate-link"
-                                    href="#"
-                                    data-i18n="pricing.cta_donate"
-                                    >Donate ❤️</a
-                                >
                             </div>
                         </article>
                         <article class="feature-card pricing-card is-enterprise">
@@ -321,6 +362,18 @@
                             </div>
                         </article>
                     </div>
+
+                    <p class="pricing-donate-standalone">
+                        <span data-i18n="pricing.donate_prompt"
+                            >Enjoying Tabula Rasa?</span
+                        >
+                        <a
+                            class="donate-link"
+                            href="#"
+                            data-i18n="pricing.cta_donate"
+                            >Donate ❤️</a
+                        >
+                    </p>
 
                     <div class="pricing-table-scroll">
                         <table class="pricing-table">
@@ -703,6 +756,7 @@
 
         <script src="assets/js/i18n.js"></script>
         <script src="assets/js/theme.js"></script>
+        <script src="assets/js/nav.js"></script>
         <script src="assets/js/ambient-grid.js"></script>
         <script>
             document.getElementById("footer-year").textContent =

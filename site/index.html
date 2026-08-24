@@ -74,7 +74,7 @@
                     <a href="#showcase" data-i18n="nav.showcase"
                         >Demo</a
                     >
-                    <a href="pricing.html" data-i18n="nav.pricing">Pricing</a>
+                    <a href="pricing.html" class="nav-pricing" data-i18n="nav.pricing">Pricing</a>
                 </nav>
 
                 <div class="header-actions">
@@ -122,14 +122,57 @@
                         </svg>
                     </button>
                     <a
-                        class="btn btn-primary btn-sm"
+                        class="btn btn-primary btn-sm nav-download-desktop"
                         href="#download"
                         data-i18n="header.download_btn"
                         >Download</a
                     >
+                    <button
+                        class="nav-toggle"
+                        id="nav-toggle"
+                        type="button"
+                        aria-expanded="false"
+                        aria-controls="mobile-nav"
+                        data-i18n-attr="aria-label:nav_toggle.aria_label"
+                        aria-label="Menu"
+                    >
+                        <svg
+                            class="icon-menu"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                        >
+                            <path d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg
+                            class="icon-close"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                        >
+                            <path d="M6 6l12 12M18 6 6 18" />
+                        </svg>
+                    </button>
                 </div>
             </div>
         </header>
+
+        <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile" hidden>
+            <div class="container">
+                <a href="#features" data-i18n="nav.features">Features</a>
+                <a href="#showcase" data-i18n="nav.showcase">Demo</a>
+                <a
+                    class="btn btn-primary"
+                    href="#download"
+                    data-i18n="header.download_btn"
+                    >Download</a
+                >
+            </div>
+        </nav>
 
         <main id="main">
             <!-- ================= Hero ================= -->
@@ -347,7 +390,7 @@
                                     <h3 data-i18n="features.card3.title">
                                         Instant search
                                     </h3>
-                                    <p data-i18n="features.card3.desc">
+                                    <p data-i18n-html="features.card3.desc">
                                         You search, the app handles the
                                         rest: you will find everything you
                                         need in a <span class="accent-text">flash</span>.
@@ -465,7 +508,11 @@
             </div>
 
             <!-- ================= Trust ================= -->
-            <section class="section" style="padding-block: 0 var(--space-6)">
+            <section
+                class="section"
+                id="trust"
+                style="padding-block: var(--space-4)"
+            >
                 <div class="container">
                     <div class="section-head">
                         <p class="eyebrow" data-i18n="trust.eyebrow">
@@ -523,9 +570,11 @@
                             <span class="accent-text">Free</span> to use*,
                             on every desktop platform.
                         </h2>
-                        <p data-i18n="download.desc">
+                        <p data-i18n-html="download.desc">
                             *For personal use, not for commercial purposes.
-                            A donation is always welcome ❤️
+                            <a href="#" class="donate-link"
+                                >A donation is always welcome ❤️</a
+                            >
                         </p>
                     </div>
 
@@ -786,6 +835,7 @@
 
         <script src="assets/js/i18n.js"></script>
         <script src="assets/js/theme.js"></script>
+        <script src="assets/js/nav.js"></script>
         <script src="assets/js/demo-table.js"></script>
         <script src="assets/js/downloads.js"></script>
         <script src="assets/js/feature-cards.js"></script>

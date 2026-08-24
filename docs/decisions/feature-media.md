@@ -82,3 +82,23 @@ keep this override if the modal's `display` value ever changes.
 are translated like every other string — see `docs/decisions/i18n.md` and the
 `sync-i18n` skill. The GIFs themselves aren't localized (no audio/on-screen
 text expected in them); revisit only if that changes.
+
+## First-visit discovery hint (v1 - expect to iterate)
+
+Both gestures (click-the-card-to-flip, click-the-play-button-for-the-modal)
+turned out to be non-obvious to a first-time visitor. `feature-cards.js` now
+watches the first `.feature-card.is-flippable` with an `IntersectionObserver`
+and, the first time it scrolls into view, adds `.is-nudging` to its
+`.feature-card-flipper` (a brief `rotateY` wiggle previewing the flip) and its
+`.feature-card-play` (an expanding-ring `box-shadow` pulse) - both are plain
+CSS `@keyframes`, removed via `animationend` so the class doesn't linger.
+Fires once per page load; skipped entirely if the visitor already flipped a
+card or opened the modal before the observer would've fired
+(`hasInteracted`), so it never nudges something already discovered.
+`prefers-reduced-motion` needs no special handling here - the site's existing
+global `animation-duration: 0.001ms !important` override (styles.css §18)
+already neuters it like every other animation.
+
+This is a first pass, not a settled design - timing, amplitude, and whether
+it should also persist across visits (currently resets every page load, not
+`localStorage`-backed) are all open to revisit once it's been seen in use.

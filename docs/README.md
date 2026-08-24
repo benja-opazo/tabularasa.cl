@@ -18,6 +18,8 @@ this folder is where the reasoning behind them lives.
 | `decisions/deploy.md`     | Why GitHub Actions + `wrangler deploy` over dashboard-only Cloudflare Pages, and the exact secret/dashboard setup steps a human still has to do. |
 | `decisions/copy.md`       | Where every factual marketing claim on the page came from, so it can be re-verified instead of re-guessed.                                       |
 | `decisions/download-redirect.md` | The `/latest/<platform>` Worker-rendered landing page - why a click-through OG page over a bare 302, why this repo owns it, what's unverified (Cloudflare zone, token scope). |
+| `decisions/mobile-nav.md` | The hamburger menu below `860px` - why it reverses the earlier "no hamburger needed" call, why Pricing stays visible while Download moves into the panel, the sticky-positioning bug fix. |
+| `decisions/mobile-polish.md` | Fixing the mobile "wall of cards" with icon badges + a Trust section background band (applied at every width), legibility font-size bumps, the footer's 3-column grid. |
 
 ## Cold-start read order
 

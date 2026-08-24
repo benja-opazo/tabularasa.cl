@@ -90,7 +90,12 @@ site-wide rewrite.
 
 Mobile-first per the brief ("mobile as a centerpiece"). Two breakpoints,
 `styles.css` §16: `640px` (2-up feature grid, 3-up download cards, footer goes
-horizontal) and `860px` (full nav appears, 3-up feature grid). Below `860px` the
-header nav collapses to just the theme toggle + a persistent small "Download"
-button - no hamburger menu, matching `benjaopazoc.cl`'s "don't add one unless nav
-actually grows" rule; three anchor links don't need it.
+horizontal) and `860px` (full nav appears, 3-up feature grid). **Reversed
+decision** (was: no hamburger menu below `860px`, just the theme toggle + a
+persistent "Download" button - "three anchor links don't need it," matching
+`benjaopazoc.cl`'s convention at the time). That stopped holding once
+`pricing.html` added a third nav link with no way to reach it below `860px`
+except scrolling to the footer. Below `860px` there's now a hamburger
+(`.nav-toggle` + `#mobile-nav`) holding Features/Demo/Pricing/Download, and
+the persistent header Download button only shows at `>=860px` alongside the
+full nav - full rationale: `docs/decisions/mobile-nav.md`.

@@ -48,11 +48,13 @@
   });
 
   function toggleFlip(card) {
+    hasInteracted = true;
     var flipped = card.classList.toggle("is-flipped");
     card.setAttribute("aria-pressed", flipped ? "true" : "false");
   }
 
   function openModal(card, trigger) {
+    hasInteracted = true;
     var gif = card.getAttribute("data-gif") || "";
     var title = card.querySelector("h3");
 
@@ -86,4 +88,43 @@
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && !modal.hidden) closeModal();
   });
+
+  // First-visit discovery hint, v1 (expect to iterate): once the first
+  // card scrolls into view, briefly preview the flip and pulse the play
+  // button so both gestures read as interactive. Fires once; skipped if the
+  // user already found either gesture before it would trigger.
+  var hasInteracted = false;
+  var firstCard = cards[0];
+  if (firstCard && "IntersectionObserver" in window) {
+    var flipper = firstCard.querySelector(".feature-card-flipper");
+    var playBtn = firstCard.querySelector(".feature-card-play");
+    var io = new IntersectionObserver(
+      function (entries) {
+        if (hasInteracted) {
+          io.disconnect();
+          return;
+        }
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          io.disconnect();
+          nudge(flipper);
+          nudge(playBtn);
+        });
+      },
+      // rootMargin shrinks the observed area to the top 3/5 of the
+      // viewport; threshold: 1 then only fires once the whole card fits
+      // inside that region, i.e. fully visible AND scrolled up to 3/5.
+      { threshold: 1.0, rootMargin: "0px 0px -40% 0px" },
+    );
+    io.observe(firstCard);
+  }
+
+  function nudge(el) {
+    if (!el) return;
+    el.classList.add("is-nudging");
+    el.addEventListener("animationend", function handler() {
+      el.classList.remove("is-nudging");
+      el.removeEventListener("animationend", handler);
+    });
+  }
 })();

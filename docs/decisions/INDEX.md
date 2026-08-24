@@ -10,6 +10,21 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 - Chrome text uses the system-ui stack (no vendored sans) - matches the app's actual font choice exactly, not an approximation.
 - Icon glyphs use the app's exact Lucide codepoints from `icons.rs`; anything without a known codepoint gets a hand-drawn SVG instead of a guess.
 
+## Mobile navigation (`mobile-nav.md`)
+
+- **Reversed decision:** below `860px` there's now a hamburger menu (`.nav-toggle` + `#mobile-nav`) instead of no menu at all - the earlier "three links don't need one" call stopped holding once `pricing.html` added a third link with no mobile way to reach it.
+- **Pricing stays directly visible** at every width (`.nav-pricing`, never hidden) - it was the specific link mobile visitors were losing. Download is what's actually demoted - no persistent header button below `860px`, it lives inside the hamburger panel instead.
+- `site/assets/js/nav.js` (new file) closes the panel on link click, outside click, Escape, or crossing back to `>=860px`.
+- Bug fixed: `.mobile-nav` needs `position: sticky; top: 64px` like the header itself, or it scrolls out of view with the page and is only reachable at the very top.
+- Same hand-sync constraint as the rest of the shared chrome - `index.html` and `pricing.html` both need the same edit.
+
+## Mobile polish: cards, legibility, footer (`mobile-polish.md`)
+
+- "Wall of cards" fixed with accent-tinted icon badges (`.feature-card .icon`) and a `--panel-2` background band on `#trust` - both applied at every width, not just mobile, per "the page should look the same in both modes."
+- Deliberately not a horizontal-scroll carousel - that would hide cards behind a swipe gesture, undermining the discoverability work already done for the flip/play gestures (`feature-media.md`).
+- `.feature-card p` / `.download-card p` font-size bumped (15px/14.5px) for legibility - same values everywhere, not mobile-only.
+- `.footer-links` is now a fixed 3-column CSS grid at every width instead of an unpredictable `flex-wrap`.
+
 ## Demo table (`demo-table.md`)
 
 - The showcase is a hardcoded ~18-row fixture with a real client-side state machine - no engine, no backend.
@@ -54,6 +69,7 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 - GIFs aren't shipped yet (`site/assets/img/features/<slug>.gif`, exact filenames in the doc) — missing files fall back to a "Demo coming soon" message instead of a broken image.
 - The play icon is a hand-drawn SVG (no Lucide play/video codepoint exists in `icons.rs`), matching the existing platform-icon/theme-toggle convention.
 - `.feature-modal[hidden] { display: none; }` is required — an author `display` rule otherwise always beats the UA `[hidden]` default.
+- **v1, iterating:** the first card nudges once (flip preview + play-button pulse) the first time it scrolls into view, skipped if the visitor already found either gesture first.
 
 ## Ambient background grid (`ambient-grid.md`)
 
@@ -67,7 +83,7 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 - The site's first second page - `site/pricing.html` duplicates `index.html`'s head/header/footer by hand (no build step means no shared-layout mechanism); both files need manual edits kept in sync.
 - Feature comparison table shows the **same** feature set for Personal and Enterprise on purpose - only the License row differs, by design (not a bug).
 - "Contact for pricing" is wired to `mailto:tabularasa@benjaopazoc.cl` and styled as a normal `.btn-primary`; "Donate" is still an honest stub (`href="#"`) - no donation URL exists anywhere in either repo, don't invent one.
-- `.btn-donate` is deliberately more visually prominent (bigger, glowing) than `.btn-primary` - direct request, not a mistake.
+- Donate is a **standalone prompt below both cards** (`.pricing-donate-standalone`), not nested in the Personal card - both cards now have the identical shape, so `margin-top: auto` reliably aligns both primary buttons on the same line.
 
 ## Copy (`copy.md`)
 

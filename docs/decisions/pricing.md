@@ -62,13 +62,51 @@ copy-paste bug when every other row is identical.
   wiring a guessed payment link would be actively wrong, not just
   incomplete. Placeholder until a real URL is provided.
 
-## Donate button is deliberately louder than Download or Contact
+## Donate is a standalone, quiet prompt below both cards - not inside Personal
 
-`.btn-donate` (styles.css section 20) is taller, has a larger font, and adds
-an accent-colored glow (`box-shadow`, not just a fill change) that neither
-`.btn-primary` (Download) nor `.btn-stub` (Contact) has — direct request:
-"more prominent than either button." It sits directly under Download in the
-Personal column, not centered under the whole table, also per the brief.
+**Reversed decision** (was: a louder `.btn-donate` button sitting directly
+under Download in the Personal column, "more prominent than either button" -
+that never actually shipped; the button that did ship, `.pricing-donate-link`,
+was already a small subdued text link, just still nested inside Personal's
+card). Moved out entirely to `.pricing-donate-standalone`, a centered
+"Enjoying Tabula Rasa? Donate ❤️" line below the two-card grid, for two
+reasons:
+
+- **Alignment.** With Donate stacked inside Personal's `.pricing-card-actions`
+  and nothing equivalent in Enterprise's, the two cards' primary buttons
+  (Download / Contact for pricing) couldn't land on the same line no matter
+  how the flexbox was tuned - one action block always had more stacked
+  content than the other. Pulling Donate out entirely means both cards now
+  contain the exact same shape (header/price/tagline/highlights/one button),
+  so `margin-top: auto` on `.pricing-card-actions` reliably pins both
+  buttons to the bottom of the (`align-items: stretch`) equal-height cards -
+  the only technique that survives the two taglines wrapping to different
+  line counts.
+- **Framing.** Donating isn't really a Personal-tier feature - it reads
+  better as a general, low-key "if this was useful" ask than something
+  bundled into one specific pricing column.
+
+Still `href="#"` - no donation URL exists anywhere in this repo or
+`tabula-rasa` (checked before building this) - see "One honest stub" above.
+
+## `.pricing-donate-link` renamed to `.donate-link` - reused on index.html too
+
+The download section's copy (`download.desc` in `en.json`/`es.json`) now
+wraps its own donation phrase ("A donation is always welcome ❤️") in the
+same quiet, underlined link style, not just plain text - same
+`href="#"` honest-stub reasoning as above. Since the link style is no
+longer pricing-page-specific, the class dropped its `pricing-` prefix.
+The one thing that *is* still pricing-specific is the standalone wrapper
+around it (`.pricing-donate-standalone`, the centered line + margin below
+both cards) - only the link's own color/underline treatment moved to the
+generic name.
+
+## Price font-size now matches on both cards
+
+`.pricing-price` (the "Free" / "Contact us" line) used to be overridden to
+`1.4rem` on the Enterprise card, smaller than Personal's `2rem` - an
+unintentional inconsistency, not a documented decision. Removed the
+override so both share the same base size.
 
 ## No new JS
 

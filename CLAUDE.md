@@ -67,6 +67,7 @@ site/pricing.html                # Second page - feature comparison table. Dupli
 site/assets/css/tokens.css       # ALL colors + site-level spacing/type tokens. Two-tier - see theming.md.
 site/assets/css/styles.css       # Every other style. Numbered TOC at top - keep it updated.
 site/assets/js/theme.js          # Toggle button + persistence + OS-follow (anti-flash script is inline in index.html's <head>).
+site/assets/js/nav.js            # Mobile hamburger menu (<860px) - open/close, closes on link/outside click/Escape/resize. See mobile-nav.md.
 site/assets/js/demo-table.js     # The interactive grid replica - hardcoded dataset + state machine. See demo-table.md.
 site/assets/js/downloads.js      # Fetches the real release manifest, detects OS, populates download cards. See downloads.md.
 site/assets/js/feature-cards.js  # Flip-to-GIF + demo modal on the 4 Shipped feature cards. See feature-media.md.
