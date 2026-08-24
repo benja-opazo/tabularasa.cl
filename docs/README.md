@@ -20,6 +20,7 @@ this folder is where the reasoning behind them lives.
 | `decisions/download-redirect.md` | The `/latest/<platform>` Worker-rendered landing page - why a click-through OG page over a bare 302, why this repo owns it, what's unverified (Cloudflare zone, token scope). |
 | `decisions/mobile-nav.md` | The hamburger menu below `860px` - why it reverses the earlier "no hamburger needed" call, why Pricing stays visible while Download moves into the panel, the sticky-positioning bug fix. |
 | `decisions/mobile-polish.md` | Fixing the mobile "wall of cards" with icon badges + a Trust section background band (applied at every width), legibility font-size bumps, the footer's 3-column grid. |
+| `decisions/donations.md` | The `donations.html` "coming soon" stub both donate links now point to - why not remove the buttons, why not go live, why still no shared-fragment tooling at the third page. |
 
 ## Cold-start read order
 

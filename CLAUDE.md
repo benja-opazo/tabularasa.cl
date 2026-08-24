@@ -64,6 +64,7 @@ exception to this (see the file map below) - not something the linter checks.
 ```
 site/index.html                  # The main page (single page, anchor-linked sections).
 site/pricing.html                # Second page - feature comparison table. Duplicates index.html's head/header/footer by hand. See pricing.md.
+site/donations.html               # Third page - "coming soon" stub all donate links point to. Same hand-duplicated shell. See donations.md.
 site/assets/css/tokens.css       # ALL colors + site-level spacing/type tokens. Two-tier - see theming.md.
 site/assets/css/styles.css       # Every other style. Numbered TOC at top - keep it updated.
 site/assets/js/theme.js          # Toggle button + persistence + OS-follow (anti-flash script is inline in index.html's <head>).
@@ -89,10 +90,13 @@ docs/decisions/                  # One file per topic; INDEX.md is the one-line 
 
 There is no `layouts/` or per-page templating. `pricing.html` (added per
 `docs/decisions/pricing.md`) duplicates `index.html`'s head/header/footer by
-hand rather than introducing a build step — if a **third** page gets added,
-that's the point to revisit whether some form of shared-fragment tooling is
-finally worth it. Don't silently add more pages without a matching decision
-entry.
+hand rather than introducing a build step. **The flagged third page arrived**
+(`donations.html`, see `docs/decisions/donations.md`) - re-examined the
+shared-fragment-tooling question at that point and still called it not
+worth it, since the new page is a minimal, likely-temporary placeholder, not
+a reason to add build tooling to an otherwise build-free site. Revisit again
+if a fourth, more substantial page shows up. Don't silently add more pages
+without a matching decision entry.
 
 ## How theming works
 

@@ -82,8 +82,16 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 
 - The site's first second page - `site/pricing.html` duplicates `index.html`'s head/header/footer by hand (no build step means no shared-layout mechanism); both files need manual edits kept in sync.
 - Feature comparison table shows the **same** feature set for Personal and Enterprise on purpose - only the License row differs, by design (not a bug).
-- "Contact for pricing" is wired to `mailto:tabularasa@benjaopazoc.cl` and styled as a normal `.btn-primary`; "Donate" is still an honest stub (`href="#"`) - no donation URL exists anywhere in either repo, don't invent one.
+- "Contact for pricing" is wired to `mailto:tabularasa@benjaopazoc.cl` and styled as a normal `.btn-primary`; "Donate" now links to `donations.html` (a coming-soon stub) instead of `href="#"` - see `donations.md`.
 - Donate is a **standalone prompt below both cards** (`.pricing-donate-standalone`), not nested in the Personal card - both cards now have the identical shape, so `margin-top: auto` reliably aligns both primary buttons on the same line.
+- The link's own style, `.donate-link`, is generic (renamed from `.pricing-donate-link`) - reused for the inline donation link in `index.html`'s download section too.
+
+## Donations page (`donations.md`)
+
+- `donations.html` - the third static page, same hand-duplicated shell as `pricing.html`. Both existing donate entry points now link here instead of `href="#"`.
+- Exists because the buttons couldn't be removed (reads as a rug-pull) but also couldn't go live (no server to safely process/verify a donation yet) - an honest "coming soon" page threads that needle.
+- Revisited `CLAUDE.md`'s flagged "third page" checkpoint (shared-fragment tooling) and still called it not worth it - this page is a minimal, likely-temporary placeholder.
+- Not linked from the main nav or footer - only reachable via the existing donate CTAs, since it isn't a primary destination.
 
 ## Copy (`copy.md`)
 
