@@ -34,4 +34,5 @@ binding = "ASSETS"
 routes = [
   { pattern = "downloads.tabularasa.cl/latest/*", zone_name = "tabularasa.cl" },
   { pattern = "downloads.tabularasa.cl/assets/*", zone_name = "tabularasa.cl" },
+  { pattern = "downloads.tabularasa.cl/robots.txt", zone_name = "tabularasa.cl" },
 ]

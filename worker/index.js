@@ -277,9 +277,11 @@ const SCRIPTS_HTML = `<script src="/assets/js/i18n.js"></script>
   });
 </script>`;
 
-// Renders the click-through landing page. No og:image is set - matches
-// index.html's own convention (docs/decisions/copy.md: "none set" rather
-// than a placeholder) since no asset for one exists yet.
+const OG_IMAGE_URL = `${SITE_URL}/assets/img/og-image.png`;
+
+// Renders the click-through landing page. Reuses the same og-image as the
+// main site (docs/decisions/seo.md's capture pipeline) rather than a
+// platform-specific one - not worth three near-identical images.
 function renderPage({ platform, version, installerUrl, size, failed, lang, themeAttrLiteral }) {
   const platformName = PLATFORM_NAMES[platform];
   const c = COPY[lang];
@@ -326,8 +328,12 @@ function renderPage({ platform, version, installerUrl, size, failed, lang, theme
 <meta property="og:title" content="${title}" />
 <meta property="og:description" content="${escapeHtml(description)}" />
 <meta property="og:url" content="${pageUrl}" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="${OG_IMAGE_URL}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
 <link rel="canonical" href="${pageUrl}" />
+<meta name="robots" content="noindex" />
 ${antiFlashScript(themeAttrLiteral)}
 <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg" />
 <link rel="stylesheet" href="/assets/css/tokens.css" />
@@ -368,26 +374,43 @@ async function handleLatest(platform, lang, themeAttrLiteral) {
       themeAttrLiteral,
     });
     return new Response(html, {
-      headers: { "content-type": "text/html; charset=UTF-8" },
+      headers: {
+        "content-type": "text/html; charset=UTF-8",
+        "x-robots-tag": "noindex",
+      },
     });
   } catch (err) {
     const html = renderPage({ platform, failed: true, lang, themeAttrLiteral });
     return new Response(html, {
       status: 502,
-      headers: { "content-type": "text/html; charset=UTF-8" },
+      headers: {
+        "content-type": "text/html; charset=UTF-8",
+        "x-robots-tag": "noindex",
+      },
     });
   }
 }
 
+// Belt-and-suspenders alongside the noindex meta/header above: a crawler
+// that respects robots.txt never fetches /latest/* at all, on top of being
+// told not to index it if it does. Disallows the whole host - nothing on
+// downloads.tabularasa.cl (redirect pages, shared CSS/JS, R2 release
+// binaries) is meant to be a search result.
+const DOWNLOADS_ROBOTS_TXT = "User-agent: *\nDisallow: /\n";
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (
-      url.hostname === "downloads.tabularasa.cl" &&
-      url.pathname.startsWith("/latest/")
-    ) {
-      const platform = url.pathname.slice("/latest/".length).replace(/\/+$/, "");
-      return handleLatest(platform, detectLang(url, request), detectThemeAttr(url));
+    if (url.hostname === "downloads.tabularasa.cl") {
+      if (url.pathname === "/robots.txt") {
+        return new Response(DOWNLOADS_ROBOTS_TXT, {
+          headers: { "content-type": "text/plain; charset=UTF-8" },
+        });
+      }
+      if (url.pathname.startsWith("/latest/")) {
+        const platform = url.pathname.slice("/latest/".length).replace(/\/+$/, "");
+        return handleLatest(platform, detectLang(url, request), detectThemeAttr(url));
+      }
     }
     return env.ASSETS.fetch(request);
   },

@@ -9,6 +9,7 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 - Fonts are **vendored, not CDN-loaded**: JetBrains Mono + the Lucide icon font, copied byte-for-byte from `tabula-rasa/assets/fonts/`.
 - Chrome text uses the system-ui stack (no vendored sans) - matches the app's actual font choice exactly, not an approximation.
 - Icon glyphs use the app's exact Lucide codepoints from `icons.rs`; anything without a known codepoint gets a hand-drawn SVG instead of a guess.
+- **`--on-accent-text`** (new token) fixes unreadable `.btn-primary`/`.skip-link` text in light mode - `--accent` doesn't flip luminance between themes like every other token does, so pairing it with `--panel-2` (which does flip) only worked in dark mode by coincidence. Mirrors the app's own `Palette::on_accent_text` fix for the identical bug.
 
 ## Mobile navigation (`mobile-nav.md`)
 
@@ -95,6 +96,15 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 - Exists because the buttons couldn't be removed (reads as a rug-pull) but also couldn't go live (no server to safely process/verify a donation yet) - an honest "coming soon" page threads that needle.
 - Revisited `CLAUDE.md`'s flagged "third page" checkpoint (shared-fragment tooling) and still called it not worth it - this page is a minimal, likely-temporary placeholder.
 - Not linked from the main nav or footer - only reachable via the existing donate CTAs, since it isn't a primary destination.
+
+## SEO basics (`seo.md`)
+
+- `robots.txt`/`sitemap.xml` added for `tabularasa.cl` - fully open, sitemap lists all three real pages (including `donations.html`, a stub but still a valid page).
+- Self-referencing `<link rel="canonical">` added to `index.html`/`pricing.html`/`donations.html` - was missing despite `og:url` already being correct.
+- `/latest/<platform>` (`worker/index.js`) is kept out of search results **two** ways: `noindex` meta + `X-Robots-Tag` header on the page itself, **and** a `downloads.tabularasa.cl/robots.txt` (needs its own exact-path `wrangler.toml` route, same reasoning as `/assets/*`) disallowing the whole host - deliberately redundant, not either/or.
+- `SoftwareApplication` JSON-LD added to `index.html` - deliberately **no `aggregateRating`** (no real rating data, never fabricate one - also the only property Google actually requires for its "Software App" rich result, so this won't trigger that specific snippet) and **no `softwareVersion`** (would go stale in static HTML; not a required/recommended field anyway).
+- `og:image` is a **screenshot of the interactive showcase demo**, not a hand-designed graphic or a hero-section screenshot (rejected - just repeats the title/description text, no new information) - regenerable on demand via `scripts/og-image/capture.mjs` (the `update-og-image` skill), since the demo has zero network dependency and can be screenshotted headlessly over `file://`.
+- Known gap, not addressed this round: Spanish content has no SEO visibility (accepted i18n trade-off).
 
 ## Copy (`copy.md`)
 

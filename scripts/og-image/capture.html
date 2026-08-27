@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="../../site/assets/css/tokens.css" />
+        <link rel="stylesheet" href="../../site/assets/css/styles.css" />
+        <style>
+            html,
+            body {
+                margin: 0;
+                width: 1200px;
+                height: 630px;
+                background: var(--bg);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .og-frame-wrap {
+                width: 1120px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="og-frame-wrap">
+            <!-- Same markup index.html uses for #tr-demo-root - demo-table.js
+                 populates it identically, no fetch()/network dependency. -->
+            <div
+                class="showcase-frame"
+                id="tr-demo-root"
+                tabindex="-1"
+                aria-hidden="true"
+            ></div>
+        </div>
+        <script src="../../site/assets/js/demo-table.js"></script>
+    </body>
+</html>

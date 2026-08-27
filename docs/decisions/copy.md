@@ -56,8 +56,6 @@ review lands; don't invent placeholder legal text here.
 
 ## Known placeholders still needing the owner's input
 
-- **OG image** - none set (`og:image` meta tag omitted rather than pointing at a
-  placeholder). Add one before this URL gets shared anywhere link previews matter.
 - **Contact** - no public-facing email exists yet; the footer link was removed
   rather than left pointing at a personal address (see above). Add it back once
   one is set up.

@@ -8,8 +8,8 @@ in explicitly labeled blocks:
 1. **App-faithful tokens** - `--bg`, `--panel`, `--panel-2`, `--titlebar`, `--text`,
    `--dim`, `--faint`, `--border`, `--grid`, `--grid-alt`, `--gutter`,
    `--gutter-text`, `--hover`, `--green`, `--orange`, `--red`, `--purple`,
-   `--blue`, `--search`, `--accent`, and the derived alpha tints
-   (`--accent-soft`, `--block-selection`, `--line-selection`, `--match-bg`,
+   `--blue`, `--search`, `--accent`, `--on-accent-text`, and the derived alpha
+   tints (`--accent-soft`, `--block-selection`, `--line-selection`, `--match-bg`,
    `--current-match-bg`). Every hex is copied verbatim from
    `tabula-rasa/src/theme.rs`'s `DARK`/`LIGHT` `Palette` consts - see
    `tabula-rasa/docs/ui-ux/visual-system.md` for the canonical table this was
@@ -34,6 +34,41 @@ app-faithful block in `tokens.css` by hand, value for value. This is a rare even
 (the app's `theme.rs` header itself calls the accent "the one user-tweakable
 brand knob" and the rest fixed), so no tooling was built for it - revisit if that
 assumption stops holding.
+
+## `--on-accent-text`: text/glyphs on an accent fill isn't always `--panel-2`
+
+`--accent` (`#66d9ef`) is the one app-faithful token that stays the **same fixed
+hex in both themes** - every other token's luminance flips between dark/light,
+`--accent` doesn't. `.btn-primary`/`.skip-link` used to pair `background:
+var(--accent)` with `color: var(--panel-2)`, which only reads correctly by
+coincidence in dark mode (`panel-2` is dark there, ≈8.65:1 against accent). In
+light mode `panel-2` is light too - ≈1.2:1, unreadable. This was a straight copy
+of a bug already found and fixed in the app (`tabula-rasa/src/theme.rs`'s
+`theme::primary_button`), fixed here the same way it was fixed there
+(`Palette::on_accent_text`): a **separate token**, not a fix to `--panel-2`
+itself, since `--panel-2` is correctly used as a background everywhere else -
+this bug is specifically about it being wrong as *foreground text on an accent
+fill*.
+
+Per-theme value is whichever neutral token actually clears WCAG's 4.5:1 body-text
+bar against `--accent`:
+
+| Theme | `--on-accent-text` | Same value as | Contrast vs. `--accent` |
+| --- | --- | --- | --- |
+| Dark | `#2a2b26` | `--panel-2` (dark) | ≈8.65:1 |
+| Light | `#2b2c27` | `--text` (light) | ≈8.65:1 (`--panel-2` here is ≈1.2:1 - fails) |
+
+Declared in all **three** places dark/light tokens live in `tokens.css`
+(`:root`/`[data-theme="dark"]`, `[data-theme="light"]`, and the
+`prefers-color-scheme` pre-JS fallback block) - missing the third would leave a
+visitor who never explicitly picked a theme, and whose OS is in light mode,
+seeing the broken dark value until JS/the anti-flash script catches up.
+
+**Known ad hoc precedent, not yet folded in:** `.tr-cell-heat` (`styles.css`)
+already hand-solves the same *class* of problem for the heatmap demo cell (dark
+uses `panel-2`, a light-theme override switches to `text`) - but its background
+is a blue/red `color-mix`, not `--accent`, so it's a different bug with
+different contrast math, not migrated to `--on-accent-text` here.
 
 ## Dark default, OS-follow
 

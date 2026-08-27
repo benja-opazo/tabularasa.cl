@@ -21,6 +21,7 @@ this folder is where the reasoning behind them lives.
 | `decisions/mobile-nav.md` | The hamburger menu below `860px` - why it reverses the earlier "no hamburger needed" call, why Pricing stays visible while Download moves into the panel, the sticky-positioning bug fix. |
 | `decisions/mobile-polish.md` | Fixing the mobile "wall of cards" with icon badges + a Trust section background band (applied at every width), legibility font-size bumps, the footer's 3-column grid. |
 | `decisions/donations.md` | The `donations.html` "coming soon" stub both donate links now point to - why not remove the buttons, why not go live, why still no shared-fragment tooling at the third page. |
+| `decisions/seo.md`       | `robots.txt`/`sitemap.xml`, canonical tags, and why the `/latest/<platform>` landing pages are `noindex`'d two ways (meta/header + a dedicated `robots.txt` route). |
 
 ## Cold-start read order
 

@@ -82,9 +82,9 @@ Graph tags, served by a Cloudflare Worker.
   loads hydrates it - no separate copy path. That only works because
   `i18n.js` now also accepts `?lang=` as a detection source (it can't read
   this origin's `localStorage` either) - see `docs/decisions/i18n.md`.
-- **No `og:image`.** Matches `copy.md`'s existing convention for the main
-  page (`og:image` omitted rather than pointing at a placeholder) - no asset
-  exists yet. Add one to both places together if that ever changes.
+- **`og:image`.** Points at the same `/assets/img/og-image.png` the rest of
+  the site uses (see `docs/decisions/seo.md`) rather than a
+  platform-specific image - not worth three near-identical variants.
 - **Manifest is fetched server-side, no CORS needed.** `worker/index.js`'s
   `fetch()` call to `manifest.json` runs in the Worker, not a browser - CORS
   is a browser-only concept, so this path doesn't depend on the CORS header
@@ -123,12 +123,15 @@ the hostname + path:
   (same-origin from the browser's point of view, since it requested
   `/assets/...` from `downloads.tabularasa.cl` in the first place) - but
   only for paths an actual Route sends here.
-- Any other path on `downloads.tabularasa.cl` (anything not `/latest/*` or
-  `/assets/*`) never reaches this Worker at all - Cloudflare Routes are
-  path-scoped, not "this Worker owns the whole hostname." It falls through
-  to whatever else serves that host (today, the R2 Custom Domain for
-  `/releases/*`, and a plain 404 for anything not covered by that or by a
-  Route).
+- `downloads.tabularasa.cl/robots.txt` (a **third** route, exact path, no
+  wildcard) → a host-wide `Disallow: /` - see `docs/decisions/seo.md` for
+  why this page needs to stay out of search results two ways.
+- Any other path on `downloads.tabularasa.cl` (anything not `/latest/*`,
+  `/assets/*`, or `/robots.txt`) never reaches this Worker at all -
+  Cloudflare Routes are path-scoped, not "this Worker owns the whole
+  hostname." It falls through to whatever else serves that host (today, the
+  R2 Custom Domain for `/releases/*`, and a plain 404 for anything not
+  covered by that or by a Route).
 
 `TARGET_BY_PLATFORM` (platform key → Rust target triple) is duplicated **by
 hand** from `site/assets/js/downloads.js` - there's no bundler shared-module

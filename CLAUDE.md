@@ -76,6 +76,11 @@ site/assets/img/features/        # Feature-card GIFs (huge-files.gif, filter-sor
 site/assets/js/ambient-grid.js   # Mouse-tracked glow on the decorative side-gutter grid panels. See ambient-grid.md.
 site/assets/fonts/               # Vendored JetBrainsMono-Regular.ttf + lucide.ttf, copied byte-for-byte from tabula-rasa/assets/fonts/, plus their licenses.
 site/assets/img/favicon.svg      # Brand mark (accent-colored rounded square, matches the nav brand mark).
+site/assets/img/og-image.png     # Shared social-share preview image - a screenshot of the showcase demo. Regenerate via the update-og-image skill. See seo.md.
+site/robots.txt                  # Fully open, points at sitemap.xml. See docs/decisions/seo.md.
+site/sitemap.xml                 # Lists the three real pages, no <lastmod> (no build step to keep it accurate).
+scripts/og-image/                # capture.html (isolated demo render) + capture.mjs (headless-Chromium screenshot) - regenerates og-image.png. See seo.md.
+.claude/skills/update-og-image/  # The official workflow for regenerating og-image.png.
 site/assets/i18n/en.json         # Canonical EN string dictionary, one flat key per string. See i18n.md.
 site/assets/i18n/es.json         # ES translation, same key set as en.json - kept in sync via the sync-i18n skill.
 site/assets/js/i18n.js           # Fetches the active locale, background-loads the rest, applies the dictionary, toggle button. See i18n.md.
@@ -154,15 +159,19 @@ regardless.
 
 ## How the download redirect worker works
 
-`worker/index.js` is this repo's own Worker `main` script, handling **two**
+`worker/index.js` is this repo's own Worker `main` script, handling **three**
 `wrangler.toml` route patterns on `downloads.tabularasa.cl`:
 `/latest/<platform>` - the canonical destination for every download click on
-the site, not just a CORS fallback - and `/assets/*`. The second route only
-exists so this page's CSS/JS/font requests actually reach the Worker at all:
+the site, not just a CORS fallback - `/assets/*`, and `/robots.txt`.
 Cloudflare Routes match by path pattern, not "this Worker now owns the whole
-hostname," so without it `/assets/...` would miss the Worker entirely and
-404 against whatever else serves that host. Once a request does reach the
-Worker, anything other than `/latest/*` falls through to
+hostname," so each of those needs its own entry or it would miss the Worker
+entirely and 404 (or hit the wrong content) against whatever else serves
+that host - `/assets/*` is why this page's CSS/JS/font requests reach the
+Worker at all, and `/robots.txt` serves a host-wide `Disallow: /` (these
+pages should never appear in search results - see `docs/decisions/seo.md`
+for the full `noindex` story, including the meta tag + header on the
+`/latest/<platform>` responses themselves). Once a request does reach the
+Worker, anything other than those two dynamic paths falls through to
 `env.ASSETS.fetch()` - the same static files `tabularasa.cl` serves, which
 is what lets this page reuse the **real** site chrome (`tokens.css`/
 `styles.css`, header, footer, ambient-grid panels,

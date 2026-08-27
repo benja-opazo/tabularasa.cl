@@ -25,7 +25,40 @@
             content="A fast, cross-platform tabular viewer/editor. Instantly opens massive files and it's free to use."
         />
         <meta property="og:url" content="https://tabularasa.cl" />
-        <meta name="twitter:card" content="summary" />
+        <meta
+            property="og:image"
+            content="https://tabularasa.cl/assets/img/og-image.png"
+        />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <link rel="canonical" href="https://tabularasa.cl/" />
+
+        <!-- Structured data (docs/decisions/seo.md) - `description` mirrors
+             `meta.description` above/en.json; keep both in sync. No
+             aggregateRating: there's no real rating data, never fabricate one. -->
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "Tabula Rasa",
+                "description": "Tabula Rasa is a fast, cross-platform tabular viewer and editor written in Rust. Instantly opens massive files and it's free to use.",
+                "url": "https://tabularasa.cl",
+                "downloadUrl": "https://tabularasa.cl/#download",
+                "image": "https://tabularasa.cl/assets/img/og-image.png",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Linux, Windows, macOS",
+                "author": {
+                    "@type": "Person",
+                    "name": "Benjamín Opazo"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "USD"
+                }
+            }
+        </script>
 
         <!-- Prevent dark/light flash before CSS+JS load - mirrors benjaopazoc.cl's
        convention. Keep in sync with assets/js/theme.js (docs/decisions/theming.md). -->
