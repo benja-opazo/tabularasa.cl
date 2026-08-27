@@ -150,6 +150,14 @@
     });
   }
 
+  // Toggling dark/light must re-stamp `?theme=` too, not just a language
+  // switch - otherwise the /latest/<platform> landing page opens in whatever
+  // theme was active at page load. See theme.js's trthemechange.
+  document.addEventListener("trthemechange", function () {
+    updateHeroCta(platform);
+    syncCardLinks();
+  });
+
   if (!("fetch" in window)) {
     hideNote();
     return;

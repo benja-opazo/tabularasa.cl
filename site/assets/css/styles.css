@@ -132,6 +132,15 @@ a {
     color: var(--accent);
 }
 
+/* --accent stays fixed-luminance across themes (theming.md) - unreadable as a
+   real link's own text color in light mode. Keep the brand tint on the
+   underline only, full-contrast --text for the glyphs themselves. */
+.section-head p a.accent-text {
+    color: var(--text);
+    text-decoration-color: var(--accent);
+    text-underline-offset: 2px;
+}
+
 .section-head p {
     color: var(--dim);
     margin: 0;
@@ -558,6 +567,14 @@ a {
 .feature-card p .accent-text,
 .feature-card h3 .accent-text {
     color: var(--accent);
+}
+
+/* Same fix as .section-head p a.accent-text above - the trust-card's
+   "Enshittification" link is a real link, not decorative emphasis. */
+.feature-card h3 a.accent-text {
+    color: var(--text);
+    text-decoration-color: var(--accent);
+    text-underline-offset: 2px;
 }
 
 .feature-card .status-pill {
@@ -1646,7 +1663,7 @@ mark.tr-match.is-current {
 }
 
 .footer-bottom a {
-    color: var(--faint);
+    color: var(--text);
     text-decoration: underline;
     text-underline-offset: 2px;
 }

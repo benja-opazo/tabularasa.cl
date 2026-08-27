@@ -6,8 +6,18 @@
   var root = document.documentElement;
   var toggle = document.getElementById("theme-toggle");
 
-  function setTheme(theme) {
+  // Shared by the toggle AND OS-follow, so anything subscribed (downloads.js,
+  // for its `?theme=` links) picks up either path - mirrors trlangchange in
+  // i18n.js.
+  function applyTheme(theme) {
     root.setAttribute("data-theme", theme);
+    document.dispatchEvent(
+      new CustomEvent("trthemechange", { detail: { theme: theme } }),
+    );
+  }
+
+  function setTheme(theme) {
+    applyTheme(theme);
     localStorage.setItem("theme", theme);
   }
 
@@ -24,7 +34,7 @@
       .matchMedia("(prefers-color-scheme: dark)")
       .addEventListener("change", function (e) {
         if (!localStorage.getItem("theme")) {
-          root.setAttribute("data-theme", e.matches ? "dark" : "light");
+          applyTheme(e.matches ? "dark" : "light");
         }
       });
   }
