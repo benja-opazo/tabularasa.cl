@@ -81,17 +81,21 @@ Deliberately left out of `wrangler.toml` itself, same convention
 ## Runbook: setting up the `/latest/<platform>` redirect route
 
 One-time setup on top of the steps above, needed because `wrangler.toml` has
-a `main` script + a `routes` entry for the download-redirect worker (see
-`docs/decisions/download-redirect.md`). Do these **before** the first deploy
-that includes the `routes` entry - a bad zone name fails at deploy time, not
+a `main` script + **two** `routes` entries for the download-redirect worker
+on `downloads.tabularasa.cl` (see `docs/decisions/download-redirect.md`):
+`/latest/*` (the actual landing page) and `/assets/*` (so that page's
+CSS/JS/fonts, reused from the real site, actually reach the Worker - a
+Cloudflare Route only matches its own path pattern, it doesn't hand this
+Worker the whole hostname). Do these **before** the first deploy that
+includes the `routes` entries - a bad zone name fails at deploy time, not
 silently.
 
 1. **Confirm the zone.** Cloudflare dashboard → your account → *Websites* -
    `downloads.tabularasa.cl` should appear as a DNS record **inside** the
    `tabularasa.cl` zone (check that zone's DNS tab), not as its own separate
-   zone entry. `wrangler.toml`'s `routes` entry assumes
+   zone entry. `wrangler.toml`'s `routes` entries assume
    `zone_name = "tabularasa.cl"` - if `downloads.tabularasa.cl` actually lives
-   in a different zone, change `zone_name` to match before deploying.
+   in a different zone, change `zone_name` on both entries before deploying.
 
 2. ~~Widen the API token~~ - not applicable anymore. The old GitHub Actions
    pipeline needed a token scoped to `Zone / Workers Routes / Edit` to attach
@@ -102,18 +106,23 @@ silently.
    ```
    npx wrangler deploy --dry-run
    ```
-   Bundles `worker/index.js` and validates `wrangler.toml` (including the
-   `routes` entry) without publishing anything - catches a bad `zone_name` or
-   malformed route pattern here instead of mid-deploy.
+   Bundles `worker/index.js` and validates `wrangler.toml` (including both
+   `routes` entries) without publishing anything - catches a bad `zone_name`
+   or malformed route pattern here instead of mid-deploy.
 
 4. **Deploy** - either `npx wrangler deploy` locally, or trigger the manual
    publish from the Cloudflare dashboard's **Deployments** tab per the
    day-to-day steps above.
 
-5. **Confirm the route attached.** Dashboard → Workers & Pages →
-   `tabularasa-cl` → Settings → Domains & Routes -
-   `downloads.tabularasa.cl/latest/*` should now be listed as a Route,
-   alongside the existing `tabularasa.cl` custom domain.
+5. **Confirm both routes attached.** Dashboard → Workers & Pages →
+   `tabularasa-cl` → Settings → Domains & Routes - **both**
+   `downloads.tabularasa.cl/latest/*` **and**
+   `downloads.tabularasa.cl/assets/*` should be listed as Routes, alongside
+   the existing `tabularasa.cl` custom domain. Missing the second one is an
+   easy mistake with a confusing symptom: the landing page itself loads
+   (200), but loads completely unstyled with every script 404ing, since its
+   CSS/JS/font requests never reach the Worker at all - if that happens,
+   check this list before anything else.
 
 6. **Smoke test in production** (plain `curl`, no browser/JS involved - this
    is what a crawler sees too):

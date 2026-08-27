@@ -4,12 +4,13 @@
 # deploy root - there is no build step, so `site/` IS the deployed output, not
 # a generated artifact.
 #
-# `main` + the `routes` entry below exist for exactly one reason: the
-# /latest/<platform> redirect landing page on downloads.tabularasa.cl (see
-# docs/decisions/download-redirect.md). worker/index.js handles that one
-# route and falls through to env.ASSETS.fetch() for every other request,
-# including all of tabularasa.cl itself - the static site behaves exactly as
-# before.
+# `main` + the `routes` below exist for the /latest/<platform> redirect
+# landing page on downloads.tabularasa.cl (see
+# docs/decisions/download-redirect.md), which reuses the real site's CSS/JS
+# (hence the second route, for /assets/*). worker/index.js handles both
+# routes and falls through to env.ASSETS.fetch() otherwise - on
+# tabularasa.cl itself (a full Custom Domain, not a path-scoped Route) that
+# covers every request, so the static site behaves exactly as before.
 name = "tabularasa-cl"
 compatibility_date = "2026-08-05"
 workers_dev = true
@@ -21,10 +22,16 @@ directory = "./site"
 binding = "ASSETS"
 
 # downloads.tabularasa.cl already has an R2 Custom Domain serving /releases/*
-# (owned by the tabula-rasa repo's release pipeline) - a Worker Route on a
-# more specific path pattern takes precedence over that without needing to
-# move /releases/* off R2. Assumes downloads.tabularasa.cl lives in the same
+# (owned by the tabula-rasa repo's release pipeline) - Worker Routes on more
+# specific path patterns take precedence over that without needing to move
+# /releases/* off R2. Assumes downloads.tabularasa.cl lives in the same
 # "tabularasa.cl" zone - not yet verified (see the decision doc).
+#
+# Routes are matched by path pattern, not "this Worker now owns the
+# hostname" - /assets/* needs its own entry so the /latest/<platform> landing
+# page's CSS/JS/font requests actually reach this Worker (and fall through to
+# env.ASSETS.fetch()) instead of hitting the R2 custom domain and 404ing.
 routes = [
   { pattern = "downloads.tabularasa.cl/latest/*", zone_name = "tabularasa.cl" },
+  { pattern = "downloads.tabularasa.cl/assets/*", zone_name = "tabularasa.cl" },
 ]

@@ -56,9 +56,14 @@ Graph tags, served by a Cloudflare Worker.
   `styles.css`, includes the same header/footer/ambient-grid markup as
   `index.html` (hand-copied, same convention `pricing.html`/`donations.html`
   already use), and loads `i18n.js`/`theme.js`/`nav.js` - all of it resolved
-  via the same `env.ASSETS` binding that serves `tabularasa.cl`, since that
-  binding is hostname-agnostic. The one hard rule this creates: every
-  asset/script `src`/`href` in `worker/index.js` must be **root-relative**
+  via the same `env.ASSETS` binding that serves `tabularasa.cl`. **This
+  needed a second `wrangler.toml` route**, `downloads.tabularasa.cl/assets/*`
+  - a Cloudflare Route only sends matching paths to this Worker, so without
+  it `/assets/...` requests on that hostname would miss the Worker entirely
+  and 404 against whatever else serves it (the initial version of this
+  change shipped without that route and broke exactly this way - see git
+  history). Once a request does reach the Worker, every asset/script
+  `src`/`href` in `worker/index.js` must still be **root-relative**
   (`/assets/...`) - a bare relative path (`assets/...`, what `index.html`
   itself uses, since it lives at the site root) would resolve against this
   route's own `/latest/<platform>` URL and get misread as another platform
@@ -109,13 +114,21 @@ the hostname + path:
   platform key that isn't `linux`/`windows`/`macos` at all) - no
   auto-download or thanks/donate block in that case, there's no file to
   offer.
-- Everything else (all of `tabularasa.cl`, any other path on
-  `downloads.tabularasa.cl`, including `/assets/*`) → `env.ASSETS.fetch(request)`,
-  i.e. the exact same static files `tabularasa.cl` serves - this is what
-  makes reusing the real CSS/JS/fonts from a different hostname work with
-  zero CORS friction (same-origin from the browser's point of view, since it
-  requested `/assets/...` from `downloads.tabularasa.cl` in the first
-  place).
+- `downloads.tabularasa.cl/assets/*` (a **separate** `wrangler.toml` route,
+  not inferred automatically - see the "Reuses the real site chrome" bullet
+  above) and all of `tabularasa.cl` (a full Custom Domain, so every path
+  reaches this Worker) → `env.ASSETS.fetch(request)`, i.e. the exact same
+  static files either host serves. This is what makes reusing the real
+  CSS/JS/fonts from `downloads.tabularasa.cl` work with zero CORS friction
+  (same-origin from the browser's point of view, since it requested
+  `/assets/...` from `downloads.tabularasa.cl` in the first place) - but
+  only for paths an actual Route sends here.
+- Any other path on `downloads.tabularasa.cl` (anything not `/latest/*` or
+  `/assets/*`) never reaches this Worker at all - Cloudflare Routes are
+  path-scoped, not "this Worker owns the whole hostname." It falls through
+  to whatever else serves that host (today, the R2 Custom Domain for
+  `/releases/*`, and a plain 404 for anything not covered by that or by a
+  Route).
 
 `TARGET_BY_PLATFORM` (platform key → Rust target triple) is duplicated **by
 hand** from `site/assets/js/downloads.js` - there's no bundler shared-module

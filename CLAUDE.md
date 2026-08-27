@@ -154,16 +154,23 @@ regardless.
 
 ## How the download redirect worker works
 
-`worker/index.js` is this repo's own Worker `main` script (see
-`wrangler.toml`'s `routes`), handling exactly one path pattern:
-`downloads.tabularasa.cl/latest/<platform>` - the canonical destination for
-every download click on the site, not just a CORS fallback. It fetches
-`manifest.json` **server-side** (no CORS involved) and renders a full page
-reusing the **real** site chrome - `tokens.css`/`styles.css`, header, footer,
-ambient-grid panels, `i18n.js`/`theme.js`/`nav.js` - via the same
-`env.ASSETS` binding tabularasa.cl uses (hostname-agnostic, so
-`/assets/...` resolves the same on either host); this is why every
-asset/script path in that file must be root-relative. On top of that shell:
+`worker/index.js` is this repo's own Worker `main` script, handling **two**
+`wrangler.toml` route patterns on `downloads.tabularasa.cl`:
+`/latest/<platform>` - the canonical destination for every download click on
+the site, not just a CORS fallback - and `/assets/*`. The second route only
+exists so this page's CSS/JS/font requests actually reach the Worker at all:
+Cloudflare Routes match by path pattern, not "this Worker now owns the whole
+hostname," so without it `/assets/...` would miss the Worker entirely and
+404 against whatever else serves that host. Once a request does reach the
+Worker, anything other than `/latest/*` falls through to
+`env.ASSETS.fetch()` - the same static files `tabularasa.cl` serves, which
+is what lets this page reuse the **real** site chrome (`tokens.css`/
+`styles.css`, header, footer, ambient-grid panels,
+`i18n.js`/`theme.js`/`nav.js`) instead of a hand-rolled inline stylesheet.
+Every asset/script path in `worker/index.js` must be root-relative
+(`/assets/...`), never bare (`assets/...`) - the latter would resolve
+against the current `/latest/<platform>` URL and get misread as another
+platform lookup. On top of that shell:
 Open Graph tags (so links shared raw into WhatsApp/Slack/etc. still unfurl a
 real preview card), a thank-you + optional donate message, and an
 auto-triggered download of the real installer (plus the same button kept
