@@ -17,9 +17,6 @@ const TARGET_BY_PLATFORM = {
   macos: "aarch64-apple-darwin",
 };
 
-// Proper nouns - same in both locales, not part of COPY below.
-const PLATFORM_NAMES = { linux: "Linux", windows: "Windows", macos: "macOS" };
-
 // Per-platform data-i18n key, so the visible text is backed by the real
 // dictionaries (site/assets/i18n/{en,es}.json) once i18n.js hydrates it -
 // these values here are only the pre-hydration/no-JS seed and MUST match
@@ -119,15 +116,19 @@ function detectThemeAttr(url) {
   return q === "dark" || q === "light" ? `"${q}"` : "null";
 }
 
-function titleFor(lang, platformName, version) {
+// Plain text only - <title>/og:title can't render the accent-highlighted
+// <span> heroHeadingHtml() below, so this is a separate, markup-free copy of
+// the same message rather than a stripped-down version of it.
+const TITLE_TEXT = {
+  en: "Thanks for Downloading Tabula Rasa!",
+  es: "¡Gracias por descargar Tabula Rasa!",
+};
+
+function heroHeadingHtml(lang) {
   if (lang === "es") {
-    return version
-      ? `Descarga Tabula Rasa v${escapeHtml(version)} para ${platformName}`
-      : `Descarga Tabula Rasa para ${platformName}`;
+    return '¡Gracias por descargar <span class="accent-text">Tabula Rasa</span>!';
   }
-  return version
-    ? `Download Tabula Rasa v${escapeHtml(version)} for ${platformName}`
-    : `Download Tabula Rasa for ${platformName}`;
+  return 'Thanks for Downloading <span class="accent-text">Tabula Rasa</span>!';
 }
 
 // Prevent dark/light flash before CSS+JS load - same convention as
@@ -283,9 +284,8 @@ const OG_IMAGE_URL = `${SITE_URL}/assets/img/og-image.png`;
 // main site (docs/decisions/seo.md's capture pipeline) rather than a
 // platform-specific one - not worth three near-identical images.
 function renderPage({ platform, version, installerUrl, size, failed, lang, themeAttrLiteral }) {
-  const platformName = PLATFORM_NAMES[platform];
   const c = COPY[lang];
-  const title = titleFor(lang, platformName, version);
+  const title = TITLE_TEXT[lang];
   const description = c.platformDesc[platform];
   const pageUrl = `https://downloads.tabularasa.cl/latest/${platform}`;
 
@@ -298,7 +298,7 @@ function renderPage({ platform, version, installerUrl, size, failed, lang, theme
          <a class="btn btn-primary" href="${SITE_URL}/#download">${escapeHtml(c.goToSite)}</a>
        </section>`
     : `<section class="hero container" id="top">
-         <h1>${title}</h1>
+         <h1>${heroHeadingHtml(lang)}</h1>
          <p class="hero-sub" data-i18n="${DESC_I18N_KEY[platform]}">${escapeHtml(description)}</p>
          <a id="tr-auto-dl" href="${escapeHtml(installerUrl)}" download style="display:none" aria-hidden="true"></a>
          <div class="hero-ctas">

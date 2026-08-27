@@ -46,6 +46,17 @@ Graph tags, served by a Cloudflare Worker.
   text before JS hydrates) pick English or Spanish from `?lang=` (set by
   `downloads.js` from the visitor's active site locale) or, failing that,
   `Accept-Language` - see "How it works" below.
+- **The H1/title/OG title say "Thanks for Downloading Tabula Rasa!"** (not a
+  platform/version-specific "Download Tabula Rasa v1.2.3 for Windows" like an
+  earlier draft) - since the real installer auto-downloads before this text
+  is even read, a thank-you framing fits what's already happened better than
+  an invitation to download. Platform/version specifics still show below it
+  (the `hero-sub` platform description, the `v1.2.3 · 45.2 MB` line) - only
+  the heading itself dropped them. The H1 highlights "Tabula Rasa" via the
+  same `.accent-text`/`.hero h1 .accent-text` treatment `index.html`'s own
+  hero uses; `<title>`/`og:title` use a separate plain-text copy of the same
+  message (`TITLE_TEXT` in `worker/index.js`) since neither can render the
+  `<span>`.
 - **Reuses the real site chrome instead of a hand-rolled inline page.**
   Originally this was a minimal standalone HTML fragment with hardcoded
   inline colors (a Worker can't `<link>` a stylesheet from its own
