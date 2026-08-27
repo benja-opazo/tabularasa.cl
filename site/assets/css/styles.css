@@ -964,11 +964,12 @@ a {
 /* ---- 9. Toolbar ------------------------------------------------------------ */
 
 .tr-toolbar {
+    position: relative;
     min-height: 46px;
     flex: none;
     display: flex;
     align-items: center;
-    gap: var(--space-3);
+    gap: var(--space-1);
     padding: 0 12px;
     background: var(--panel);
     border-bottom: 1px solid var(--border);
@@ -1000,12 +1001,18 @@ a {
     flex: none;
 }
 
+/* Pushes everything from here to the toolbar's right edge (Find/Go to/Order
+   by/Group by/Filter), matching the real app's toolbar layout. */
+.tr-toolbar-right-start {
+    margin-left: auto;
+}
+
 .tr-btn {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     height: 30px;
-    padding: 0 8px;
+    padding: 0 6px;
     border-radius: 6px;
     border: none;
     background: transparent;
@@ -1070,32 +1077,62 @@ a {
     z-index: 2;
     background: var(--panel-2);
     color: var(--text);
-    text-align: left;
     font-weight: 500;
     padding: 6px 8px;
     height: 26px;
     border-bottom: 1px solid var(--border);
     border-right: 1px solid var(--border);
-    cursor: pointer;
     user-select: none;
     white-space: nowrap;
 }
 
-.tr-grid thead th:hover {
-    background: var(--hover);
+/* `<th>` must keep its default table-cell display for the header row to lay
+   out horizontally - the drag/label/sort flex layout lives on this inner
+   wrapper instead of the cell itself. */
+.tr-col-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .tr-grid thead th.tr-col-gutter {
     cursor: default;
 }
 
-.tr-grid thead th.tr-col-gutter:hover {
-    background: var(--panel-2);
+/* Three independent zones - drag (reorder), label (click selects the
+   column), sort chevron (click stacks/toggles) - not one whole-header
+   click target, matching the real app. */
+.tr-col-drag {
+    cursor: grab;
+    color: var(--faint);
+    font-size: 11px;
+    flex: none;
 }
 
-.tr-grid th .sort-chev {
+.tr-col-drag:hover {
+    color: var(--dim);
+}
+
+.tr-col-label {
+    cursor: pointer;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tr-col-label:hover {
+    color: var(--accent);
+}
+
+.tr-col-sort {
+    cursor: pointer;
     font-size: 10px;
-    margin-left: 4px;
+    color: var(--faint);
+    flex: none;
+}
+
+.tr-col-sort.is-active,
+.tr-col-sort:hover {
     color: var(--accent);
 }
 
@@ -1130,7 +1167,7 @@ a {
     background: var(--line-selection);
 }
 
-.tr-grid td.is-cell-selected {
+.tr-grid tbody tr td.is-cell-selected {
     background: var(--block-selection);
     outline: 1px solid var(--accent);
     outline-offset: -1px;
@@ -1150,39 +1187,6 @@ a {
 
 .tr-col-id {
     color: var(--dim);
-}
-
-.tr-status-cell {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.tr-status-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    flex: none;
-}
-
-.tr-status-dot.is-green {
-    background: var(--green);
-}
-.tr-status-dot.is-orange {
-    background: var(--orange);
-}
-.tr-status-dot.is-red {
-    background: var(--red);
-}
-
-.tr-status-cell.is-green {
-    color: var(--green);
-}
-.tr-status-cell.is-orange {
-    color: var(--orange);
-}
-.tr-status-cell.is-red {
-    color: var(--red);
 }
 
 .tr-group-header td {
@@ -1206,6 +1210,26 @@ a {
     color: var(--dim);
     font-weight: 400;
     margin-left: 6px;
+}
+
+.tr-group-agg {
+    margin-left: 14px;
+    display: inline-flex;
+    gap: 10px;
+}
+
+.tr-group-header .agg-label {
+    text-transform: uppercase;
+    font-size: 9px;
+    letter-spacing: 0.4px;
+    color: var(--faint);
+    font-weight: 400;
+    margin-right: 3px;
+}
+
+.tr-group-header .agg-value {
+    color: var(--dim);
+    font-weight: 400;
 }
 
 mark.tr-match {
@@ -1337,6 +1361,9 @@ mark.tr-match.is-current {
 }
 
 .tr-pill-close {
+    /* ICON.CLOSE is a lucide-font codepoint - without this it renders as
+       tofu, since only .icon sets font-family: var(--font-icon). */
+    font-family: var(--font-icon);
     cursor: pointer;
     opacity: 0.75;
 }
@@ -1405,6 +1432,8 @@ mark.tr-match.is-current {
 }
 
 .tr-search-btn {
+    /* Same tofu-glyph fix as .tr-pill-close - ICON.CLOSE needs the lucide font. */
+    font-family: var(--font-icon);
     background: none;
     border: none;
     color: var(--faint);
@@ -1482,6 +1511,79 @@ mark.tr-match.is-current {
     margin-left: auto;
     color: var(--faint);
     font-size: 11px;
+}
+
+/* Filter builder - single hardcoded-shape rule, not a real multi-filter
+   stack (docs/decisions/demo-table.md). SQL query tab is present for
+   fidelity but is itself just another gated "coming soon" trigger. */
+/* The Filter button's own anchor div opts out of .tr-popover-anchor's
+   position: relative (see .tr-filter-anchor below) so this popover escapes
+   up to position against .tr-toolbar instead - anchoring to the Filter
+   button itself overflowed off the left edge on narrower widths where the
+   toolbar wraps and the button no longer sits near the toolbar's right
+   edge (see docs/decisions/demo-table.md). */
+.tr-filter-popover {
+    left: auto;
+    right: 12px;
+    min-width: 280px;
+    padding: 0;
+}
+
+.tr-filter-anchor {
+    position: static;
+}
+
+.tr-filter-gated {
+    padding: 10px 10px 12px;
+    color: var(--dim);
+    font-size: 12.5px;
+    font-family: var(--font-chrome);
+    max-width: 260px;
+}
+
+.tr-filter-tabs {
+    display: flex;
+    gap: var(--space-3);
+    padding: 8px 10px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.tr-filter-tab {
+    font-size: 12px;
+    font-family: var(--font-chrome);
+    color: var(--dim);
+    padding-bottom: 7px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+}
+
+.tr-filter-tab.is-active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+.tr-filter-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px;
+}
+
+.tr-filter-select,
+.tr-filter-value {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--font-chrome);
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 4px 6px;
+    height: 28px;
+}
+
+.tr-filter-value {
+    flex: 1;
+    min-width: 0;
 }
 
 /* ---- 14. Download section ---------------------------------------------------- */

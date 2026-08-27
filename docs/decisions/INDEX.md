@@ -29,9 +29,12 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 ## Demo table (`demo-table.md`)
 
 - The showcase is a hardcoded ~18-row fixture with a real client-side state machine - no engine, no backend.
-- Feature parity is deliberate: what's a disabled stub in the app (Number format, Freeze, Format panel, Order by, Go to row) is a disabled stub here too.
-- Rendering splits into a full-shell rebuild (discrete actions) vs. a `<tbody>`-only refresh (search keystrokes) - the input element must never be destroyed while the user is typing into it.
-- Heatmap/aggregate values are computed over the currently **filtered** rows, not the whole fixture.
+- Feature parity is deliberate and was re-verified 2026-08-27 against the app's current source. Every "coming soon" popover (genuine unbuilt stubs like Number format/Freeze/Format panel/Go to row, and deliberately-gated real features like Width/Height/SQL query) shows identical copy - no lock icon, no unbuilt-vs-gated distinction - with a "Get the app" CTA that mirrors the hero's detected-platform download link.
+- Grouping and sorting are real nested/stackable multi-key state (not single-dimension); cell selection is a real rectangular range (click+drag, shift-click extend) that also covers whole-column selection via a header-label click; column headers have three independent zones (drag-to-reorder, label-to-select, chevron-to-sort) instead of one whole-header click target.
+- Filter is a single hardcoded-shape rule (column/operator/value, real and editable, but only ever one) with a present-but-gated SQL query tab - not the app's real multi-filter stack.
+- Aggregates are per-column (Sum for numeric, unique-count for text) over the current **selection** when one exists (narrowed to selected columns for a range), else the currently **filtered** rows - and the same stat now also appears per group-header row, scoped to that band's own rows (the app has an equivalent feature in progress but not finished).
+- Rendering splits into a full-shell rebuild (discrete actions), a `<tbody>`-only refresh (search keystrokes + selection changes), and a targeted `.tr-status-left`-only aggregate patch (selection changes only) - the search input element must never be destroyed while the user is typing into it.
+- Toolbar matches the app's real button order/grouping, with Find/Go to row/Order by/Group by/Filter right-aligned via a `margin-left: auto` divider; the filter popover (wider than the others, and now often near the toolbar's right edge) anchors against `.tr-toolbar` itself rather than its own button, so it can't overflow off-screen regardless of where that button wraps to. Clicking the filter's SQL query tab swaps only the popover's body to the gated message - the Builder/SQL query tab strip itself stays visible and clickable either way.
 
 ## Downloads (`downloads.md`)
 
