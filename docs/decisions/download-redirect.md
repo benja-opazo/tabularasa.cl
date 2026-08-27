@@ -78,16 +78,16 @@ the `/latest/<platform>` redirect route" section, rather than duplicated here.
   release pipeline configured (same blind spot `downloads.md` already flags
   for the CORS header) - confirm the zone name matches before the first
   deploy, or `wrangler deploy` will fail to attach the route.
-- **API token scope.** `deploy.md` already anticipated this: the token needs
-  `Account.Workers Routes:Edit` (not just `Workers Scripts:Edit`) to attach a
-  route on a domain, since this Worker now claims a route instead of only a
-  custom domain. Check the existing `CLOUDFLARE_API_TOKEN`'s scope before the
-  next deploy - it may need widening.
-- **CI check step** (`.github/workflows/deploy.yml`) now also runs
-  `node --check` against `worker/index.js` separately (needs
-  `--input-type=module` since it's an ES module, unlike the plain scripts in
-  `site/assets/js/`) - keep both checks if either file's module format ever
-  changes.
+- **API token scope** was a concern under the old GitHub Actions pipeline
+  (attaching a route needs `Account.Workers Routes:Edit`, not just `Workers
+  Scripts:Edit`) - no longer applicable now that deploys run via Cloudflare
+  Workers Builds with the connected account's own full credentials, see
+  `deploy.md`.
+- **Build check step** (Cloudflare Workers Builds' build command, see
+  `deploy.md`) runs `node --check` against `worker/index.js` separately
+  (needs `--input-type=module` since it's an ES module, unlike the plain
+  scripts in `site/assets/js/`) - keep both checks if either file's module
+  format ever changes.
 
 ## Downloads.md status update
 

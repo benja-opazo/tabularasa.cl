@@ -82,8 +82,7 @@ site/assets/js/i18n.js           # Fetches the active locale, background-loads t
 .claude/skills/sync-i18n/        # The official workflow for editing copy + syncing the ES translation.
 worker/index.js                  # Worker `main` script - /latest/<platform> OG landing page on downloads.tabularasa.cl; falls through to the static site otherwise. See download-redirect.md.
 wrangler.toml                    # Cloudflare Workers static-assets config - directory = ./site, plus the worker/routes above.
-scripts/check-comments.mjs       # CI guard for the comments policy above - no npm deps, plain Node.
-.github/workflows/deploy.yml     # CI: JS syntax check (site/ + worker/) + comments-policy check, then `wrangler deploy` - manual `workflow_dispatch` only, not on push.
+scripts/check-comments.mjs       # Comments-policy guard - no npm deps, plain Node. Run by hand and by the Cloudflare Workers Builds build command.
 docs/README.md                   # Docs map - read this first for anything beyond quick edits.
 docs/decisions/                  # One file per topic; INDEX.md is the one-line index. Search before redesigning.
 ```
@@ -181,16 +180,19 @@ guessing them. Adding a new locale is "new JSON file + one entry in `i18n.js`'s
 
 ## Deploy
 
-GitHub Actions (`.github/workflows/deploy.yml`) runs a JS syntax check, then
-`wrangler deploy`, against `wrangler.toml`'s Workers static-assets config
+Deploys via **Cloudflare Workers Builds** - Cloudflare's own git-connected
+CI/CD, configured entirely in the dashboard, not GitHub Actions (this repo has
+no `.github/workflows/` at all, matching `benjaopazoc.cl`). A push to `main`
+runs a build (the same JS-syntax + comments-policy checks the old GitHub
+Actions job ran) against `wrangler.toml`'s Workers static-assets config
 (`site/` as the asset directory, plus `main = "worker/index.js"` for the
 `/latest/<platform>` redirect route - see "How the download redirect worker
-works" above). **Manual trigger only**
-(`workflow_dispatch`) - this is still an active prototype, so nothing
-auto-deploys on push to `main`; trigger it from the Actions tab when a change
-is actually ready. Needs `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` repo
-secrets - setup steps and why this differs from `benjaopazoc.cl`'s current
-dashboard-only Cloudflare Pages setup: `docs/decisions/deploy.md`.
+works" above), but **automatic deployment is deliberately left off** - this is
+still an active prototype, so going live is a manual click in the dashboard
+(or `npx wrangler deploy` locally) once a change is actually ready, not
+automatic on push. No repo secrets needed - Workers Builds deploys with the
+connected Cloudflare account's own credentials. Full setup steps and the
+runbook for the `/latest/<platform>` route: `docs/decisions/deploy.md`.
 
 ## Adding content
 

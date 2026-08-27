@@ -15,7 +15,7 @@ this folder is where the reasoning behind them lives.
 | `decisions/ambient-grid.md` | Decorative tilted grid + mouse-tracked glow in the side gutters - why the glow layer isn't rotated with the grid, breakpoint gating, z-index approach. |
 | `decisions/pricing.md`    | The site's first second page - why plain HTML duplication over templating, the two honest-stub CTAs, why the comparison table shows identical features for both tiers. |
 | `decisions/feature-media.md` | Feature card flip + demo modal - scope (Shipped cards only), expected GIF filenames, the `[hidden]` CSS gotcha, hand-drawn play icon rationale. |
-| `decisions/deploy.md`     | Why GitHub Actions + `wrangler deploy` over dashboard-only Cloudflare Pages, and the exact secret/dashboard setup steps a human still has to do. |
+| `decisions/deploy.md`     | Why Cloudflare Workers Builds over GitHub Actions, and the exact dashboard setup steps + runbook a human still has to do. |
 | `decisions/copy.md`       | Where every factual marketing claim on the page came from, so it can be re-verified instead of re-guessed.                                       |
 | `decisions/download-redirect.md` | The `/latest/<platform>` Worker-rendered landing page - why a click-through OG page over a bare 302, why this repo owns it, what's unverified (Cloudflare zone, token scope). |
 | `decisions/mobile-nav.md` | The hamburger menu below `860px` - why it reverses the earlier "no hamburger needed" call, why Pricing stays visible while Download moves into the panel, the sticky-positioning bug fix. |

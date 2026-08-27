@@ -44,14 +44,14 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 - `/latest/<platform>` is a Cloudflare Worker-rendered **click-through HTML landing page** with OG tags, not a bare 302 - a redirect straight to the binary can't produce a link-preview card.
 - This repo owns the worker (`worker/index.js` + `wrangler.toml`'s `main`/`routes`), not `tabula-rasa` - it's visitor-facing copy/branding, same responsibility this repo already has for the rest of the site.
 - Manifest is fetched **server-side** in the Worker - no CORS dependency, unlike the client-side `fetch()` in `downloads.js`.
-- Not yet verified: the Cloudflare zone name for the new route, and whether the deploy API token's scope covers `Workers Routes:Edit`.
+- Not yet verified: the Cloudflare zone name for the new route.
 
 ## Deploy (`deploy.md`)
 
-- Deploy path is **GitHub Actions + `wrangler deploy`** against Cloudflare Workers static assets (`wrangler.toml`), not `benjaopazoc.cl`'s current dashboard-only Cloudflare Pages setup - chosen explicitly so the pipeline is versioned and visible in-repo.
-- **Deviation:** manual `workflow_dispatch` only, no push-to-`main` trigger - this site is still an active prototype, so deploys are a deliberate action, not automatic.
-- No build job: the JS syntax check is the only pre-deploy gate.
-- Includes a step-by-step **runbook** for the one-time Cloudflare setup the `/latest/<platform>` redirect route needs (zone check, token scope, dry run, smoke test).
+- Deploy path is **Cloudflare Workers Builds** (Workers' own git-connected CI/CD, the Workers equivalent of Cloudflare Pages) against Cloudflare Workers static assets (`wrangler.toml`) - moved off GitHub Actions once GH Actions minutes became the binding constraint; matches `benjaopazoc.cl` and `blog.benjaopazoc.cl`, which never used GitHub Actions either.
+- **Deviation from the other two sites:** automatic deployment is left off - a push builds but doesn't go live by itself, since this site is still an active prototype. Publishing is a manual dashboard click (or local `npx wrangler deploy`).
+- Build command runs the same JS syntax + comments-policy checks the old GitHub Actions job did; no repo secrets needed since Workers Builds deploys with the connected account's own credentials.
+- Includes a step-by-step **runbook** for the one-time Cloudflare setup the `/latest/<platform>` redirect route needs (zone check, dry run, smoke test).
 
 ## Internationalization (`i18n.md`)
 
