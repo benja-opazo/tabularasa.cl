@@ -59,6 +59,7 @@
   "download.note_fetching": "Fetching the latest release…",
   "download.note_latest": "Latest release: v{version} · SHA-256 checksums ship alongside every download.",
   "download.cta_for_platform": "Download for {platform}",
+  "download.thanks": "Thanks for choosing Tabula Rasa!",
   "pricing.meta.title": "Tabula Rasa — Pricing",
   "pricing.meta.description": "Free for personal use, same full feature set for enterprise. See the comparison and get in touch.",
   "pricing.eyebrow": "Pricing",

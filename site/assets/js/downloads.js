@@ -52,12 +52,20 @@
     return window.TRI18N ? window.TRI18N.locale() : "en";
   }
 
-  // Stamps/replaces `?lang=` on an already-absolute URL so the
+  // downloads.tabularasa.cl can't read this origin's localStorage, so its
+  // theme would otherwise only ever follow OS preference.
+  function currentTheme() {
+    return document.documentElement.getAttribute("data-theme") || "dark";
+  }
+
+  // Stamps/replaces `?lang=`/`?theme=` on an already-absolute URL so the
   // /latest/<platform> landing page (worker/index.js) matches whatever
-  // language the visitor has the site in, not just their Accept-Language.
-  function withLang(rawUrl, lang) {
+  // language/theme the visitor has the site in, not just Accept-Language/OS
+  // preference.
+  function withState(rawUrl) {
     var u = new URL(rawUrl, window.location.href);
-    u.searchParams.set("lang", lang);
+    u.searchParams.set("lang", currentLang());
+    u.searchParams.set("theme", currentTheme());
     return u.toString();
   }
 
@@ -66,9 +74,9 @@
   // which auto-downloads the real file and shows a thanks/donate message.
   // See docs/decisions/downloads.md for why this replaced linking straight
   // to the manifest-resolved file.
-  function syncCardLinks(lang) {
+  function syncCardLinks() {
     document.querySelectorAll(".dl-link").forEach(function (a) {
-      a.setAttribute("href", withLang(a.getAttribute("href"), lang));
+      a.setAttribute("href", withState(a.getAttribute("href")));
     });
   }
 
@@ -86,10 +94,7 @@
       });
       link.setAttribute(
         "href",
-        withLang(
-          "https://downloads.tabularasa.cl/latest/" + platform,
-          currentLang(),
-        ),
+        withState("https://downloads.tabularasa.cl/latest/" + platform),
       );
       link.setAttribute("target", "_blank");
       link.setAttribute("rel", "noopener");
@@ -135,12 +140,12 @@
 
   var platform = detectPlatform();
   updateHeroCta(platform);
-  syncCardLinks(currentLang());
+  syncCardLinks();
 
   if (window.TRI18N) {
     window.TRI18N.onChange(function () {
       updateHeroCta(platform);
-      syncCardLinks(currentLang());
+      syncCardLinks();
       if (lastManifest) applyManifest(lastManifest);
     });
   }

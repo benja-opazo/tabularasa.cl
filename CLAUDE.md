@@ -158,16 +158,25 @@ regardless.
 `wrangler.toml`'s `routes`), handling exactly one path pattern:
 `downloads.tabularasa.cl/latest/<platform>` - the canonical destination for
 every download click on the site, not just a CORS fallback. It fetches
-`manifest.json` **server-side** (no CORS involved) and renders a small
-click-through HTML landing page with Open Graph tags (so links shared raw
-into WhatsApp/Slack/etc. still unfurl a real preview card), a thank-you +
-optional donate message, and an auto-triggered download of the real
-installer (plus the same button kept manual/clickable as a fallback).
-Bilingual via `?lang=`/`Accept-Language`, English/Spanish copy hand-
-duplicated in the file since it has no runtime access to `en.json`/`es.json`.
-Every other request (all of `tabularasa.cl`, any other path) falls through
-to `env.ASSETS.fetch()`, i.e. the static site unchanged. Full rationale, the
-options considered, and what's still unverified (Cloudflare zone name):
+`manifest.json` **server-side** (no CORS involved) and renders a full page
+reusing the **real** site chrome - `tokens.css`/`styles.css`, header, footer,
+ambient-grid panels, `i18n.js`/`theme.js`/`nav.js` - via the same
+`env.ASSETS` binding tabularasa.cl uses (hostname-agnostic, so
+`/assets/...` resolves the same on either host); this is why every
+asset/script path in that file must be root-relative. On top of that shell:
+Open Graph tags (so links shared raw into WhatsApp/Slack/etc. still unfurl a
+real preview card), a thank-you + optional donate message, and an
+auto-triggered download of the real installer (plus the same button kept
+manual/clickable as a fallback). Bilingual via `?lang=`/`Accept-Language`
+for the parts that must resolve before any JS runs (OG tags, meta
+description); the reused header/footer/nav text is real `data-i18n`,
+hydrated by the same `i18n.js` every other page uses (which now also
+accepts `?lang=` as a detection source, since this origin can't read
+tabularasa.cl's `localStorage` - see "How i18n works"). `?theme=` does the
+same job for the anti-flash script. Every other request (all of
+`tabularasa.cl`, any other path) falls through to `env.ASSETS.fetch()`, i.e.
+the static site unchanged. Full rationale, the options considered, and
+what's still unverified (Cloudflare zone name):
 `docs/decisions/download-redirect.md`.
 
 ## How i18n works
@@ -183,8 +192,11 @@ hand-editing both files - it's the official workflow for keeping `en`/`es` in
 sync and surfacing translation subtleties for a human call instead of
 guessing them. Adding a new locale is "new JSON file + one entry in `i18n.js`'s
 `SUPPORTED` array" - no edits to existing locale files. The showcase demo
-(`#tr-demo-root`) is deliberately left untranslated - see
-`docs/decisions/i18n.md`.
+(`#tr-demo-root`) is deliberately left untranslated. Locale detection order
+is `?lang=` query param → `localStorage` → `navigator.language` → English -
+the query param exists for the downloads.tabularasa.cl landing page
+(`worker/index.js`), a different origin that can't read this one's
+`localStorage`. See `docs/decisions/i18n.md`.
 
 ## Deploy
 

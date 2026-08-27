@@ -15,7 +15,15 @@
   var loaded = {};
   var inFlight = {};
 
+  // `?lang=` wins over storage - lets a cross-origin link (e.g. the
+  // downloads.tabularasa.cl landing page, a different origin so it can't
+  // read this origin's localStorage) carry the visitor's active locale
+  // across instead of re-guessing from Accept-Language/navigator.
   function detectLocale() {
+    var fromQuery = new URLSearchParams(window.location.search).get(
+      STORAGE_KEY,
+    );
+    if (fromQuery && SUPPORTED.indexOf(fromQuery) !== -1) return fromQuery;
     var stored = localStorage.getItem(STORAGE_KEY);
     if (stored && SUPPORTED.indexOf(stored) !== -1) return stored;
     var nav = (

@@ -1535,6 +1535,14 @@ mark.tr-match.is-current {
     text-underline-offset: 2px;
 }
 
+/* Manifest-fetch-failed state on the downloads.tabularasa.cl/latest/<platform>
+   landing page (worker/index.js) - not used anywhere in this repo's own HTML. */
+.tr-error {
+    color: var(--red);
+    max-width: 40ch;
+    margin-inline: auto;
+}
+
 /* ---- 15. Footer --------------------------------------------------------------- */
 
 .site-footer {

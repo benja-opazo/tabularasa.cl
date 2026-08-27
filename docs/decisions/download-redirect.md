@@ -41,11 +41,42 @@ Graph tags, served by a Cloudflare Worker.
   page" section for why that reverses an earlier plan.
 - **Bilingual, plus a thank-you/donate message.** The page shows "Thanks for
   choosing Tabula Rasa" and an optional "Donate" link to
-  `https://tabularasa.cl/donations.html` below the download button, in
-  English or Spanish depending on `?lang=` (set by `downloads.js` from the
-  visitor's active site locale) or, failing that, the `Accept-Language`
-  header (for a raw shared link with no query param). See "How it works"
-  below for the copy-duplication mechanics.
+  `https://tabularasa.cl/donations.html` below the download button. The
+  dynamic/crawler-facing parts (title, meta description, OG tags, button
+  text before JS hydrates) pick English or Spanish from `?lang=` (set by
+  `downloads.js` from the visitor's active site locale) or, failing that,
+  `Accept-Language` - see "How it works" below.
+- **Reuses the real site chrome instead of a hand-rolled inline page.**
+  Originally this was a minimal standalone HTML fragment with hardcoded
+  inline colors (a Worker can't `<link>` a stylesheet from its own
+  filesystem) and no header/footer, because it was conceived as a lightweight
+  fallback. Once it became the canonical destination for every download
+  click, "lightweight fallback" stopped being the right frame - it needed to
+  look like the rest of the site. It now `<link>`s the real `tokens.css`/
+  `styles.css`, includes the same header/footer/ambient-grid markup as
+  `index.html` (hand-copied, same convention `pricing.html`/`donations.html`
+  already use), and loads `i18n.js`/`theme.js`/`nav.js` - all of it resolved
+  via the same `env.ASSETS` binding that serves `tabularasa.cl`, since that
+  binding is hostname-agnostic. The one hard rule this creates: every
+  asset/script `src`/`href` in `worker/index.js` must be **root-relative**
+  (`/assets/...`) - a bare relative path (`assets/...`, what `index.html`
+  itself uses, since it lives at the site root) would resolve against this
+  route's own `/latest/<platform>` URL and get misread as another platform
+  lookup by the same handler.
+- **Full light/dark theme, via a `?theme=` param.** Since the page now loads
+  the real tokens.css, it can support both themes like every other page -
+  but `localStorage.theme` is scoped to `tabularasa.cl` and invisible from
+  `downloads.tabularasa.cl`, so without a signal it would only ever follow
+  OS preference. `downloads.js` appends `?theme=<current theme>` next to
+  `?lang=`; the page's anti-flash script (mirroring `index.html`'s, see
+  `docs/decisions/theming.md`) checks it before `localStorage`/OS
+  preference.
+- **Reused chrome text is real `data-i18n`, not more hand-duplicated copy.**
+  The header/footer/nav markup is byte-identical to `index.html`'s (English
+  text + `data-i18n` attributes), so the same `i18n.js` every page already
+  loads hydrates it - no separate copy path. That only works because
+  `i18n.js` now also accepts `?lang=` as a detection source (it can't read
+  this origin's `localStorage` either) - see `docs/decisions/i18n.md`.
 - **No `og:image`.** Matches `copy.md`'s existing convention for the main
   page (`og:image` omitted rather than pointing at a placeholder) - no asset
   exists yet. Add one to both places together if that ever changes.
@@ -63,31 +94,46 @@ the hostname + path:
 
 - `downloads.tabularasa.cl/latest/<platform>` → picks a language (`?lang=en`
   or `?lang=es` if present and valid, else parsed from `Accept-Language`,
-  else English), fetches `https://downloads.tabularasa.cl/releases/manifest.json`,
-  looks up `targets[<triple>].installer`, and renders a small standalone
-  HTML page (OG tags, an auto-triggered + manual download button, a
-  thanks/donate message, dark-only, hand-copied inline app-faithful colors
-  since a Worker can't `<link>` `tokens.css`) with a 200. Manifest fetch
-  failure (offline R2, bad schema, unknown platform key not in
-  `TARGET_BY_PLATFORM`) renders the same shell with an error message and a
-  link back to `tabularasa.cl/#download`, with a 502 (404 for a platform key
-  that isn't `linux`/`windows`/`macos` at all) - no auto-download or
-  thanks/donate block in that case, there's no file to offer.
+  else English) and a theme (`?theme=dark`/`?theme=light` if present, else
+  `localStorage`/OS preference, same as `index.html`), fetches
+  `https://downloads.tabularasa.cl/releases/manifest.json`, looks up
+  `targets[<triple>].installer`, and renders a full page: the real head
+  boilerplate (favicon, `tokens.css`/`styles.css`, anti-flash script, OG
+  tags), the hand-copied header/ambient-grid/footer, and a main section with
+  an auto-triggered + manual download button, version/size text, and a
+  thanks/donate message - with a 200. Manifest fetch failure (offline R2,
+  bad schema, unknown platform key not in `TARGET_BY_PLATFORM`) renders the
+  same shell (still with the full chrome, so a visitor stuck here can still
+  navigate the real site) but swaps the main section for an error message
+  and a link back to `tabularasa.cl/#download`, with a 502 (404 for a
+  platform key that isn't `linux`/`windows`/`macos` at all) - no
+  auto-download or thanks/donate block in that case, there's no file to
+  offer.
 - Everything else (all of `tabularasa.cl`, any other path on
-  `downloads.tabularasa.cl`) → `env.ASSETS.fetch(request)`, i.e. the static
-  site behaves exactly as it did before this change.
+  `downloads.tabularasa.cl`, including `/assets/*`) → `env.ASSETS.fetch(request)`,
+  i.e. the exact same static files `tabularasa.cl` serves - this is what
+  makes reusing the real CSS/JS/fonts from a different hostname work with
+  zero CORS friction (same-origin from the browser's point of view, since it
+  requested `/assets/...` from `downloads.tabularasa.cl` in the first
+  place).
 
-`TARGET_BY_PLATFORM` (platform key → Rust target triple) and the per-platform
-copy strings are duplicated **by hand**, in both English and Spanish, from
-`site/assets/js/downloads.js` and the `download.*`/`pricing.cta_donate`
-strings in `site/assets/i18n/{en,es}.json` respectively - there's no bundler
-shared-module step across a Worker script and the plain-script/JSON site
-files, so this is a manual-sync invariant like the `tokens.css` ↔ `theme.rs`
-one. Comments in `worker/index.js` point back here. **The donate link is a
-hardcoded absolute URL** (`https://tabularasa.cl/donations.html`), not a
-relative path - this page is served from the `downloads.tabularasa.cl` host,
-where only the `/latest/*` Route is attached, so a relative link would
-resolve against the wrong origin and 404.
+`TARGET_BY_PLATFORM` (platform key → Rust target triple) is duplicated **by
+hand** from `site/assets/js/downloads.js` - there's no bundler shared-module
+step across a Worker script and the plain-script site files, so this is a
+manual-sync invariant like the `tokens.css` ↔ `theme.rs` one. The header/
+footer/nav text is **not** duplicated - it's the same markup + `data-i18n`
+attributes as `index.html`, hydrated by the real `i18n.js`. What's left
+hand-duplicated in English/Spanish is only what must resolve before any JS
+runs or has no real i18n-key equivalent: the title, meta description, OG
+tags, and the error-state copy; the reused fields (`platformDesc`,
+`buttonLabel`, the thanks message, the donate label) each carry a matching
+`data-i18n` attribute too, so i18n.js corrects them to the live dictionary
+value the moment it loads - comments in `worker/index.js` note which real
+key each hand-duplicated string mirrors. **The donate link is a hardcoded
+absolute URL** (`https://tabularasa.cl/donations.html`), not a relative
+path - relative internal links throughout this page point at
+`https://tabularasa.cl/...` on purpose, since it has none of the anchors/
+pages they target itself.
 
 ## Setup runbook
 

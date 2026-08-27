@@ -42,7 +42,8 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 
 - `/latest/<platform>` is a Cloudflare Worker-rendered **click-through HTML landing page** with OG tags - the canonical destination for every download click on the site, not a bare 302 or a CORS fallback.
 - It **auto-downloads** the real installer on load (hidden `<a download>`, auto-clicked) while keeping the visible button as a manual fallback, and shows a thanks/optional-donate message linking to `https://tabularasa.cl/donations.html` (must be absolute - this page is served from `downloads.tabularasa.cl`, which has no route for that path).
-- Bilingual via `?lang=` (set by `downloads.js` from the active site locale) or `Accept-Language` - copy hand-duplicated in English/Spanish inside `worker/index.js`, no runtime access to `en.json`/`es.json`.
+- **Reuses the real site chrome** - `tokens.css`/`styles.css`, header/footer/ambient-grid (hand-copied like `pricing.html`/`donations.html`), `i18n.js`/`theme.js`/`nav.js` - via the same hostname-agnostic `env.ASSETS` binding, instead of a hand-rolled inline stylesheet. Every asset path must be root-relative (`/assets/...`), a bare relative path would collide with the `/latest/*` route.
+- Reused chrome text is real `data-i18n`, hydrated by the same `i18n.js`. Only the crawler-facing/pre-JS bits (title, meta/OG description, error state) stay hand-duplicated English/Spanish, chosen via `?lang=` (or `Accept-Language`); `?theme=` does the same job for the anti-flash script, since neither param's underlying state (`localStorage`) is readable across origins.
 - This repo owns the worker (`worker/index.js` + `wrangler.toml`'s `main`/`routes`), not `tabula-rasa` - it's visitor-facing copy/branding, same responsibility this repo already has for the rest of the site.
 - Manifest is fetched **server-side** in the Worker - no CORS dependency, unlike the client-side `fetch()` in `downloads.js`.
 - Not yet verified: the Cloudflare zone name for the route.
@@ -59,6 +60,7 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 - Client-side dictionary swap (per-locale `assets/i18n/*.json` + `i18n.js` + `data-i18n*` attributes), not per-locale pages - no build step means no templating to generate `/en/`/`/es/` statically.
 - **Active locale loads first, the rest load in the background** after `load` and get cached - a toggle click applies instantly once warm, without shipping every locale to every visitor.
 - English is canonical; Spanish is kept in sync via the `sync-i18n` skill (`.claude/skills/sync-i18n/SKILL.md`).
+- Detection order is `?lang=` query param → `localStorage` → `navigator.language` → English - the query param exists for the downloads.tabularasa.cl landing page (`worker/index.js`), a different origin that can't read this one's `localStorage`.
 - The showcase demo (`#tr-demo-root`) is deliberately **not** translated - it replicates the real app, which is English-only today.
 - Accepted trade-off: a brief flash of English before JS re-writes to Spanish, now with a small same-origin fetch layered on top - no build step means no true zero-flash trick for text content, unlike the theme toggle's color swap.
 - The inline English text on each `data-i18n` element is only a fallback (JS overwrites it) - it drifts silently and must be re-synced whenever `en.json` changes; it's what non-JS crawlers index.

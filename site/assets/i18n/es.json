@@ -59,6 +59,7 @@
   "download.note_fetching": "Buscando la última versión…",
   "download.note_latest": "Última versión: v{version} · las sumas SHA-256 vienen incluidas con cada descarga.",
   "download.cta_for_platform": "Descarga para {platform}",
+  "download.thanks": "¡Gracias por elegir Tabula Rasa!",
   "pricing.meta.title": "Tabula Rasa — Precios",
   "pricing.meta.description": "Gratis para uso personal, el mismo conjunto completo de funciones para empresas. Mira la comparación y contáctanos.",
   "pricing.eyebrow": "Precios",
