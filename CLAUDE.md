@@ -141,26 +141,34 @@ touching this file: `docs/decisions/feature-media.md`.
 
 ## How downloads work
 
-Cards are populated from the **real** release manifest
+Cards' version/size text is populated from the **real** release manifest
 (`https://downloads.tabularasa.cl/releases/manifest.json`, schema owned by
-`tabula-rasa/scripts/release/gen_manifest.py`) via `fetch()`, with the OS
-auto-detected client-side. The static `href`s already in `index.html` are the
-fallback if that fetch fails. **This needs CORS enabled on the R2 bucket** - see
-`docs/decisions/downloads.md` for the header required and what happens if it's
-missing (silent fallback, not a crash).
+`tabula-rasa/scripts/release/gen_manifest.py`) via client-side `fetch()`
+(needs CORS enabled on the R2 bucket, confirmed working - see
+`docs/decisions/downloads.md`). **The download buttons themselves don't
+depend on that fetch at all** - every card button and the OS-detected hero
+CTA link to the `/latest/<platform>` landing page (next section) in a new
+tab, never straight to a manifest-resolved file. If the version/size fetch
+fails, the cards just keep the `v—`/`—` placeholder text; the buttons work
+regardless.
 
 ## How the download redirect worker works
 
 `worker/index.js` is this repo's own Worker `main` script (see
 `wrangler.toml`'s `routes`), handling exactly one path pattern:
-`downloads.tabularasa.cl/latest/<platform>`. It fetches `manifest.json`
-**server-side** (no CORS involved) and renders a small click-through HTML
-landing page with Open Graph tags - not a bare redirect, so links shared raw
-into WhatsApp/Slack/etc. still unfurl a real preview card. Every other
-request (all of `tabularasa.cl`, any other path) falls through to
-`env.ASSETS.fetch()`, i.e. the static site unchanged. Full rationale, the
-options considered, and what's still unverified (Cloudflare zone name, API
-token scope): `docs/decisions/download-redirect.md`.
+`downloads.tabularasa.cl/latest/<platform>` - the canonical destination for
+every download click on the site, not just a CORS fallback. It fetches
+`manifest.json` **server-side** (no CORS involved) and renders a small
+click-through HTML landing page with Open Graph tags (so links shared raw
+into WhatsApp/Slack/etc. still unfurl a real preview card), a thank-you +
+optional donate message, and an auto-triggered download of the real
+installer (plus the same button kept manual/clickable as a fallback).
+Bilingual via `?lang=`/`Accept-Language`, English/Spanish copy hand-
+duplicated in the file since it has no runtime access to `en.json`/`es.json`.
+Every other request (all of `tabularasa.cl`, any other path) falls through
+to `env.ASSETS.fetch()`, i.e. the static site unchanged. Full rationale, the
+options considered, and what's still unverified (Cloudflare zone name):
+`docs/decisions/download-redirect.md`.
 
 ## How i18n works
 

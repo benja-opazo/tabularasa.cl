@@ -34,17 +34,18 @@ One line per decision. Full reasoning + tradeoffs live in the linked topic file.
 
 ## Downloads (`downloads.md`)
 
-- Download cards are populated by fetching the real `manifest.json` the release pipeline publishes, not hand-maintained links.
-- This requires CORS to be enabled on the `downloads.tabularasa.cl` R2 bucket for `tabularasa.cl` - not yet verified as configured.
-- The static `/latest/<platform>` hrefs in the HTML are the fallback if that fetch fails; they are not a real endpoint today (see the decision for what would need to exist for them to be).
-- The fallback is **silent**: on any failure `#download-note` is hidden outright. The old "Showing the standard download links - {reason}" note was cut deliberately - the visitor can't act on it and the links work anyway.
+- Download cards' version/size text is populated by fetching the real `manifest.json` the release pipeline publishes - CORS on the `downloads.tabularasa.cl` R2 bucket for `https://tabularasa.cl` is confirmed working.
+- The download buttons themselves don't depend on that fetch: every card + the hero CTA link to the `/latest/<platform>` landing page in a new tab, always - not a manifest-resolved file, and not just a CORS-failure fallback anymore (an earlier plan on this page said the opposite; superseded).
+- The version/size fallback is **silent**: on any manifest-fetch failure `#download-note` is hidden and the cards keep `v—`/`—`. The old "Showing the standard download links - {reason}" note was cut deliberately - the visitor can't act on it and the buttons work anyway.
 
 ## Download redirect worker (`download-redirect.md`)
 
-- `/latest/<platform>` is a Cloudflare Worker-rendered **click-through HTML landing page** with OG tags, not a bare 302 - a redirect straight to the binary can't produce a link-preview card.
+- `/latest/<platform>` is a Cloudflare Worker-rendered **click-through HTML landing page** with OG tags - the canonical destination for every download click on the site, not a bare 302 or a CORS fallback.
+- It **auto-downloads** the real installer on load (hidden `<a download>`, auto-clicked) while keeping the visible button as a manual fallback, and shows a thanks/optional-donate message linking to `https://tabularasa.cl/donations.html` (must be absolute - this page is served from `downloads.tabularasa.cl`, which has no route for that path).
+- Bilingual via `?lang=` (set by `downloads.js` from the active site locale) or `Accept-Language` - copy hand-duplicated in English/Spanish inside `worker/index.js`, no runtime access to `en.json`/`es.json`.
 - This repo owns the worker (`worker/index.js` + `wrangler.toml`'s `main`/`routes`), not `tabula-rasa` - it's visitor-facing copy/branding, same responsibility this repo already has for the rest of the site.
 - Manifest is fetched **server-side** in the Worker - no CORS dependency, unlike the client-side `fetch()` in `downloads.js`.
-- Not yet verified: the Cloudflare zone name for the new route.
+- Not yet verified: the Cloudflare zone name for the route.
 
 ## Deploy (`deploy.md`)
 

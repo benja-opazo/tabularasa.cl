@@ -24,11 +24,28 @@ Graph tags, served by a Cloudflare Worker.
   `/releases/*` on the same hostname unchanged; a Worker Route on the more
   specific `/latest/*` path pattern takes precedence without needing to move
   anything off R2.
-- **Click-through page, not a meta-refresh auto-bounce.** The rendered page
-  has a real `<a href>` "Download for X" button; nothing auto-redirects.
-  Matches how GitHub Releases/SourceForge-style download pages behave and
-  avoids an unsolicited-download surprise some browsers/security software
-  flag. Costs one extra click versus an auto-redirect - accepted trade-off.
+- **Auto-downloads on load, but keeps a real button too.** Originally this
+  page required a manual click (to match GitHub Releases/SourceForge-style
+  pages and avoid an unsolicited-download surprise). That changed once this
+  became the canonical destination for *every* download click, not just a
+  CORS-failure fallback: a hidden `<a download>` auto-clicks itself on page
+  load so the file starts saving immediately, while the same visible button
+  stays in the DOM (now also carrying `download`) as a manual fallback if a
+  browser/extension blocks the auto-click. Same-origin as the R2 release
+  file (`downloads.tabularasa.cl` on both sides), so `download` is honored
+  without needing `Content-Disposition` from R2.
+- **Every download click routes here now, not just the CORS-fallback case.**
+  `site/index.html`'s card buttons and the hero CTA all link to this page
+  (in a new tab) instead of a manifest-resolved file URL - see
+  `docs/decisions/downloads.md`'s "Every click goes through the landing
+  page" section for why that reverses an earlier plan.
+- **Bilingual, plus a thank-you/donate message.** The page shows "Thanks for
+  choosing Tabula Rasa" and an optional "Donate" link to
+  `https://tabularasa.cl/donations.html` below the download button, in
+  English or Spanish depending on `?lang=` (set by `downloads.js` from the
+  visitor's active site locale) or, failing that, the `Accept-Language`
+  header (for a raw shared link with no query param). See "How it works"
+  below for the copy-duplication mechanics.
 - **No `og:image`.** Matches `copy.md`'s existing convention for the main
   page (`og:image` omitted rather than pointing at a placeholder) - no asset
   exists yet. Add one to both places together if that ever changes.
@@ -44,25 +61,33 @@ Graph tags, served by a Cloudflare Worker.
 `worker/index.js` is the Worker's `main` script. On every request it checks
 the hostname + path:
 
-- `downloads.tabularasa.cl/latest/<platform>` → fetches
-  `https://downloads.tabularasa.cl/releases/manifest.json`, looks up
-  `targets[<triple>].installer`, and renders a small standalone HTML page
-  (OG tags + a styled download button, dark-only, hand-copied inline
-  app-faithful colors since a Worker can't `<link>` `tokens.css`) with a 200.
-  Manifest fetch failure (offline R2, bad schema, unknown platform key not in
+- `downloads.tabularasa.cl/latest/<platform>` → picks a language (`?lang=en`
+  or `?lang=es` if present and valid, else parsed from `Accept-Language`,
+  else English), fetches `https://downloads.tabularasa.cl/releases/manifest.json`,
+  looks up `targets[<triple>].installer`, and renders a small standalone
+  HTML page (OG tags, an auto-triggered + manual download button, a
+  thanks/donate message, dark-only, hand-copied inline app-faithful colors
+  since a Worker can't `<link>` `tokens.css`) with a 200. Manifest fetch
+  failure (offline R2, bad schema, unknown platform key not in
   `TARGET_BY_PLATFORM`) renders the same shell with an error message and a
   link back to `tabularasa.cl/#download`, with a 502 (404 for a platform key
-  that isn't `linux`/`windows`/`macos` at all).
+  that isn't `linux`/`windows`/`macos` at all) - no auto-download or
+  thanks/donate block in that case, there's no file to offer.
 - Everything else (all of `tabularasa.cl`, any other path on
   `downloads.tabularasa.cl`) → `env.ASSETS.fetch(request)`, i.e. the static
   site behaves exactly as it did before this change.
 
 `TARGET_BY_PLATFORM` (platform key → Rust target triple) and the per-platform
-copy strings are duplicated **by hand** from `site/assets/js/downloads.js`
-and the `download.*` English strings in `site/assets/i18n/en.json`,
-respectively - there's no bundler shared-module step across a Worker script
-and the plain-script site files, so this is a manual-sync invariant like the
-`tokens.css` ↔ `theme.rs` one. Comments in `worker/index.js` point back here.
+copy strings are duplicated **by hand**, in both English and Spanish, from
+`site/assets/js/downloads.js` and the `download.*`/`pricing.cta_donate`
+strings in `site/assets/i18n/{en,es}.json` respectively - there's no bundler
+shared-module step across a Worker script and the plain-script/JSON site
+files, so this is a manual-sync invariant like the `tokens.css` ↔ `theme.rs`
+one. Comments in `worker/index.js` point back here. **The donate link is a
+hardcoded absolute URL** (`https://tabularasa.cl/donations.html`), not a
+relative path - this page is served from the `downloads.tabularasa.cl` host,
+where only the `/latest/*` Route is attached, so a relative link would
+resolve against the wrong origin and 404.
 
 ## Setup runbook
 

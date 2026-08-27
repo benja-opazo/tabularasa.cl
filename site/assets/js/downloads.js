@@ -1,6 +1,8 @@
-// Populates the download cards from the real release manifest, not
-// hand-maintained links. Manifest schema, the CORS dependency, and the
-// fallback behavior: docs/decisions/downloads.md.
+// Fills in each download card's version/size from the real release
+// manifest - the actual download link always goes to the
+// /latest/<platform> landing page (worker/index.js), not a manifest-
+// resolved file URL. Manifest schema, the CORS dependency, and why the
+// landing page is the steady state: docs/decisions/downloads.md.
 (function () {
   "use strict";
 
@@ -46,11 +48,35 @@
     return (i === 0 ? n : n.toFixed(1)) + " " + units[i];
   }
 
+  function currentLang() {
+    return window.TRI18N ? window.TRI18N.locale() : "en";
+  }
+
+  // Stamps/replaces `?lang=` on an already-absolute URL so the
+  // /latest/<platform> landing page (worker/index.js) matches whatever
+  // language the visitor has the site in, not just their Accept-Language.
+  function withLang(rawUrl, lang) {
+    var u = new URL(rawUrl, window.location.href);
+    u.searchParams.set("lang", lang);
+    return u.toString();
+  }
+
+  // Every download click - card buttons and the hero CTA alike - always
+  // goes through the /latest/<platform> landing page (worker/index.js),
+  // which auto-downloads the real file and shows a thanks/donate message.
+  // See docs/decisions/downloads.md for why this replaced linking straight
+  // to the manifest-resolved file.
+  function syncCardLinks(lang) {
+    document.querySelectorAll(".dl-link").forEach(function (a) {
+      a.setAttribute("href", withLang(a.getAttribute("href"), lang));
+    });
+  }
+
   // Remembers the last real state so a language switch can re-render text
   // without re-fetching the manifest.
   var lastManifest = null;
 
-  function updateHeroCta(platform, manifest) {
+  function updateHeroCta(platform) {
     var label = document.getElementById("hero-download-label");
     var link = document.getElementById("hero-download-btn");
     if (!label || !link) return;
@@ -58,16 +84,20 @@
       label.textContent = t("download.cta_for_platform", {
         platform: PLATFORM_NAMES[platform],
       });
-      if (manifest) {
-        var triple = TARGET_BY_PLATFORM[platform];
-        var entry = manifest.targets && manifest.targets[triple];
-        if (entry && entry.installer && entry.installer.url) {
-          link.setAttribute("href", entry.installer.url);
-          return;
-        }
-      }
+      link.setAttribute(
+        "href",
+        withLang(
+          "https://downloads.tabularasa.cl/latest/" + platform,
+          currentLang(),
+        ),
+      );
+      link.setAttribute("target", "_blank");
+      link.setAttribute("rel", "noopener");
+      return;
     }
     link.setAttribute("href", "#download");
+    link.removeAttribute("target");
+    link.removeAttribute("rel");
   }
 
   function applyManifest(manifest) {
@@ -86,10 +116,7 @@
       var linkEl = card.querySelector(".dl-link");
       if (versionEl) versionEl.textContent = "v" + manifest.version;
       if (sizeEl) sizeEl.textContent = humanSize(entry.installer.size);
-      if (linkEl) {
-        linkEl.setAttribute("href", entry.installer.url);
-        linkEl.textContent = t(LABEL_KEY_BY_PLATFORM[platform]) || "Download";
-      }
+      if (linkEl) linkEl.textContent = t(LABEL_KEY_BY_PLATFORM[platform]) || "Download";
     });
     if (note)
       note.textContent = t("download.note_latest", {
@@ -107,11 +134,13 @@
   }
 
   var platform = detectPlatform();
-  updateHeroCta(platform, null);
+  updateHeroCta(platform);
+  syncCardLinks(currentLang());
 
   if (window.TRI18N) {
     window.TRI18N.onChange(function () {
-      updateHeroCta(platform, lastManifest);
+      updateHeroCta(platform);
+      syncCardLinks(currentLang());
       if (lastManifest) applyManifest(lastManifest);
     });
   }
@@ -126,10 +155,7 @@
       if (!res.ok) throw new Error("manifest request failed: " + res.status);
       return res.json();
     })
-    .then(function (manifest) {
-      applyManifest(manifest);
-      updateHeroCta(platform, manifest);
-    })
+    .then(applyManifest)
     .catch(function () {
       hideNote();
     });
