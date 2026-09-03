@@ -2027,6 +2027,26 @@ mark.tr-match.is-current {
     color: var(--faint);
 }
 
+.pricing-contact-line {
+    max-width: 760px;
+    margin: var(--space-4) auto 0;
+    text-align: right;
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
+}
+
+.pricing-contact-line a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.pricing-contact-line a:hover,
+.pricing-contact-line a:focus-visible {
+    text-decoration: underline;
+}
+
 /* Generic - reused for the inline donate link in the download section
    (index.html) as well as the standalone one here, so both read as the
    same quiet, non-competing affordance instead of two different treatments. */
