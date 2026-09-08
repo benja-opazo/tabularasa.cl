@@ -38,6 +38,21 @@
       }
     });
 
+    // Same discovery-hint wiggle as the scroll-triggered one below, replayed
+    // on hover for every card - gated behind a 400ms delay so a mouse just
+    // passing over the card on its way elsewhere doesn't trigger it.
+    var hoverTimer = null;
+    card.addEventListener("mouseenter", function () {
+      if (card.classList.contains("is-flipped")) return;
+      hoverTimer = window.setTimeout(function () {
+        nudge(card.querySelector(".feature-card-flipper"));
+        nudge(card.querySelector(".feature-card-play"));
+      }, 400);
+    });
+    card.addEventListener("mouseleave", function () {
+      window.clearTimeout(hoverTimer);
+    });
+
     var playBtn = card.querySelector(".feature-card-play");
     if (playBtn) {
       playBtn.addEventListener("click", function (e) {

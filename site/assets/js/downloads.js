@@ -27,9 +27,15 @@
     return window.TRI18N ? window.TRI18N.t(key, vars) : key;
   }
 
+  // Phones are paired with the desktop OS their owner most likely also
+  // runs, not their own (unsupported) mobile OS - iPhone -> macOS, Android
+  // -> Windows. Checked before the desktop tests below since Android's
+  // UA/platform both contain "Linux" and would otherwise match that first.
   function detectPlatform() {
     var ua = navigator.userAgent || "";
     var plat = navigator.platform || "";
+    if (/iPhone|iPod/i.test(ua)) return "macos";
+    if (/Android/i.test(ua)) return "windows";
     if (/Win/i.test(plat) || /Windows/i.test(ua)) return "windows";
     if (/Mac/i.test(plat) || /Macintosh/i.test(ua)) return "macos";
     if (/Linux/i.test(plat) || /Linux/i.test(ua)) return "linux";

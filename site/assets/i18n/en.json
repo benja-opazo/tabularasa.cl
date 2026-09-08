@@ -57,7 +57,7 @@
   "download.btn_exe": "Download .exe",
   "download.btn_dmg": "Download .dmg",
   "download.note_fetching": "Fetching the latest release…",
-  "download.note_latest": "Latest release: v{version} · SHA-256 checksums ship alongside every download.",
+  "download.note_latest": "Latest release: v{version}",
   "download.cta_for_platform": "Download for {platform}",
   "download.thanks": "Thanks for choosing Tabula Rasa!",
   "pricing.meta.title": "Tabula Rasa — Pricing",

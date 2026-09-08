@@ -628,8 +628,13 @@ a {
     outline: none; /* moved to the flipper so it traces the visible card, not this 0-size wrapper */
 }
 
+/* height: 100% - .feature-card itself stretches to the tallest card in its
+   grid row (default grid align-items: stretch), but this inner wrapper
+   wouldn't inherit that automatically, so cards with shorter copy would
+   visibly shrink-wrap instead of matching their row. */
 .feature-card-flipper {
     position: relative;
+    height: 100%;
     transition: transform 0.5s var(--ease);
     transform-style: preserve-3d;
 }
@@ -645,6 +650,8 @@ a {
 }
 
 .feature-card-face {
+    box-sizing: border-box;
+    height: 100%;
     background: var(--panel);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
